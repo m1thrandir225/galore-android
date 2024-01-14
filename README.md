@@ -1,3 +1,3 @@
-![Project Header](./.github/galore-android-github-project-header.psd)
+![Project Header](./.github/galore-android-github-project-header.png)
 
 # Galore
