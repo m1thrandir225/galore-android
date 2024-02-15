@@ -71,9 +71,11 @@ dependencies {
     implementation("androidx.compose.ui:ui-tooling-preview")
     implementation("androidx.compose.material3:material3")
 
-    //Glide
-    val glideVer = "4.14.2"
-    implementation("com.github.bumptech.glide:glide:$glideVer")
+    //Coil
+    val coilVer = "2.5.0"
+    implementation("io.coil-kt:coil:$coilVer")
+    implementation("io.coil-kt:coil-compose:$coilVer")
+
 
     //Retrofit
     val retrofitVer = "2.9.0"
@@ -88,5 +90,9 @@ dependencies {
     //Navigation
     val navVersion = "2.7.6"
     implementation("androidx.navigation:navigation-compose:$navVersion")
+
+    //Lottie
+    val lottieVersion = "6.3.0"
+    implementation ("com.airbnb.android:lottie-compose:$lottieVersion")
 
 }
