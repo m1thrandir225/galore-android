@@ -1,5 +1,4 @@
-package com.sebastijanzindl.galore.compose.register
-
+package com.sebastijanzindl.galore.compose.login
 
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
@@ -41,25 +40,20 @@ import com.sebastijanzindl.galore.R
 import com.sebastijanzindl.galore.compose.Logo
 import com.sebastijanzindl.galore.ui.theme.GaloreTheme
 
-
 @Composable
-fun RegisterScreen(
+fun LoginScreen(
     modifier: Modifier = Modifier,
-    onLoginClick: () -> Unit
+    onRegisterClick: () -> Unit,
 ) {
-    val composition by rememberLottieComposition(spec = LottieCompositionSpec.RawRes(R.raw.register_lottie))
+    val composition by rememberLottieComposition(spec = LottieCompositionSpec.RawRes(R.raw.login_lottie))
     var email by remember {
         mutableStateOf("")
     }
-    var name by remember {
-        mutableStateOf("")
-    }
-
     var password by remember {
         mutableStateOf("")
     }
     Scaffold {
-        contentPadding ->
+            contentPadding ->
         Column(
             verticalArrangement = Arrangement.SpaceAround,
             horizontalAlignment = Alignment.CenterHorizontally,
@@ -87,19 +81,10 @@ fun RegisterScreen(
                 modifier = Modifier.fillMaxWidth()
             ) {
                 Text(
-                    text ="Register",
+                    text ="Login",
                     modifier = Modifier.padding(bottom = 12.dp),
                     style = MaterialTheme.typography.headlineMedium
                 )
-                TextField(
-                    modifier = Modifier.fillMaxWidth(),
-                    value = name,
-                    onValueChange = { name = it },
-                    label = {
-                        Text("Name")
-                    }
-                )
-
                 TextField(
                     modifier = Modifier.fillMaxWidth(),
                     value = email,
@@ -118,6 +103,11 @@ fun RegisterScreen(
                     visualTransformation = PasswordVisualTransformation(),
                     keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Password)
                 )
+                Text(
+                    text = "Forgot your password ?",
+                    style = MaterialTheme.typography.labelSmall,
+                    color = MaterialTheme.colorScheme.error
+                )
             }
             Button(
                 onClick = { /*TODO*/ },
@@ -132,15 +122,15 @@ fun RegisterScreen(
                 horizontalArrangement = Arrangement.spacedBy(8.dp)
             ){
                 Text(
-                    text = "Already have an account ?",
+                    text = "Don't have an account ?",
                     style = MaterialTheme.typography.labelSmall,
                     color = MaterialTheme.colorScheme.onBackground
                 )
                 Text(
                     modifier = Modifier.clickable(
-                        onClick = onLoginClick
+                        onClick = onRegisterClick
                     ),
-                    text = "Login",
+                    text = "Register",
                     style = MaterialTheme.typography.labelSmall,
                     color = MaterialTheme.colorScheme.primary,
                 )
@@ -193,11 +183,10 @@ fun RegisterScreen(
     }
 }
 
-
 @Preview(apiLevel = 33)
 @Composable
-private fun RegisterScreenPreview() {
+private fun LoginScreenPreview() {
     GaloreTheme {
-        RegisterScreen(onLoginClick = {})
+        LoginScreen(onRegisterClick = {})
     }
 }

@@ -12,6 +12,7 @@ import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
 import androidx.navigation.navigation
 import com.sebastijanzindl.galore.compose.home.HomeScreen
+import com.sebastijanzindl.galore.compose.login.LoginScreen
 import com.sebastijanzindl.galore.compose.register.RegisterScreen
 import com.sebastijanzindl.galore.compose.welcome.WelcomeScreen
 
@@ -46,11 +47,6 @@ fun GaloreNavHost (
                         AnimatedContentTransitionScope.SlideDirection.End, tween(200)
                     )
                 },
-                popExitTransition = {
-                    return@composable slideOutOfContainer(
-                        AnimatedContentTransitionScope.SlideDirection.Start, tween(200)
-                    )
-                }
             ) {
                 WelcomeScreen(
                     onGettingStartedClick = {
@@ -60,8 +56,61 @@ fun GaloreNavHost (
                     }
                 )
             }
-            composable(route = Screen.Register.route) {
-                RegisterScreen()
+            composable(
+                route = Screen.Register.route,
+                enterTransition = {
+                    return@composable fadeIn(tween(500))
+                },
+                exitTransition = {
+                    return@composable slideOutOfContainer(
+                        AnimatedContentTransitionScope.SlideDirection.End, tween(200)
+                    )
+                },
+                popEnterTransition = {
+                    return@composable slideIntoContainer(
+                        AnimatedContentTransitionScope.SlideDirection.End, tween(200)
+                    )
+                },
+                popExitTransition = {
+                    return@composable slideOutOfContainer(
+                        AnimatedContentTransitionScope.SlideDirection.Start, tween(400)
+                    )
+                }
+            ) {
+                RegisterScreen(onLoginClick = {
+                    navController.navigate(Screen.Login.route) {
+                        popUpTo(Screen.Welcome.route)
+                    }
+                })
+            }
+            composable(
+                route = Screen.Login.route,
+                enterTransition = {
+                    return@composable fadeIn(tween(500))
+                },
+                exitTransition = {
+                    return@composable slideOutOfContainer(
+                        AnimatedContentTransitionScope.SlideDirection.Start, tween(200)
+                    )
+                },
+                popEnterTransition = {
+                    return@composable slideIntoContainer(
+                        AnimatedContentTransitionScope.SlideDirection.End, tween(200)
+                    )
+                },
+                popExitTransition = {
+                    return@composable slideOutOfContainer(
+                        AnimatedContentTransitionScope.SlideDirection.Start, tween(400)
+                    )
+                }
+            ) {
+                LoginScreen(
+                    onRegisterClick = {
+                        navController.navigate(Screen.Register.route) {
+                            popUpTo(Screen.Welcome.route)
+                        }
+                    }
+                )
             }
         }
 

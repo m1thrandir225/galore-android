@@ -16,6 +16,7 @@ fun Logo(
     Text(text = "galore",
         fontSize = 48.sp,
         fontFamily = benzinFont,
-        color = MaterialTheme.colorScheme.primary
+        color = MaterialTheme.colorScheme.primary,
+        modifier = modifier
     )
 }
