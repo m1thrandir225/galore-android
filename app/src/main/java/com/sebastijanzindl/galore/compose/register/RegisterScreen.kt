@@ -55,8 +55,6 @@ fun RegisterScreen(
             Column(
                 verticalArrangement = Arrangement.SpaceEvenly,
                 horizontalAlignment = Alignment.Start
-
-
             ) {
 
             }
