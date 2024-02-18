@@ -68,12 +68,12 @@ fun GaloreNavHost (
                 },
                 popEnterTransition = {
                     return@composable slideIntoContainer(
-                        AnimatedContentTransitionScope.SlideDirection.End, tween(200)
+                        AnimatedContentTransitionScope.SlideDirection.End
                     )
                 },
                 popExitTransition = {
                     return@composable slideOutOfContainer(
-                        AnimatedContentTransitionScope.SlideDirection.Start, tween(400)
+                        AnimatedContentTransitionScope.SlideDirection.Start
                     )
                 }
             ) {
@@ -95,12 +95,12 @@ fun GaloreNavHost (
                 },
                 popEnterTransition = {
                     return@composable slideIntoContainer(
-                        AnimatedContentTransitionScope.SlideDirection.End, tween(200)
+                        AnimatedContentTransitionScope.SlideDirection.End
                     )
                 },
                 popExitTransition = {
                     return@composable slideOutOfContainer(
-                        AnimatedContentTransitionScope.SlideDirection.Start, tween(400)
+                        AnimatedContentTransitionScope.SlideDirection.Start
                     )
                 }
             ) {

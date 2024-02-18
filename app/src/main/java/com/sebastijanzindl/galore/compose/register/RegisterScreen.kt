@@ -6,11 +6,15 @@ import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.ExperimentalLayoutApi
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
+import androidx.compose.foundation.layout.imeNestedScroll
+import androidx.compose.foundation.layout.imePadding
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.statusBarsPadding
 import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.text.KeyboardOptions
@@ -18,6 +22,7 @@ import androidx.compose.material3.Button
 import androidx.compose.material3.ButtonDefaults
 import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
+import androidx.compose.material3.OutlinedTextField
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
 import androidx.compose.material3.TextField
@@ -42,6 +47,7 @@ import com.sebastijanzindl.galore.compose.Logo
 import com.sebastijanzindl.galore.ui.theme.GaloreTheme
 
 
+@OptIn(ExperimentalLayoutApi::class)
 @Composable
 fun RegisterScreen(
     modifier: Modifier = Modifier,
@@ -58,7 +64,7 @@ fun RegisterScreen(
     var password by remember {
         mutableStateOf("")
     }
-    Scaffold {
+    Scaffold( modifier = Modifier) {
         contentPadding ->
         Column(
             verticalArrangement = Arrangement.SpaceAround,
@@ -71,14 +77,16 @@ fun RegisterScreen(
                     end = 24.dp
                 )
                 .fillMaxSize()
+
         ) {
             Box(
-                modifier = Modifier.fillMaxWidth()
+                modifier = Modifier.fillMaxWidth().height(250.dp)
             ){
                 Logo(modifier = Modifier.align(Alignment.TopCenter))
                 LottieAnimation(modifier = Modifier
                     .fillMaxWidth()
-                    .height(250.dp), composition = composition, iterations = LottieConstants.IterateForever)
+                    .align(Alignment.Center)
+                    ,composition = composition, iterations = LottieConstants.IterateForever)
             }
 
             Column(
@@ -91,7 +99,7 @@ fun RegisterScreen(
                     modifier = Modifier.padding(bottom = 12.dp),
                     style = MaterialTheme.typography.headlineMedium
                 )
-                TextField(
+                OutlinedTextField(
                     modifier = Modifier.fillMaxWidth(),
                     value = name,
                     onValueChange = { name = it },
@@ -100,7 +108,7 @@ fun RegisterScreen(
                     }
                 )
 
-                TextField(
+                OutlinedTextField(
                     modifier = Modifier.fillMaxWidth(),
                     value = email,
                     onValueChange = { email = it },
@@ -108,7 +116,7 @@ fun RegisterScreen(
                         Text(text = "Email")
                     }
                 )
-                TextField(
+                OutlinedTextField(
                     modifier = Modifier.fillMaxWidth(),
                     value = password,
                     onValueChange = { password = it },

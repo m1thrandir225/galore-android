@@ -16,7 +16,7 @@
         <activity
             android:name=".GaloreActivity"
             android:exported="true"
-            
+            android:windowSoftInputMode="adjustResize"
             android:theme="@style/Theme.Galore">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
