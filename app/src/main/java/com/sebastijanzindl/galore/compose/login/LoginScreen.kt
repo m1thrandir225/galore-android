@@ -5,21 +5,26 @@ import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.ExperimentalLayoutApi
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
+import androidx.compose.foundation.layout.imeNestedScroll
+import androidx.compose.foundation.layout.imePadding
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.width
+import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.text.KeyboardOptions
+import androidx.compose.foundation.verticalScroll
 import androidx.compose.material3.Button
 import androidx.compose.material3.ButtonDefaults
 import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
+import androidx.compose.material3.OutlinedTextField
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
-import androidx.compose.material3.TextField
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
@@ -40,6 +45,7 @@ import com.sebastijanzindl.galore.R
 import com.sebastijanzindl.galore.compose.Logo
 import com.sebastijanzindl.galore.ui.theme.GaloreTheme
 
+@OptIn(ExperimentalLayoutApi::class)
 @Composable
 fun LoginScreen(
     modifier: Modifier = Modifier,
@@ -58,13 +64,17 @@ fun LoginScreen(
             verticalArrangement = Arrangement.SpaceAround,
             horizontalAlignment = Alignment.CenterHorizontally,
             modifier = Modifier
+                .fillMaxSize()
                 .padding(
                     top = contentPadding.calculateTopPadding(),
                     bottom = contentPadding.calculateBottomPadding(),
                     start = 24.dp,
                     end = 24.dp
                 )
-                .fillMaxSize()
+                .verticalScroll(rememberScrollState())
+                .imePadding()
+                .imeNestedScroll()
+
         ) {
             Box(
                 modifier = Modifier.fillMaxWidth()
@@ -83,9 +93,10 @@ fun LoginScreen(
                 Text(
                     text ="Login",
                     modifier = Modifier.padding(bottom = 12.dp),
-                    style = MaterialTheme.typography.headlineMedium
+                    style = MaterialTheme.typography.headlineMedium,
+                    color = MaterialTheme.colorScheme.onBackground
                 )
-                TextField(
+                OutlinedTextField(
                     modifier = Modifier.fillMaxWidth(),
                     value = email,
                     onValueChange = { email = it },
@@ -93,7 +104,7 @@ fun LoginScreen(
                         Text(text = "Email")
                     }
                 )
-                TextField(
+                OutlinedTextField(
                     modifier = Modifier.fillMaxWidth(),
                     value = password,
                     onValueChange = { password = it },
@@ -106,7 +117,7 @@ fun LoginScreen(
                 Text(
                     text = "Forgot your password ?",
                     style = MaterialTheme.typography.labelSmall,
-                    color = MaterialTheme.colorScheme.error
+                    color = MaterialTheme.colorScheme.onTertiaryContainer
                 )
             }
             Button(
@@ -162,7 +173,6 @@ fun LoginScreen(
                     .height(3.dp)
                 )
             }
-
             Button(
                 onClick = { /*TODO*/ },
                 colors = ButtonDefaults.buttonColors(MaterialTheme.colorScheme.secondary),

@@ -1,6 +1,7 @@
 package com.sebastijanzindl.galore.compose.register
 
 
+import android.inputmethodservice.Keyboard
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
@@ -14,10 +15,12 @@ import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.imeNestedScroll
 import androidx.compose.foundation.layout.imePadding
 import androidx.compose.foundation.layout.padding
-import androidx.compose.foundation.layout.statusBarsPadding
 import androidx.compose.foundation.layout.width
+import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.shape.RoundedCornerShape
+import androidx.compose.foundation.text.KeyboardActions
 import androidx.compose.foundation.text.KeyboardOptions
+import androidx.compose.foundation.verticalScroll
 import androidx.compose.material3.Button
 import androidx.compose.material3.ButtonDefaults
 import androidx.compose.material3.Icon
@@ -25,19 +28,23 @@ import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.OutlinedTextField
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
-import androidx.compose.material3.TextField
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.focus.FocusDirection
+import androidx.compose.ui.platform.LocalFocusManager
 import androidx.compose.ui.res.painterResource
+import androidx.compose.ui.text.input.ImeAction
 import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.text.input.PasswordVisualTransformation
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import androidx.hilt.navigation.compose.hiltViewModel
 import com.airbnb.lottie.compose.LottieAnimation
 import com.airbnb.lottie.compose.LottieCompositionSpec
 import com.airbnb.lottie.compose.LottieConstants
@@ -45,42 +52,42 @@ import com.airbnb.lottie.compose.rememberLottieComposition
 import com.sebastijanzindl.galore.R
 import com.sebastijanzindl.galore.compose.Logo
 import com.sebastijanzindl.galore.ui.theme.GaloreTheme
-
+import com.sebastijanzindl.galore.viewmodels.RegisterScreenViewModel
+import kotlinx.coroutines.flow.collect
 
 @OptIn(ExperimentalLayoutApi::class)
 @Composable
 fun RegisterScreen(
     modifier: Modifier = Modifier,
+    viewModel: RegisterScreenViewModel = hiltViewModel(),
     onLoginClick: () -> Unit
 ) {
     val composition by rememberLottieComposition(spec = LottieCompositionSpec.RawRes(R.raw.register_lottie))
-    var email by remember {
-        mutableStateOf("")
-    }
-    var name by remember {
-        mutableStateOf("")
-    }
+    val scrollState = rememberScrollState();
+    val focusManager = LocalFocusManager.current;
 
-    var password by remember {
-        mutableStateOf("")
-    }
-    Scaffold( modifier = Modifier) {
+    Scaffold(modifier = modifier) {
         contentPadding ->
         Column(
             verticalArrangement = Arrangement.SpaceAround,
             horizontalAlignment = Alignment.CenterHorizontally,
             modifier = Modifier
+                .fillMaxSize()
+                .verticalScroll(scrollState)
                 .padding(
                     top = contentPadding.calculateTopPadding(),
                     bottom = contentPadding.calculateBottomPadding(),
                     start = 24.dp,
                     end = 24.dp
                 )
-                .fillMaxSize()
+                .imePadding()
+                .imeNestedScroll()
 
         ) {
             Box(
-                modifier = Modifier.fillMaxWidth().height(250.dp)
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .height(250.dp)
             ){
                 Logo(modifier = Modifier.align(Alignment.TopCenter))
                 LottieAnimation(modifier = Modifier
@@ -101,34 +108,58 @@ fun RegisterScreen(
                 )
                 OutlinedTextField(
                     modifier = Modifier.fillMaxWidth(),
-                    value = name,
-                    onValueChange = { name = it },
+                    value = viewModel.fullName,
+                    onValueChange = { newValue -> viewModel.updateFullName(newValue) },
                     label = {
                         Text("Name")
-                    }
+                    },
+                    keyboardOptions = KeyboardOptions(
+                        keyboardType = KeyboardType.Text,
+                        imeAction = ImeAction.Next
+                    ),
+                    keyboardActions = KeyboardActions(
+                        onNext = {
+                            focusManager.moveFocus(FocusDirection.Down)
+                        }
+                    )
                 )
 
                 OutlinedTextField(
                     modifier = Modifier.fillMaxWidth(),
-                    value = email,
-                    onValueChange = { email = it },
+                    value = viewModel.email,
+                    onValueChange = { newValue -> viewModel.updateEmail(newValue) },
                     label = {
                         Text(text = "Email")
-                    }
+                    },
+                    keyboardOptions = KeyboardOptions(
+                        keyboardType = KeyboardType.Email,
+                        imeAction =  ImeAction.Next
+                    ),
+                    keyboardActions = KeyboardActions(
+                        onNext = {
+                            focusManager.moveFocus(FocusDirection.Down)
+                        }
+                    )
                 )
                 OutlinedTextField(
                     modifier = Modifier.fillMaxWidth(),
-                    value = password,
-                    onValueChange = { password = it },
+                    value = viewModel.password,
+                    onValueChange = { newValue -> viewModel.updatePassword(newValue) },
                     label = {
                         Text("Password")
                     },
                     visualTransformation = PasswordVisualTransformation(),
-                    keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Password)
+                    keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Password, imeAction = ImeAction.Done),
+                    keyboardActions = KeyboardActions(
+                        onDone = {
+                            viewModel.registerUser()
+                        }
+                    )
                 )
             }
+
             Button(
-                onClick = { /*TODO*/ },
+                onClick = { viewModel.registerUser() },
                 modifier = Modifier
                     .padding(top = 50.dp, bottom = 12.dp)
                     .fillMaxWidth()
@@ -136,6 +167,8 @@ fun RegisterScreen(
             ) {
                 Text(text = "Continue")
             }
+
+
             Row(
                 horizontalArrangement = Arrangement.spacedBy(8.dp)
             ){
@@ -206,6 +239,6 @@ fun RegisterScreen(
 @Composable
 private fun RegisterScreenPreview() {
     GaloreTheme {
-        RegisterScreen(onLoginClick = {})
+        RegisterScreen(onLoginClick = {}, viewModel = hiltViewModel<RegisterScreenViewModel>())
     }
 }

@@ -73,6 +73,7 @@ dependencies {
     implementation("androidx.compose.material3:material3-window-size-class:1.2.0")
     implementation("androidx.compose.material3:material3-adaptive:1.0.0-alpha06")
     implementation("androidx.compose.material3:material3-adaptive-navigation-suite:1.0.0-alpha03")
+    implementation("androidx.lifecycle:lifecycle-viewmodel-compose:2.7.0")
 
     //Coil
     val coilVer = "2.5.0"
@@ -88,6 +89,7 @@ dependencies {
     //Dagger-Hilt
     val hiltVer = "2.50"
     implementation ("com.google.dagger:hilt-android:$hiltVer")
+    implementation("androidx.hilt:hilt-navigation-compose:1.1.0")
     ksp("com.google.dagger:hilt-compiler:$hiltVer")
 
     //Navigation

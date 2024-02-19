@@ -6,6 +6,7 @@ import androidx.compose.animation.core.tween
 import androidx.compose.animation.fadeIn
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.platform.LocalContext
+import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
@@ -15,6 +16,7 @@ import com.sebastijanzindl.galore.compose.home.HomeScreen
 import com.sebastijanzindl.galore.compose.login.LoginScreen
 import com.sebastijanzindl.galore.compose.register.RegisterScreen
 import com.sebastijanzindl.galore.compose.welcome.WelcomeScreen
+import com.sebastijanzindl.galore.viewmodels.RegisterScreenViewModel
 
 @Composable
 fun GaloreApp() {
@@ -58,9 +60,6 @@ fun GaloreNavHost (
             }
             composable(
                 route = Screen.Register.route,
-                enterTransition = {
-                    return@composable fadeIn(tween(500))
-                },
                 exitTransition = {
                     return@composable slideOutOfContainer(
                         AnimatedContentTransitionScope.SlideDirection.End, tween(200)
@@ -77,7 +76,7 @@ fun GaloreNavHost (
                     )
                 }
             ) {
-                RegisterScreen(onLoginClick = {
+                RegisterScreen(viewModel = hiltViewModel<RegisterScreenViewModel>() ,onLoginClick = {
                     navController.navigate(Screen.Login.route) {
                         popUpTo(Screen.Welcome.route)
                     }
@@ -85,9 +84,6 @@ fun GaloreNavHost (
             }
             composable(
                 route = Screen.Login.route,
-                enterTransition = {
-                    return@composable fadeIn(tween(500))
-                },
                 exitTransition = {
                     return@composable slideOutOfContainer(
                         AnimatedContentTransitionScope.SlideDirection.Start, tween(200)
