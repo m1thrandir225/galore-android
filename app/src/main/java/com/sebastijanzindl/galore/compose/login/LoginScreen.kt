@@ -1,5 +1,6 @@
 package com.sebastijanzindl.galore.compose.login
 
+import android.text.TextUtils
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
@@ -16,8 +17,11 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.shape.RoundedCornerShape
+import androidx.compose.foundation.text.KeyboardActions
 import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.foundation.verticalScroll
+import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.Info
 import androidx.compose.material3.Button
 import androidx.compose.material3.ButtonDefaults
 import androidx.compose.material3.Icon
@@ -32,11 +36,15 @@ import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.focus.FocusDirection
+import androidx.compose.ui.platform.LocalFocusManager
 import androidx.compose.ui.res.painterResource
+import androidx.compose.ui.text.input.ImeAction
 import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.text.input.PasswordVisualTransformation
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import androidx.hilt.navigation.compose.hiltViewModel
 import com.airbnb.lottie.compose.LottieAnimation
 import com.airbnb.lottie.compose.LottieCompositionSpec
 import com.airbnb.lottie.compose.LottieConstants
@@ -44,20 +52,19 @@ import com.airbnb.lottie.compose.rememberLottieComposition
 import com.sebastijanzindl.galore.R
 import com.sebastijanzindl.galore.compose.Logo
 import com.sebastijanzindl.galore.ui.theme.GaloreTheme
+import com.sebastijanzindl.galore.viewmodels.LoginScreenViewModel
 
 @OptIn(ExperimentalLayoutApi::class)
 @Composable
 fun LoginScreen(
     modifier: Modifier = Modifier,
+    viewModel: LoginScreenViewModel = hiltViewModel(),
     onRegisterClick: () -> Unit,
 ) {
     val composition by rememberLottieComposition(spec = LottieCompositionSpec.RawRes(R.raw.login_lottie))
-    var email by remember {
-        mutableStateOf("")
-    }
-    var password by remember {
-        mutableStateOf("")
-    }
+    val scrollState = rememberScrollState();
+    val focusManager = LocalFocusManager.current;
+
     Scaffold {
             contentPadding ->
         Column(
@@ -71,7 +78,7 @@ fun LoginScreen(
                     start = 24.dp,
                     end = 24.dp
                 )
-                .verticalScroll(rememberScrollState())
+                .verticalScroll(scrollState)
                 .imePadding()
                 .imeNestedScroll()
 
@@ -98,21 +105,61 @@ fun LoginScreen(
                 )
                 OutlinedTextField(
                     modifier = Modifier.fillMaxWidth(),
-                    value = email,
-                    onValueChange = { email = it },
+                    value = viewModel.email,
+                    onValueChange = { newValue -> viewModel.updateEmail(newValue) },
                     label = {
                         Text(text = "Email")
-                    }
+                    },
+                    keyboardOptions = KeyboardOptions(
+                        imeAction = ImeAction.Next
+                    ),
+                    keyboardActions = KeyboardActions(
+                        onNext = {
+                            focusManager.moveFocus(FocusDirection.Down)
+                        },
+                    ),
+                    trailingIcon = {
+                                   if(viewModel.hasEmailError)
+                                       Icon(Icons.Filled.Info, "Error", tint = MaterialTheme.colorScheme.error)
+                    },
+                    supportingText = {
+                                     if(viewModel.hasEmailError) {
+                                        Text("Email is invalid")
+                                     }
+                    },
+                    singleLine = true,
+                    isError = viewModel.hasEmailError
                 )
                 OutlinedTextField(
                     modifier = Modifier.fillMaxWidth(),
-                    value = password,
-                    onValueChange = { password = it },
+                    value = viewModel.password,
+                    onValueChange = { newValue -> viewModel.updatePassword(newValue) },
                     label = {
                         Text("Password")
                     },
                     visualTransformation = PasswordVisualTransformation(),
-                    keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Password)
+                    keyboardOptions = KeyboardOptions(
+                        keyboardType = KeyboardType.Password,
+                        imeAction = ImeAction.Done
+                    ),
+                    keyboardActions = KeyboardActions(
+                        onDone = {
+                            viewModel.loginUser()
+                        }
+                    ),
+                    singleLine = true,
+                    trailingIcon = {
+                                   if(viewModel.hasPasswordError) {
+                                       Icon(Icons.Filled.Info, "Error", tint = MaterialTheme.colorScheme.error)
+                                   }
+                    },
+                    supportingText = {
+                                     if(viewModel.hasPasswordError) {
+                                        Text(text = "Password must be at least 8 characters long.")
+                                     }
+                    },
+                    isError = viewModel.hasPasswordError
+
                 )
                 Text(
                     text = "Forgot your password ?",
@@ -121,7 +168,8 @@ fun LoginScreen(
                 )
             }
             Button(
-                onClick = { /*TODO*/ },
+                enabled = !viewModel.hasEmailError && !viewModel.hasPasswordError,
+                onClick = { viewModel.loginUser() },
                 modifier = Modifier
                     .padding(top = 50.dp, bottom = 12.dp)
                     .fillMaxWidth()
@@ -197,6 +245,6 @@ fun LoginScreen(
 @Composable
 private fun LoginScreenPreview() {
     GaloreTheme {
-        LoginScreen(onRegisterClick = {})
+        LoginScreen(onRegisterClick = {}, viewModel = hiltViewModel<LoginScreenViewModel>())
     }
 }

@@ -16,6 +16,7 @@ import com.sebastijanzindl.galore.compose.home.HomeScreen
 import com.sebastijanzindl.galore.compose.login.LoginScreen
 import com.sebastijanzindl.galore.compose.register.RegisterScreen
 import com.sebastijanzindl.galore.compose.welcome.WelcomeScreen
+import com.sebastijanzindl.galore.viewmodels.LoginScreenViewModel
 import com.sebastijanzindl.galore.viewmodels.RegisterScreenViewModel
 
 @Composable
@@ -101,6 +102,7 @@ fun GaloreNavHost (
                 }
             ) {
                 LoginScreen(
+                    viewModel = hiltViewModel<LoginScreenViewModel>(),
                     onRegisterClick = {
                         navController.navigate(Screen.Register.route) {
                             popUpTo(Screen.Welcome.route)
