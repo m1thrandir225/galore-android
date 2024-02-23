@@ -1,6 +1,5 @@
-package com.sebastijanzindl.galore.compose.login
+package com.sebastijanzindl.galore.compose.screens.login
 
-import android.text.TextUtils
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
@@ -23,7 +22,6 @@ import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Info
 import androidx.compose.material3.Button
-import androidx.compose.material3.ButtonDefaults
 import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.OutlinedTextField
@@ -31,14 +29,10 @@ import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
-import androidx.compose.runtime.mutableStateOf
-import androidx.compose.runtime.remember
-import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.focus.FocusDirection
 import androidx.compose.ui.platform.LocalFocusManager
-import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.input.ImeAction
 import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.text.input.PasswordVisualTransformation
@@ -50,7 +44,8 @@ import com.airbnb.lottie.compose.LottieCompositionSpec
 import com.airbnb.lottie.compose.LottieConstants
 import com.airbnb.lottie.compose.rememberLottieComposition
 import com.sebastijanzindl.galore.R
-import com.sebastijanzindl.galore.compose.Logo
+import com.sebastijanzindl.galore.compose.components.Logo
+import com.sebastijanzindl.galore.compose.components.GoogleSigninButton
 import com.sebastijanzindl.galore.ui.theme.GaloreTheme
 import com.sebastijanzindl.galore.viewmodels.LoginScreenViewModel
 
@@ -221,22 +216,7 @@ fun LoginScreen(
                     .height(3.dp)
                 )
             }
-            Button(
-                onClick = { /*TODO*/ },
-                colors = ButtonDefaults.buttonColors(MaterialTheme.colorScheme.secondary),
-                modifier = Modifier.fillMaxWidth()
-
-            ) {
-                Row(
-                    verticalAlignment = Alignment.CenterVertically,
-                    horizontalArrangement = Arrangement.spacedBy(8.dp)
-                ){
-                    Icon(painter = painterResource(R.drawable.google_logo), contentDescription = "")
-                    Text(
-                        text = "Continue With Google",
-                    )
-                }
-            }
+          GoogleSigninButton(viewModel = viewModel)
         }
     }
 }

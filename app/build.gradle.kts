@@ -1,3 +1,7 @@
+import com.android.build.gradle.internal.cxx.configure.gradleLocalProperties
+import java.io.FileInputStream
+import java.util.Properties
+
 plugins {
     id("com.android.application")
     id("org.jetbrains.kotlin.android")
@@ -20,6 +24,14 @@ android {
         vectorDrawables {
             useSupportLibrary = true
         }
+
+        val properties = Properties().apply {
+            load(FileInputStream(File(rootProject.rootDir, "local.properties")))
+        };
+
+        buildConfigField("String", "SUPABASE_ANON_KEY", "\"${properties.getProperty("SUPABASE_ANON_KEY")}\"")
+        buildConfigField("String", "SECRET", "\"${properties.getProperty("SECRET")}\"")
+        buildConfigField("String", "SUPABASE_URL", "\"${properties.getProperty("SUPABASE_URL")}\"")
     }
 
     buildTypes {
@@ -99,5 +111,26 @@ dependencies {
     //Lottie
     val lottieVersion = "6.3.0"
     implementation ("com.airbnb.android:lottie-compose:$lottieVersion")
+
+    //Supabase
+    val supabase_version = "2.1.5"
+    val ktor_version = "2.3.8"
+    implementation ("io.github.jan-tennert.supabase:postgrest-kt:$supabase_version")
+    implementation ("io.github.jan-tennert.supabase:storage-kt:$supabase_version")
+    implementation ("io.github.jan-tennert.supabase:gotrue-kt:$supabase_version")
+    implementation("io.github.jan-tennert.supabase:coil-integration:$supabase_version")
+    implementation ("io.ktor:ktor-client-android:$ktor_version")
+    implementation ("io.ktor:ktor-client-core:$ktor_version")
+    implementation ("io.ktor:ktor-utils:$ktor_version")
+
+    //Credential Manager
+    implementation("androidx.credentials:credentials:1.3.0-alpha01")
+    implementation("androidx.credentials:credentials-play-services-auth:1.3.0-alpha01")
+
+
+    //Sign in with Google
+    val googleid_ver = "1.1.0"
+
+    implementation ("com.google.android.libraries.identity.googleid:googleid:$googleid_ver")
 
 }

@@ -1,4 +1,4 @@
-package com.sebastijanzindl.galore.compose.home
+package com.sebastijanzindl.galore.compose.screens.home
 
 import androidx.compose.foundation.ExperimentalFoundationApi
 import androidx.compose.foundation.layout.Arrangement

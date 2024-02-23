@@ -1,4 +1,4 @@
-package com.sebastijanzindl.galore.compose.welcome
+package com.sebastijanzindl.galore.compose.screens.welcome
 
 
 import androidx.compose.foundation.ExperimentalFoundationApi
@@ -9,6 +9,8 @@ import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.offset
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.statusBarsPadding
+import androidx.compose.foundation.layout.systemBarsPadding
 import androidx.compose.material3.Button
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.MaterialTheme
@@ -24,7 +26,7 @@ import androidx.compose.ui.text.font.FontFamily
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import com.sebastijanzindl.galore.R
-import com.sebastijanzindl.galore.compose.Logo
+import com.sebastijanzindl.galore.compose.components.Logo
 
 import com.sebastijanzindl.galore.ui.theme.GaloreTheme
 
@@ -36,7 +38,7 @@ fun WelcomeScreen(
     onGettingStartedClick: () -> Unit
 ) {
     val welcomeBackground = painterResource(id = R.drawable.welcome_background)
-    Box(modifier = modifier.fillMaxSize()) {
+    Box(modifier = modifier.fillMaxSize().statusBarsPadding().systemBarsPadding()) {
         Image(
             painter = welcomeBackground,
             contentDescription = "welcome background",
@@ -74,6 +76,7 @@ fun WelcomeScreen(
         }
     }
 }
+
 @Preview
 @Composable
 private fun WelcomeScreenPreview() {

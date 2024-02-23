@@ -12,7 +12,6 @@ import dagger.hilt.android.AndroidEntryPoint
 class GaloreActivity: ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-
         enableEdgeToEdge()
         setContent {
             GaloreTheme {

@@ -2,15 +2,19 @@ package com.sebastijanzindl.galore.viewmodels
 
 import android.text.TextUtils
 import android.util.Patterns
+import android.widget.Toast
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.setValue
 import androidx.lifecycle.SavedStateHandle
 import androidx.lifecycle.ViewModel
+import androidx.lifecycle.viewModelScope
+import com.sebastijanzindl.galore.domain.usecase.SignUpUseCase
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow
+import kotlinx.coroutines.launch
 import javax.inject.Inject
 
 
@@ -19,7 +23,9 @@ import javax.inject.Inject
  */
 
 @HiltViewModel
-class RegisterScreenViewModel @Inject constructor(): ViewModel() {
+class RegisterScreenViewModel @Inject constructor(
+    private val signUpUseCase: SignUpUseCase
+): ViewModel() {
     var fullName by mutableStateOf("")
         private set
     var hasFullNameError by mutableStateOf(false)
@@ -39,15 +45,16 @@ class RegisterScreenViewModel @Inject constructor(): ViewModel() {
 
     fun updateFullName(input: String) {
         fullName = input;
+        validateFullName(input);
     }
 
     private fun validateFullName(input: String) {
         hasFullNameError = TextUtils.isEmpty(input);
     };
 
-
     fun updateEmail(input: String) {
         email = input;
+        validateEmail(input);
     }
     private fun validateEmail(input: String) {
         val emailPattern = Patterns.EMAIL_ADDRESS;
@@ -57,12 +64,28 @@ class RegisterScreenViewModel @Inject constructor(): ViewModel() {
 
     fun updatePassword(input: String) {
         password = input;
+        validatePassword(input);
     }
 
     private fun validatePassword(input: String) {
         hasPasswordError = input.length < 8
     }
     fun registerUser() {
-        println("$fullName + $email + $password")
+        viewModelScope.launch {
+            val result = signUpUseCase.execute(
+                SignUpUseCase.Input(
+                    email = email,
+                    password = password
+                )
+            )
+            when(result) {
+                is SignUpUseCase.Output.Success -> {
+                    println("signed-in")
+                }
+                else -> {
+                    println("Something went wrong")
+                }
+            }
+        }
     }
 }

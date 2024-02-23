@@ -1,4 +1,4 @@
-package com.sebastijanzindl.galore.compose
+package com.sebastijanzindl.galore.compose.navigation
 
 import androidx.navigation.NamedNavArgument
 

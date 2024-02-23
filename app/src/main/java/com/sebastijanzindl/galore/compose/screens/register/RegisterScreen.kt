@@ -1,7 +1,6 @@
-package com.sebastijanzindl.galore.compose.register
+package com.sebastijanzindl.galore.compose.screens.register
 
 
-import android.inputmethodservice.Keyboard
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
@@ -21,24 +20,20 @@ import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.text.KeyboardActions
 import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.foundation.verticalScroll
+import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.Info
 import androidx.compose.material3.Button
-import androidx.compose.material3.ButtonDefaults
 import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.OutlinedTextField
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
-import androidx.compose.runtime.mutableStateOf
-import androidx.compose.runtime.remember
-import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.focus.FocusDirection
 import androidx.compose.ui.platform.LocalFocusManager
-import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.input.ImeAction
 import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.text.input.PasswordVisualTransformation
@@ -50,10 +45,10 @@ import com.airbnb.lottie.compose.LottieCompositionSpec
 import com.airbnb.lottie.compose.LottieConstants
 import com.airbnb.lottie.compose.rememberLottieComposition
 import com.sebastijanzindl.galore.R
-import com.sebastijanzindl.galore.compose.Logo
+import com.sebastijanzindl.galore.compose.components.Logo
+import com.sebastijanzindl.galore.compose.components.GoogleSigninButton
 import com.sebastijanzindl.galore.ui.theme.GaloreTheme
 import com.sebastijanzindl.galore.viewmodels.RegisterScreenViewModel
-import kotlinx.coroutines.flow.collect
 
 @OptIn(ExperimentalLayoutApi::class)
 @Composable
@@ -82,12 +77,11 @@ fun RegisterScreen(
                 )
                 .imePadding()
                 .imeNestedScroll()
-
         ) {
             Box(
                 modifier = Modifier
                     .fillMaxWidth()
-                    .height(250.dp)
+                    .height(200.dp)
             ){
                 Logo(modifier = Modifier.align(Alignment.TopCenter))
                 LottieAnimation(modifier = Modifier
@@ -97,7 +91,7 @@ fun RegisterScreen(
             }
 
             Column(
-                verticalArrangement = Arrangement.spacedBy(12.dp),
+                verticalArrangement = Arrangement.spacedBy(8.dp),
                 horizontalAlignment = Alignment.Start,
                 modifier = Modifier.fillMaxWidth()
             ) {
@@ -121,9 +115,19 @@ fun RegisterScreen(
                         onNext = {
                             focusManager.moveFocus(FocusDirection.Down)
                         }
-                    )
+                    ),
+                    trailingIcon = {
+                        if(viewModel.hasFullNameError) {
+                            Icon(Icons.Filled.Info, "Error", tint = MaterialTheme.colorScheme.error)
+                        }
+                    },
+                    supportingText = {
+                        if(viewModel.hasFullNameError) {
+                            Text(text = "Field must not be empty.")
+                        }
+                    },
+                    isError = viewModel.hasFullNameError
                 )
-
                 OutlinedTextField(
                     modifier = Modifier.fillMaxWidth(),
                     value = viewModel.email,
@@ -139,7 +143,18 @@ fun RegisterScreen(
                         onNext = {
                             focusManager.moveFocus(FocusDirection.Down)
                         }
-                    )
+                    ),
+                    trailingIcon = {
+                        if(viewModel.hasEmailError) {
+                            Icon(Icons.Filled.Info, "Error", tint = MaterialTheme.colorScheme.error)
+                        }
+                    },
+                    supportingText = {
+                        if(viewModel.hasEmailError) {
+                            Text(text = "Field is not valid.")
+                        }
+                    },
+                    isError = viewModel.hasEmailError
                 )
                 OutlinedTextField(
                     modifier = Modifier.fillMaxWidth(),
@@ -154,20 +169,30 @@ fun RegisterScreen(
                         onDone = {
                             viewModel.registerUser()
                         }
-                    )
+                    ),
+                    trailingIcon = {
+                        if(viewModel.hasPasswordError) {
+                            Icon(Icons.Filled.Info, "Error", tint = MaterialTheme.colorScheme.error)
+                        }
+                    },
+                    supportingText = {
+                        if(viewModel.hasPasswordError) {
+                            Text(text = "Field must be at least 8 characters long.")
+                        }
+                    },
+                    isError = viewModel.hasPasswordError
                 )
             }
 
             Button(
                 onClick = { viewModel.registerUser() },
                 modifier = Modifier
-                    .padding(top = 50.dp, bottom = 12.dp)
+                    .padding(vertical = 12.dp)
                     .fillMaxWidth()
 
             ) {
                 Text(text = "Continue")
             }
-
 
             Row(
                 horizontalArrangement = Arrangement.spacedBy(8.dp)
@@ -212,23 +237,6 @@ fun RegisterScreen(
                     .width(138.dp)
                     .height(3.dp)
                 )
-            }
-
-            Button(
-                onClick = { /*TODO*/ },
-                colors = ButtonDefaults.buttonColors(MaterialTheme.colorScheme.secondary),
-                modifier = Modifier.fillMaxWidth()
-
-            ) {
-                Row(
-                    verticalAlignment = Alignment.CenterVertically,
-                    horizontalArrangement = Arrangement.spacedBy(8.dp)
-                ){
-                    Icon(painter = painterResource(R.drawable.google_logo), contentDescription = "")
-                    Text(
-                        text = "Continue With Google",
-                    )
-                }
             }
         }
     }

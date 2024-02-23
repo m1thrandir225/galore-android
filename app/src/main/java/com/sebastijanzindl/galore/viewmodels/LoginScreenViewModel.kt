@@ -7,15 +7,20 @@ import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.setValue
 import androidx.lifecycle.SavedStateHandle
 import androidx.lifecycle.ViewModel
+import androidx.lifecycle.viewModelScope
+import com.sebastijanzindl.galore.domain.usecase.SignInGoogleUseCase
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow
+import kotlinx.coroutines.launch
 import java.util.regex.Pattern
 import javax.inject.Inject
 
 @HiltViewModel
-class LoginScreenViewModel @Inject constructor() : ViewModel() {
+class LoginScreenViewModel @Inject constructor(
+    private val signInGoogleUseCase: SignInGoogleUseCase
+) : ViewModel() {
     var email by mutableStateOf("")
         private set
 
@@ -47,5 +52,16 @@ class LoginScreenViewModel @Inject constructor() : ViewModel() {
     }
     fun loginUser() {
         println("$email + $password")
+    }
+
+    fun signInWithGoogle(token: String, rawNonce: String) {
+        viewModelScope.launch {
+            val result = signInGoogleUseCase.execute(
+                SignInGoogleUseCase.Input(
+                    token = token,
+                    rawNonce = rawNonce
+                )
+            )
+        }
     }
 }
