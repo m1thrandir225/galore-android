@@ -60,12 +60,12 @@ fun LoginScreen(
     val scrollState = rememberScrollState();
     val focusManager = LocalFocusManager.current;
 
-    Scaffold {
+    Scaffold(modifier = modifier) {
             contentPadding ->
         Column(
             verticalArrangement = Arrangement.SpaceAround,
             horizontalAlignment = Alignment.CenterHorizontally,
-            modifier = Modifier
+            modifier =  Modifier
                 .fillMaxSize()
                 .padding(
                     top = contentPadding.calculateTopPadding(),
