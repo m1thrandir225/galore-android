@@ -13,7 +13,11 @@ fun NavGraphBuilder.mainNavGraph(
 ) {
     navigation(startDestination = Screen.Welcome.route, route = "main") {
         composable(route = Screen.Home.route) {
-            HomeScreen(viewModel = hiltViewModel<HomeScreenViewModel>())
+            HomeScreen(viewModel = hiltViewModel<HomeScreenViewModel>(), navigateToAuth = {
+                navController.navigate(Screen.Welcome.route) {
+                    popUpTo(Screen.Welcome.route)
+                }
+            })
         }
     }
 }

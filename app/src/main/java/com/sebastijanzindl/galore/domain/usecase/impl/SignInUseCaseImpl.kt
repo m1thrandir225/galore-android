@@ -1,22 +1,22 @@
 package com.sebastijanzindl.galore.domain.usecase.impl
 
 import com.sebastijanzindl.galore.data.repository.AuthenticationRepository
-import com.sebastijanzindl.galore.domain.usecase.SignOutUseCase
+import com.sebastijanzindl.galore.domain.usecase.SignInUseCase
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext
 import javax.inject.Inject
 
-class SignOutUseCaseImpl @Inject constructor(
+class SignInUseCaseImpl @Inject constructor(
     private val authenticationRepository: AuthenticationRepository
-): SignOutUseCase{
+): SignInUseCase{
 
-    override suspend fun execute(input: SignOutUseCase.Input): SignOutUseCase.Output =
+    override suspend fun execute(input: SignInUseCase.Input): SignInUseCase.Output  =
         withContext(Dispatchers.IO) {
-            val result = authenticationRepository.signOut()
+            val result = authenticationRepository.signIn(input.email, input.password);
             if(result) {
-                SignOutUseCase.Output.Success
+                SignInUseCase.Output.Success
             } else {
-                SignOutUseCase.Output.Failure;
+                SignInUseCase.Output.Failure
             }
         }
 }

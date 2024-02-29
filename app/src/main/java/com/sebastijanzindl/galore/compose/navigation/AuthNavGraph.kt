@@ -13,7 +13,7 @@ import com.sebastijanzindl.galore.compose.screens.login.LoginScreen
 import com.sebastijanzindl.galore.compose.screens.onboarding.OnboardingScreen
 import com.sebastijanzindl.galore.compose.screens.register.RegisterScreen
 import com.sebastijanzindl.galore.compose.screens.welcome.WelcomeScreen
-import com.sebastijanzindl.galore.viewmodels.LoginScreenViewModel
+import com.sebastijanzindl.galore.compose.screens.login.LoginScreenViewModel
 import com.sebastijanzindl.galore.viewmodels.RegisterScreenViewModel
 
 
@@ -115,7 +115,9 @@ fun NavGraphBuilder.authNavGraph(
         composable(
             route = Screen.EnablePushNotifications.route
         ) {
-            HomeScreen()
+            HomeScreen(navigateToAuth = {
+                navController.navigate(Screen.Welcome.route)
+            })
         }
     }
 }

@@ -1,9 +1,11 @@
 package com.sebastijanzindl.galore.di
 
 import com.sebastijanzindl.galore.domain.usecase.SignInGoogleUseCase
+import com.sebastijanzindl.galore.domain.usecase.SignInUseCase
 import com.sebastijanzindl.galore.domain.usecase.SignOutUseCase
 import com.sebastijanzindl.galore.domain.usecase.SignUpUseCase
 import com.sebastijanzindl.galore.domain.usecase.impl.SignInGoogleUseCaseImpl
+import com.sebastijanzindl.galore.domain.usecase.impl.SignInUseCaseImpl
 import com.sebastijanzindl.galore.domain.usecase.impl.SignOutUseCaseImpl
 import com.sebastijanzindl.galore.domain.usecase.impl.SignUpUseCaseImpl
 import dagger.Binds
@@ -22,4 +24,7 @@ abstract class UseCaseModule {
 
     @Binds
     abstract fun bindSignOutUseCase(impl: SignOutUseCaseImpl): SignOutUseCase
+
+    @Binds
+    abstract fun bindSignInUseCase(impl: SignInUseCaseImpl): SignInUseCase
 }

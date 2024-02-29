@@ -24,7 +24,7 @@ import com.google.android.libraries.identity.googleid.GetGoogleIdOption
 import com.google.android.libraries.identity.googleid.GoogleIdTokenCredential
 import com.google.android.libraries.identity.googleid.GoogleIdTokenParsingException
 import com.sebastijanzindl.galore.R
-import com.sebastijanzindl.galore.viewmodels.LoginScreenViewModel
+import com.sebastijanzindl.galore.compose.screens.login.LoginScreenViewModel
 import io.github.jan.supabase.postgrest.Postgrest
 import kotlinx.coroutines.launch
 import java.security.MessageDigest

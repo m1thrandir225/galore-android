@@ -1,4 +1,4 @@
-package com.sebastijanzindl.galore.viewmodels
+package com.sebastijanzindl.galore.compose.screens.login
 
 import android.text.TextUtils
 import android.util.Patterns
@@ -9,6 +9,8 @@ import androidx.lifecycle.SavedStateHandle
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.sebastijanzindl.galore.domain.usecase.SignInGoogleUseCase
+import com.sebastijanzindl.galore.domain.usecase.SignInUseCase
+import com.sebastijanzindl.galore.domain.usecase.SignUpUseCase
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
@@ -19,7 +21,8 @@ import javax.inject.Inject
 
 @HiltViewModel
 class LoginScreenViewModel @Inject constructor(
-    private val signInGoogleUseCase: SignInGoogleUseCase
+    private val signInGoogleUseCase: SignInGoogleUseCase,
+    private val signInUseCase: SignInUseCase
 ) : ViewModel() {
     var email by mutableStateOf("")
         private set
@@ -51,7 +54,22 @@ class LoginScreenViewModel @Inject constructor(
         hasPasswordError = input.length < 8;
     }
     fun loginUser() {
-        println("$email + $password")
+        viewModelScope.launch {
+            val result = signInUseCase.execute(
+                SignInUseCase.Input(
+                    email = email,
+                    password = password
+                )
+            )
+            when(result) {
+                is SignInUseCase.Output.Success -> {
+
+                }
+                else -> {
+
+                }
+            }
+        }
     }
 
     fun signInWithGoogle(token: String, rawNonce: String) {

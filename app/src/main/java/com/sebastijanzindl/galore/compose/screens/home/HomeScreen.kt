@@ -25,7 +25,8 @@ import com.sebastijanzindl.galore.ui.theme.GaloreTheme
 @Composable
 fun HomeScreen (
     modifier: Modifier = Modifier,
-    viewModel: HomeScreenViewModel = hiltViewModel()
+    viewModel: HomeScreenViewModel = hiltViewModel(),
+    navigateToAuth: () -> Unit,
 ){
 
     val scrollBehaviour = TopAppBarDefaults.enterAlwaysScrollBehavior()
@@ -38,7 +39,7 @@ fun HomeScreen (
         }
     ) {contentPadding ->
         Button(modifier = Modifier.padding(top = contentPadding.calculateTopPadding()), onClick = {
-            viewModel.logout()
+            viewModel.logout(navigateToAuth)
         }) {
             Text(text = "Logout")
         }
@@ -71,6 +72,6 @@ private fun HomeTopAppBar(
 @Composable
 private fun HomeScreenPreview() {
     GaloreTheme {
-        HomeScreen(viewModel = hiltViewModel<HomeScreenViewModel>())
+        HomeScreen(viewModel = hiltViewModel<HomeScreenViewModel>(), navigateToAuth =  {})
     }
 }

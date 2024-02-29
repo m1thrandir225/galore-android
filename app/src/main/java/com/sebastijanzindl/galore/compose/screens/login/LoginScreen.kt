@@ -47,7 +47,6 @@ import com.sebastijanzindl.galore.R
 import com.sebastijanzindl.galore.compose.components.Logo
 import com.sebastijanzindl.galore.compose.components.GoogleSigninButton
 import com.sebastijanzindl.galore.ui.theme.GaloreTheme
-import com.sebastijanzindl.galore.viewmodels.LoginScreenViewModel
 
 @OptIn(ExperimentalLayoutApi::class)
 @Composable
