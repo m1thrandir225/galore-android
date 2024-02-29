@@ -6,8 +6,8 @@ import io.github.jan.supabase.gotrue.Auth
 import io.github.jan.supabase.gotrue.providers.Google
 import io.github.jan.supabase.gotrue.providers.builtin.Email
 import io.github.jan.supabase.gotrue.providers.builtin.IDToken
-import java.lang.Exception
 import javax.inject.Inject
+import kotlin.Exception
 
 class AuthenticationRepositoryImpl @Inject constructor(
     private val auth: Auth
@@ -47,5 +47,15 @@ class AuthenticationRepositoryImpl @Inject constructor(
             println(e.message)
             false
         }
+    }
+
+    override suspend fun signOut(): Boolean {
+       return try {
+           auth.signOut();
+           true;
+       } catch (e: Exception) {
+           false
+       }
+
     }
 }

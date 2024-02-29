@@ -5,6 +5,7 @@ import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
+import androidx.compose.material3.Button
 import androidx.compose.material3.CenterAlignedTopAppBar
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.MaterialTheme
@@ -16,11 +17,15 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.input.nestedscroll.nestedScroll
 import androidx.compose.ui.tooling.preview.Preview
-@Preview
+import androidx.hilt.navigation.compose.hiltViewModel
+import androidx.lifecycle.ViewModel
+import com.sebastijanzindl.galore.ui.theme.GaloreTheme
+
 @OptIn(ExperimentalMaterial3Api::class, ExperimentalFoundationApi::class)
 @Composable
 fun HomeScreen (
-    modifier: Modifier = Modifier
+    modifier: Modifier = Modifier,
+    viewModel: HomeScreenViewModel = hiltViewModel()
 ){
 
     val scrollBehaviour = TopAppBarDefaults.enterAlwaysScrollBehavior()
@@ -32,11 +37,16 @@ fun HomeScreen (
             )
         }
     ) {contentPadding ->
-        Text(text = "Hello World", modifier = Modifier.padding(top = contentPadding.calculateTopPadding()))
+        Button(modifier = Modifier.padding(top = contentPadding.calculateTopPadding()), onClick = {
+            viewModel.logout()
+        }) {
+            Text(text = "Logout")
+        }
 
     }
 
 }
+
 
 @OptIn(ExperimentalMaterial3Api::class, ExperimentalFoundationApi::class)
 @Composable
@@ -57,3 +67,10 @@ private fun HomeTopAppBar(
         modifier = modifier,)
 }
 
+@Preview(apiLevel = 33)
+@Composable
+private fun HomeScreenPreview() {
+    GaloreTheme {
+        HomeScreen(viewModel = hiltViewModel<HomeScreenViewModel>())
+    }
+}

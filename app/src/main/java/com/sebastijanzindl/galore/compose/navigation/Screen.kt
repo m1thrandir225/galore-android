@@ -4,6 +4,8 @@ import androidx.navigation.NamedNavArgument
 
 sealed class Screen(val route: String, val navArguments: List<NamedNavArgument> = emptyList()){
     //Authentication - first time user
+
+    data object Splash: Screen("splash")
     data object Welcome: Screen("welcome");
     data object Register: Screen("register");
 

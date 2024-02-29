@@ -12,7 +12,6 @@ class SignInGoogleUseCaseImpl @Inject constructor(
     override suspend fun execute(input: SignInGoogleUseCase.Input): SignInGoogleUseCase.Output =
         withContext(Dispatchers.IO) {
             val result = authenticationRepository.signInWithGoogle(token = input.token, rawNonce =  input.rawNonce)
-            println(result)
             SignInGoogleUseCase.Output()
         }
 }

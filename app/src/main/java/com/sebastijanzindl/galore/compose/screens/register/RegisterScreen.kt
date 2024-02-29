@@ -55,7 +55,8 @@ import com.sebastijanzindl.galore.viewmodels.RegisterScreenViewModel
 fun RegisterScreen(
     modifier: Modifier = Modifier,
     viewModel: RegisterScreenViewModel = hiltViewModel(),
-    onLoginClick: () -> Unit
+    onLoginClick: () -> Unit,
+    navigateToOnboarding: () -> Unit,
 ) {
     val composition by rememberLottieComposition(spec = LottieCompositionSpec.RawRes(R.raw.register_lottie))
     val scrollState = rememberScrollState();
@@ -167,7 +168,7 @@ fun RegisterScreen(
                     keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Password, imeAction = ImeAction.Done),
                     keyboardActions = KeyboardActions(
                         onDone = {
-                            viewModel.registerUser()
+                            viewModel.registerUser(navigateToOnboarding)
                         }
                     ),
                     trailingIcon = {
@@ -185,7 +186,7 @@ fun RegisterScreen(
             }
 
             Button(
-                onClick = { viewModel.registerUser() },
+                onClick = { viewModel.registerUser(navigateToOnboarding) },
                 modifier = Modifier
                     .padding(vertical = 12.dp)
                     .fillMaxWidth()
@@ -247,6 +248,6 @@ fun RegisterScreen(
 @Composable
 private fun RegisterScreenPreview() {
     GaloreTheme {
-        RegisterScreen(onLoginClick = {}, viewModel = hiltViewModel<RegisterScreenViewModel>())
+        RegisterScreen(onLoginClick = {}, viewModel = hiltViewModel<RegisterScreenViewModel>(), navigateToOnboarding = {})
     }
 }

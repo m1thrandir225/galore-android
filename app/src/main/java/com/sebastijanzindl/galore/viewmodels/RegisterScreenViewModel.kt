@@ -70,7 +70,7 @@ class RegisterScreenViewModel @Inject constructor(
     private fun validatePassword(input: String) {
         hasPasswordError = input.length < 8
     }
-    fun registerUser() {
+    fun registerUser(navigateToOnboarding: () -> Unit) {
         viewModelScope.launch {
             val result = signUpUseCase.execute(
                 SignUpUseCase.Input(
@@ -80,7 +80,7 @@ class RegisterScreenViewModel @Inject constructor(
             )
             when(result) {
                 is SignUpUseCase.Output.Success -> {
-                    println("signed-in")
+                    navigateToOnboarding();
                 }
                 else -> {
                     println("Something went wrong")

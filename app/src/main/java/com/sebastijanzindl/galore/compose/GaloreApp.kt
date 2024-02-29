@@ -23,6 +23,7 @@ import com.sebastijanzindl.galore.compose.screens.login.LoginScreen
 import com.sebastijanzindl.galore.compose.navigation.Screen
 import com.sebastijanzindl.galore.compose.navigation.authNavGraph
 import com.sebastijanzindl.galore.compose.navigation.mainNavGraph
+import com.sebastijanzindl.galore.compose.navigation.splashNavGraph
 import com.sebastijanzindl.galore.compose.screens.register.RegisterScreen
 import com.sebastijanzindl.galore.compose.screens.welcome.WelcomeScreen
 import com.sebastijanzindl.galore.viewmodels.LoginScreenViewModel
@@ -60,8 +61,10 @@ fun GaloreNavHost (
 ) {
     val activity = (LocalContext.current as Activity)
 
-    NavHost(navController = navController, startDestination = if(isLoggedIn) "app" else "auth") {
+    NavHost(navController = navController, startDestination = "loading") {
+        splashNavGraph(navController = navController)
         mainNavGraph(navController =  navController)
         authNavGraph(navController = navController)
+
     }
 }

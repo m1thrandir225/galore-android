@@ -8,7 +8,9 @@ import androidx.navigation.NavController
 import androidx.navigation.NavGraphBuilder
 import androidx.navigation.compose.composable
 import androidx.navigation.navigation
+import com.sebastijanzindl.galore.compose.screens.home.HomeScreen
 import com.sebastijanzindl.galore.compose.screens.login.LoginScreen
+import com.sebastijanzindl.galore.compose.screens.onboarding.OnboardingScreen
 import com.sebastijanzindl.galore.compose.screens.register.RegisterScreen
 import com.sebastijanzindl.galore.compose.screens.welcome.WelcomeScreen
 import com.sebastijanzindl.galore.viewmodels.LoginScreenViewModel
@@ -61,11 +63,18 @@ fun NavGraphBuilder.authNavGraph(
                 )
             }
         ) {
-            RegisterScreen(viewModel = hiltViewModel<RegisterScreenViewModel>() ,onLoginClick = {
-                navController.navigate(Screen.Login.route) {
-                    popUpTo(Screen.Welcome.route)
+            RegisterScreen(viewModel = hiltViewModel<RegisterScreenViewModel>(),
+                onLoginClick = {
+                    navController.navigate(Screen.Login.route) {
+                        popUpTo(Screen.Welcome.route)
+                    }
+                },
+                navigateToOnboarding = {
+                    navController.navigate(Screen.Onboarding.route) {
+                        popUpTo(Screen.Onboarding.route)
+                    }
                 }
-            })
+            )
         }
         composable(
             route = Screen.Login.route,
@@ -93,6 +102,20 @@ fun NavGraphBuilder.authNavGraph(
                     }
                 }
             )
+        }
+        composable(
+            route = Screen.Onboarding.route,
+        ) {
+            OnboardingScreen(navigateToPushNotificationScreen = {
+                navController.navigate(Screen.EnablePushNotifications.route) {
+                    popUpTo(Screen.EnablePushNotifications.route)
+                }
+            })
+        }
+        composable(
+            route = Screen.EnablePushNotifications.route
+        ) {
+            HomeScreen()
         }
     }
 }
