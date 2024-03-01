@@ -12,6 +12,7 @@ import androidx.navigation.NavHostController
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.currentBackStackEntryAsState
 import androidx.navigation.compose.rememberNavController
+import com.sebastijanzindl.galore.compose.navigation.GaloreNavHost
 import com.sebastijanzindl.galore.compose.navigation.authNavGraph
 import com.sebastijanzindl.galore.compose.navigation.mainNavGraph
 import com.sebastijanzindl.galore.compose.navigation.splashNavGraph
@@ -31,24 +32,9 @@ fun GaloreApp(
         SnackbarHostState()
     }
 
-
     GaloreNavHost(
         isLoggedIn = viewModel.isLoggedIn,
         navController = navController
     )
 }
 
-@Composable
-fun GaloreNavHost (
-    isLoggedIn: Boolean,
-    navController: NavHostController
-) {
-    val activity = (LocalContext.current as Activity)
-
-    NavHost(navController = navController, startDestination = "loading") {
-        splashNavGraph(navController = navController)
-        mainNavGraph(navController =  navController)
-        authNavGraph(navController = navController)
-
-    }
-}

@@ -16,6 +16,7 @@ import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.launch
+import java.lang.Exception
 import java.util.regex.Pattern
 import javax.inject.Inject
 
@@ -53,7 +54,7 @@ class LoginScreenViewModel @Inject constructor(
     private fun validatePassword(input: String) {
         hasPasswordError = input.length < 8;
     }
-    fun loginUser() {
+    fun loginUser(navigateToHome: () -> Unit) {
         viewModelScope.launch {
             val result = signInUseCase.execute(
                 SignInUseCase.Input(
@@ -63,10 +64,10 @@ class LoginScreenViewModel @Inject constructor(
             )
             when(result) {
                 is SignInUseCase.Output.Success -> {
-
+                    navigateToHome();
                 }
                 else -> {
-
+                    throw Exception("there has been a problem while logging you in")
                 }
             }
         }

@@ -75,7 +75,8 @@ class RegisterScreenViewModel @Inject constructor(
             val result = signUpUseCase.execute(
                 SignUpUseCase.Input(
                     email = email,
-                    password = password
+                    password = password,
+                    fullName = fullName
                 )
             )
             when(result) {

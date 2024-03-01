@@ -53,7 +53,8 @@ import com.sebastijanzindl.galore.ui.theme.GaloreTheme
 fun LoginScreen(
     modifier: Modifier = Modifier,
     viewModel: LoginScreenViewModel = hiltViewModel(),
-    onRegisterClick: () -> Unit,
+    onRegisterPress: () -> Unit,
+    onLoginPress: () -> Unit,
 ) {
     val composition by rememberLottieComposition(spec = LottieCompositionSpec.RawRes(R.raw.login_lottie))
     val scrollState = rememberScrollState();
@@ -138,7 +139,7 @@ fun LoginScreen(
                     ),
                     keyboardActions = KeyboardActions(
                         onDone = {
-                            viewModel.loginUser()
+                            viewModel.loginUser(navigateToHome = onLoginPress)
                         }
                     ),
                     singleLine = true,
@@ -163,7 +164,7 @@ fun LoginScreen(
             }
             Button(
                 enabled = !viewModel.hasEmailError && !viewModel.hasPasswordError,
-                onClick = { viewModel.loginUser() },
+                onClick = { viewModel.loginUser(navigateToHome = onLoginPress) },
                 modifier = Modifier
                     .padding(top = 50.dp, bottom = 12.dp)
                     .fillMaxWidth()
@@ -181,7 +182,7 @@ fun LoginScreen(
                 )
                 Text(
                     modifier = Modifier.clickable(
-                        onClick = onRegisterClick
+                        onClick = onRegisterPress
                     ),
                     text = "Register",
                     style = MaterialTheme.typography.labelSmall,
@@ -224,6 +225,6 @@ fun LoginScreen(
 @Composable
 private fun LoginScreenPreview() {
     GaloreTheme {
-        LoginScreen(onRegisterClick = {}, viewModel = hiltViewModel<LoginScreenViewModel>())
+        LoginScreen(onRegisterPress = {}, onLoginPress = {})
     }
 }

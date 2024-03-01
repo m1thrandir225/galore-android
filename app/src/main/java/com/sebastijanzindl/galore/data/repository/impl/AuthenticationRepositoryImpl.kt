@@ -1,11 +1,12 @@
 package com.sebastijanzindl.galore.data.repository.impl
 
-import androidx.compose.ui.platform.LocalContext
 import com.sebastijanzindl.galore.data.repository.AuthenticationRepository
 import io.github.jan.supabase.gotrue.Auth
 import io.github.jan.supabase.gotrue.providers.Google
 import io.github.jan.supabase.gotrue.providers.builtin.Email
 import io.github.jan.supabase.gotrue.providers.builtin.IDToken
+import kotlinx.serialization.json.buildJsonObject
+import kotlinx.serialization.json.put
 import javax.inject.Inject
 import kotlin.Exception
 
@@ -23,11 +24,17 @@ class AuthenticationRepositoryImpl @Inject constructor(
             false
         }
     }
-    override suspend fun signUp(email: String, password: String): Boolean {
+    override suspend fun signUp(email: String, password: String, fullName: String): Boolean {
+        val firstName = fullName.split(" ")[0];
+        val lastName = fullName.split(" ")[1];
         return try {
             auth.signUpWith(Email) {
                 this.email = email
                 this.password = password
+                data = buildJsonObject {
+                    put("first_name", firstName)
+                    put("last_name", lastName)
+                }
             }
             true
         } catch (e: Exception) {

@@ -15,12 +15,16 @@ import com.sebastijanzindl.galore.compose.screens.register.RegisterScreen
 import com.sebastijanzindl.galore.compose.screens.welcome.WelcomeScreen
 import com.sebastijanzindl.galore.compose.screens.login.LoginScreenViewModel
 import com.sebastijanzindl.galore.viewmodels.RegisterScreenViewModel
-
-
 fun NavGraphBuilder.authNavGraph(
     navController: NavController
 ) {
-    navigation(startDestination = Screen.Welcome.route,route = "auth") {
+    navigation(
+        startDestination = Screen.Welcome.route,
+        route = NavGraph.Auth.route
+    ) {
+        /**
+         * Welcome Screen - Initial Screen the user sees
+         */
         composable(
             route = Screen.Welcome.route,
             enterTransition = {
@@ -45,6 +49,9 @@ fun NavGraphBuilder.authNavGraph(
                 }
             )
         }
+        /**
+         * Register Screen - Screen for user registration
+         */
         composable(
             route = Screen.Register.route,
             exitTransition = {
@@ -71,11 +78,16 @@ fun NavGraphBuilder.authNavGraph(
                 },
                 navigateToOnboarding = {
                     navController.navigate(Screen.Onboarding.route) {
-                        popUpTo(Screen.Onboarding.route)
+                        popUpTo(Screen.Onboarding.route) {
+                            inclusive = true
+                        }
                     }
                 }
             )
         }
+        /**
+         *
+         */
         composable(
             route = Screen.Login.route,
             exitTransition = {
@@ -96,28 +108,20 @@ fun NavGraphBuilder.authNavGraph(
         ) {
             LoginScreen(
                 viewModel = hiltViewModel<LoginScreenViewModel>(),
-                onRegisterClick = {
+                onRegisterPress = {
                     navController.navigate(Screen.Register.route) {
                         popUpTo(Screen.Welcome.route)
+                    }
+                },
+                onLoginPress = {
+                    navController.navigate(Screen.Home.route) {
+                        popUpTo(Screen.Home.route)
                     }
                 }
             )
         }
-        composable(
-            route = Screen.Onboarding.route,
-        ) {
-            OnboardingScreen(navigateToPushNotificationScreen = {
-                navController.navigate(Screen.EnablePushNotifications.route) {
-                    popUpTo(Screen.EnablePushNotifications.route)
-                }
-            })
-        }
-        composable(
-            route = Screen.EnablePushNotifications.route
-        ) {
-            HomeScreen(navigateToAuth = {
-                navController.navigate(Screen.Welcome.route)
-            })
-        }
+
+
+
     }
 }

@@ -9,14 +9,22 @@ import com.sebastijanzindl.galore.compose.screens.splash.SplashScreen
 fun NavGraphBuilder.splashNavGraph(
     navController: NavController
 ) {
-    navigation(startDestination = Screen.Splash.route, route = "loading") {
+    navigation(startDestination = Screen.Splash.route, route = NavGraph.Splash.route) {
         composable(route = Screen.Splash.route) {
             SplashScreen(
                 navigateToAuth = {
-                    navController.navigate(Screen.Welcome.route)
+                    navController.navigate(Screen.Welcome.route) {
+                        popUpTo(Screen.Splash.route) {
+                            inclusive = true;
+                        }
+                    }
                 },
                 navigateToMain = {
-                    navController.navigate(Screen.Home.route)
+                    navController.navigate(Screen.Home.route) {
+                        popUpTo(Screen.Splash.route) {
+                            inclusive = true;
+                        }
+                    }
                 }
             )
         }
