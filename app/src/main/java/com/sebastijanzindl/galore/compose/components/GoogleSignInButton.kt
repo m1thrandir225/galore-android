@@ -24,17 +24,17 @@ import com.google.android.libraries.identity.googleid.GetGoogleIdOption
 import com.google.android.libraries.identity.googleid.GoogleIdTokenCredential
 import com.google.android.libraries.identity.googleid.GoogleIdTokenParsingException
 import com.sebastijanzindl.galore.R
-import com.sebastijanzindl.galore.compose.screens.login.LoginScreenViewModel
+import com.sebastijanzindl.galore.viewmodels.AuthSharedViewModel
 import io.github.jan.supabase.postgrest.Postgrest
 import kotlinx.coroutines.launch
 import java.security.MessageDigest
 import java.util.UUID
 
-
 @Composable
-fun GoogleSigninButton(
+fun GoogleSignInButton(
     modifier: Modifier = Modifier,
-    viewModel: LoginScreenViewModel
+    viewModel: AuthSharedViewModel,
+    onSuccessCallback: () -> Unit,
 ) {
     val context = LocalContext.current;
     val coroutineScope =  rememberCoroutineScope()
@@ -74,6 +74,8 @@ fun GoogleSigninButton(
 
                Log.i("wow", googleIdToken)
                Toast.makeText(context, "You are signed in !", Toast.LENGTH_SHORT).show()
+
+               onSuccessCallback();
            } catch (e: GoogleIdTokenParsingException) {
                Toast.makeText(context, e.message, Toast.LENGTH_SHORT).show()
            } catch (e: Exception) {

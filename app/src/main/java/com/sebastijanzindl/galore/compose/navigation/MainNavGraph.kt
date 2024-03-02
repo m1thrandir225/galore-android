@@ -8,11 +8,12 @@ import com.sebastijanzindl.galore.compose.screens.home.HomeScreen
 fun NavGraphBuilder.mainNavGraph(
     navController: NavController
 ) {
-    navigation(startDestination = Screen.Welcome.route, route = "main") {
+    navigation(startDestination = Screen.Welcome.route, route = NavGraph.Main.route
+    ) {
         composable(route = Screen.Home.route) {
             HomeScreen(
                 navigateToAuth = {
-                    navController.navigate(Screen.Welcome.route) {
+                    navController.navigate(NavGraph.Auth.route) {
                         popUpTo(NavGraph.Main.route) {
                             inclusive = true
                         }

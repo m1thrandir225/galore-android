@@ -1,12 +1,16 @@
 package com.sebastijanzindl.galore.compose
 
+import android.Manifest
 import android.app.Activity
+import android.content.pm.PackageManager
 import androidx.compose.material3.SnackbarHostState
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.platform.LocalContext
+import androidx.core.content.ContextCompat
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.NavHost
@@ -27,6 +31,21 @@ fun GaloreApp(
     val currentRoute = navBackStackEntry?.destination?.route
 
     val corutineScrope = rememberCoroutineScope();
+
+    val context = LocalContext.current
+
+    val hasNotificationPermission by remember {
+        mutableStateOf(
+            ContextCompat.checkSelfPermission(
+                context,
+                Manifest.permission.POST_NOTIFICATIONS
+            ) == PackageManager.PERMISSION_GRANTED
+        )
+    }
+
+    viewModel.setHasEnabledNotifications(
+        hasNotificationPermission
+    )
 
     val snackbarHostState = remember {
         SnackbarHostState()

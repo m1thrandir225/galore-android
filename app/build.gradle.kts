@@ -133,4 +133,8 @@ dependencies {
 
     implementation ("com.google.android.libraries.identity.googleid:googleid:$googleid_ver")
 
+//    //Arrow
+//    implementation("io.arrow-kt:arrow-core:1.2.1")
+//    implementation("io.arrow-kt:arrow-fx-coroutines:1.2.1")
+
 }

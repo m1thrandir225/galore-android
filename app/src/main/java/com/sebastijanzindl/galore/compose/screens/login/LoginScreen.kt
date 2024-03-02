@@ -45,16 +45,19 @@ import com.airbnb.lottie.compose.LottieConstants
 import com.airbnb.lottie.compose.rememberLottieComposition
 import com.sebastijanzindl.galore.R
 import com.sebastijanzindl.galore.compose.components.Logo
-import com.sebastijanzindl.galore.compose.components.GoogleSigninButton
+import com.sebastijanzindl.galore.compose.components.GoogleSignInButton
+import com.sebastijanzindl.galore.viewmodels.AuthSharedViewModel
 import com.sebastijanzindl.galore.ui.theme.GaloreTheme
 
 @OptIn(ExperimentalLayoutApi::class)
 @Composable
 fun LoginScreen(
     modifier: Modifier = Modifier,
-    viewModel: LoginScreenViewModel = hiltViewModel(),
-    onRegisterPress: () -> Unit,
-    onLoginPress: () -> Unit,
+    viewModel: LoginScreenViewModel = hiltViewModel<LoginScreenViewModel>(),
+    sharedViewModel: AuthSharedViewModel = hiltViewModel<AuthSharedViewModel>(),
+    navigateToRegister: () -> Unit,
+    navigateToMain: () -> Unit,
+    navigateToOnboarding: () -> Unit,
 ) {
     val composition by rememberLottieComposition(spec = LottieCompositionSpec.RawRes(R.raw.login_lottie))
     val scrollState = rememberScrollState();
@@ -65,7 +68,7 @@ fun LoginScreen(
         Column(
             verticalArrangement = Arrangement.SpaceAround,
             horizontalAlignment = Alignment.CenterHorizontally,
-            modifier =  Modifier
+            modifier = Modifier
                 .fillMaxSize()
                 .padding(
                     top = contentPadding.calculateTopPadding(),
@@ -139,7 +142,7 @@ fun LoginScreen(
                     ),
                     keyboardActions = KeyboardActions(
                         onDone = {
-                            viewModel.loginUser(navigateToHome = onLoginPress)
+                            viewModel.loginUser(navigateToHome = navigateToMain)
                         }
                     ),
                     singleLine = true,
@@ -164,7 +167,7 @@ fun LoginScreen(
             }
             Button(
                 enabled = !viewModel.hasEmailError && !viewModel.hasPasswordError,
-                onClick = { viewModel.loginUser(navigateToHome = onLoginPress) },
+                onClick = { viewModel.loginUser(navigateToHome = navigateToMain) },
                 modifier = Modifier
                     .padding(top = 50.dp, bottom = 12.dp)
                     .fillMaxWidth()
@@ -182,7 +185,7 @@ fun LoginScreen(
                 )
                 Text(
                     modifier = Modifier.clickable(
-                        onClick = onRegisterPress
+                        onClick = navigateToRegister
                     ),
                     text = "Register",
                     style = MaterialTheme.typography.labelSmall,
@@ -216,7 +219,7 @@ fun LoginScreen(
                     .height(3.dp)
                 )
             }
-          GoogleSigninButton(viewModel = viewModel)
+          GoogleSignInButton(viewModel = sharedViewModel, onSuccessCallback = navigateToOnboarding)
         }
     }
 }
@@ -225,6 +228,6 @@ fun LoginScreen(
 @Composable
 private fun LoginScreenPreview() {
     GaloreTheme {
-        LoginScreen(onRegisterPress = {}, onLoginPress = {})
+        LoginScreen(navigateToRegister = {}, navigateToMain = {}, navigateToOnboarding = {})
     }
 }

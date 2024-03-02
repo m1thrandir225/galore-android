@@ -1,4 +1,4 @@
-package com.sebastijanzindl.galore.viewmodels
+package com.sebastijanzindl.galore.compose.screens.register
 
 import android.text.TextUtils
 import android.util.Patterns

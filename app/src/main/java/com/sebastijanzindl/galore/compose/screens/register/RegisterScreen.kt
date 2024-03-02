@@ -45,17 +45,18 @@ import com.airbnb.lottie.compose.LottieCompositionSpec
 import com.airbnb.lottie.compose.LottieConstants
 import com.airbnb.lottie.compose.rememberLottieComposition
 import com.sebastijanzindl.galore.R
+import com.sebastijanzindl.galore.compose.components.GoogleSignInButton
 import com.sebastijanzindl.galore.compose.components.Logo
-import com.sebastijanzindl.galore.compose.components.GoogleSigninButton
+import com.sebastijanzindl.galore.viewmodels.AuthSharedViewModel
 import com.sebastijanzindl.galore.ui.theme.GaloreTheme
-import com.sebastijanzindl.galore.viewmodels.RegisterScreenViewModel
 
 @OptIn(ExperimentalLayoutApi::class)
 @Composable
 fun RegisterScreen(
     modifier: Modifier = Modifier,
     viewModel: RegisterScreenViewModel = hiltViewModel(),
-    onLoginClick: () -> Unit,
+    sharedViewModel: AuthSharedViewModel = hiltViewModel<AuthSharedViewModel>(),
+    navigateToLogin: () -> Unit,
     navigateToOnboarding: () -> Unit,
 ) {
     val composition by rememberLottieComposition(spec = LottieCompositionSpec.RawRes(R.raw.register_lottie))
@@ -205,7 +206,7 @@ fun RegisterScreen(
                 )
                 Text(
                     modifier = Modifier.clickable(
-                        onClick = onLoginClick
+                        onClick = navigateToLogin
                     ),
                     text = "Login",
                     style = MaterialTheme.typography.labelSmall,
@@ -239,6 +240,8 @@ fun RegisterScreen(
                     .height(3.dp)
                 )
             }
+
+            GoogleSignInButton(viewModel = sharedViewModel, onSuccessCallback = navigateToOnboarding)
         }
     }
 }
@@ -248,6 +251,6 @@ fun RegisterScreen(
 @Composable
 private fun RegisterScreenPreview() {
     GaloreTheme {
-        RegisterScreen(onLoginClick = {}, viewModel = hiltViewModel<RegisterScreenViewModel>(), navigateToOnboarding = {})
+        RegisterScreen(navigateToLogin = {}, viewModel = hiltViewModel<RegisterScreenViewModel>(), navigateToOnboarding = {})
     }
 }

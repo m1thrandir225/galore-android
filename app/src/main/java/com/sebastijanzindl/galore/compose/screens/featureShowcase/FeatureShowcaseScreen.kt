@@ -1,6 +1,5 @@
-package com.sebastijanzindl.galore.compose.screens.onboarding
+package com.sebastijanzindl.galore.compose.screens.featureShowcase
 
-import android.widget.Space
 import androidx.annotation.DrawableRes
 import androidx.compose.animation.animateColorAsState
 import androidx.compose.animation.animateContentSize
@@ -19,7 +18,6 @@ import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.requiredWidth
-import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.layout.wrapContentHeight
 import androidx.compose.foundation.layout.wrapContentWidth
@@ -52,23 +50,34 @@ import kotlinx.coroutines.launch
 
 @OptIn(ExperimentalFoundationApi::class)
 
+
+/**
+ * TODO: add viewmodel and isFirstTime useCase if the user is a first time continue with onboarding if not redirect to main nav graph
+ */
+
+
 @Composable
-fun OnboardingScreen(
+fun FeatureShowcaseScreen(
     modifier: Modifier = Modifier,
     navigateToPushNotificationScreen: () -> Unit,
 ) {
-    val maxCarouselSlides = 3;
-    val carouselState = rememberPagerState {
-        maxCarouselSlides
-    }
-
-    val coroutineScope = rememberCoroutineScope();
-
+    val maxCarouselSlides = 3
+    val coroutineScope = rememberCoroutineScope()
     val pagerState  = rememberPagerState {
         3
     }
+    val onContinuePress = {
+        val currentPage = pagerState.currentPage + 1
+        if (currentPage < maxCarouselSlides) {
+            coroutineScope.launch {
+                pagerState.animateScrollToPage(currentPage + 1)
+            }
+        } else {
+            navigateToPushNotificationScreen()
+        }
+    }
 
-    Scaffold { it ->
+    Scaffold (modifier = modifier) {
         Column (
             horizontalAlignment = Alignment.CenterHorizontally,
             verticalArrangement = Arrangement.SpaceEvenly,
@@ -81,20 +90,8 @@ fun OnboardingScreen(
             Button(
                 modifier = Modifier.width(200.dp),
                 onClick =  {
-
-                    val currentPage = pagerState.currentPage
-                    if(currentPage < 2 ) {
-                        coroutineScope.launch {
-                            pagerState.animateScrollToPage(currentPage + 1);
-                        }
-                    } else {
-                        coroutineScope.launch {
-                            // navigate to personalization screen
-                            pagerState.animateScrollToPage(0)
-                        }
-                    }
-
-                }) {
+                    onContinuePress()
+                }){
                 Text(text = "Continue")
             }
 
@@ -117,21 +114,20 @@ fun Carousel(
     val slideText = remember {
         mutableStateOf("Choose your favourite flavours.")
     }
-    val coroutineScope  = rememberCoroutineScope();
-
 
     Column(
+        modifier = modifier,
         horizontalAlignment = Alignment.CenterHorizontally,
         verticalArrangement = Arrangement.spacedBy(8.dp)
     ){
         HorizontalPager(state = pagerState ) { page ->
             when(page) {
                 0 -> {
-                    slideImage.value = R.drawable.open_doodles___catching_up
+                    slideImage.intValue = R.drawable.open_doodles___catching_up
                     slideText.value = "Choose your favourite flavours."
                 }
                 1 -> {
-                    slideImage.value = R.drawable.open_doodles___dynamic_duo
+                    slideImage.intValue = R.drawable.open_doodles___dynamic_duo
                     slideText.value = "Find your next favourite drink."
                 }
 
@@ -242,10 +238,8 @@ fun Dot(
 
 @Preview(apiLevel = 33)
 @Composable
-private fun OnboardingScreenPreview() {
+private fun Preview1() {
     GaloreTheme {
-        OnboardingScreen (navigateToPushNotificationScreen = {})
-
-
+        FeatureShowcaseScreen (navigateToPushNotificationScreen = {})
     }
 }

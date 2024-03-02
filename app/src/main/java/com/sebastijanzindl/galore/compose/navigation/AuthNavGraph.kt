@@ -3,18 +3,14 @@ package com.sebastijanzindl.galore.compose.navigation
 import androidx.compose.animation.AnimatedContentTransitionScope
 import androidx.compose.animation.core.tween
 import androidx.compose.animation.fadeIn
-import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavController
 import androidx.navigation.NavGraphBuilder
 import androidx.navigation.compose.composable
 import androidx.navigation.navigation
-import com.sebastijanzindl.galore.compose.screens.home.HomeScreen
 import com.sebastijanzindl.galore.compose.screens.login.LoginScreen
-import com.sebastijanzindl.galore.compose.screens.onboarding.OnboardingScreen
 import com.sebastijanzindl.galore.compose.screens.register.RegisterScreen
 import com.sebastijanzindl.galore.compose.screens.welcome.WelcomeScreen
-import com.sebastijanzindl.galore.compose.screens.login.LoginScreenViewModel
-import com.sebastijanzindl.galore.viewmodels.RegisterScreenViewModel
+
 fun NavGraphBuilder.authNavGraph(
     navController: NavController
 ) {
@@ -70,8 +66,8 @@ fun NavGraphBuilder.authNavGraph(
                 )
             }
         ) {
-            RegisterScreen(viewModel = hiltViewModel<RegisterScreenViewModel>(),
-                onLoginClick = {
+            RegisterScreen(
+                navigateToLogin = {
                     navController.navigate(Screen.Login.route) {
                         popUpTo(Screen.Welcome.route)
                     }
@@ -86,7 +82,7 @@ fun NavGraphBuilder.authNavGraph(
             )
         }
         /**
-         *
+         *Login Screen - Screen for users to login
          */
         composable(
             route = Screen.Login.route,
@@ -107,15 +103,23 @@ fun NavGraphBuilder.authNavGraph(
             }
         ) {
             LoginScreen(
-                viewModel = hiltViewModel<LoginScreenViewModel>(),
-                onRegisterPress = {
+                navigateToRegister = {
                     navController.navigate(Screen.Register.route) {
                         popUpTo(Screen.Welcome.route)
                     }
                 },
-                onLoginPress = {
+                navigateToOnboarding = {
+                    navController.navigate(NavGraph.Onboarding.route) {
+                        popUpTo(NavGraph.Auth.route) {
+                            inclusive = true;
+                        }
+                    }
+                },
+                navigateToMain = {
                     navController.navigate(Screen.Home.route) {
-                        popUpTo(Screen.Home.route)
+                        popUpTo(NavGraph.Auth.route) {
+                            inclusive = true
+                        }
                     }
                 }
             )

@@ -17,8 +17,9 @@ fun GaloreNavHost(
         startDestination =  NavGraph.Splash.route
     ) {
         splashNavGraph(navController)
-        mainNavGraph(navController)
-        authNavGraph(navController)
         onboardingNavGraph(navController)
+        authNavGraph(navController)
+        mainNavGraph(navController)
+
     }
 }

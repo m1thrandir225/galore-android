@@ -22,7 +22,6 @@ import javax.inject.Inject
 
 @HiltViewModel
 class LoginScreenViewModel @Inject constructor(
-    private val signInGoogleUseCase: SignInGoogleUseCase,
     private val signInUseCase: SignInUseCase
 ) : ViewModel() {
     var email by mutableStateOf("")
@@ -70,17 +69,6 @@ class LoginScreenViewModel @Inject constructor(
                     throw Exception("there has been a problem while logging you in")
                 }
             }
-        }
-    }
-
-    fun signInWithGoogle(token: String, rawNonce: String) {
-        viewModelScope.launch {
-            val result = signInGoogleUseCase.execute(
-                SignInGoogleUseCase.Input(
-                    token = token,
-                    rawNonce = rawNonce
-                )
-            )
         }
     }
 }

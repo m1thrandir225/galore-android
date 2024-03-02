@@ -12,7 +12,14 @@ class MainViewModel @Inject constructor(): ViewModel() {
     var isLoggedIn by mutableStateOf(false)
         private set
 
+    var enabledNotifications by mutableStateOf(false)
+        private set
+
     fun setIsLoggedIn(value: Boolean) {
         isLoggedIn = value;
+    }
+
+    fun setHasEnabledNotifications(value: Boolean) {
+        enabledNotifications = value;
     }
 }

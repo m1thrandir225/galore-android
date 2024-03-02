@@ -4,8 +4,9 @@ import androidx.navigation.NavController
 import androidx.navigation.NavGraphBuilder
 import androidx.navigation.compose.composable
 import androidx.navigation.navigation
+import com.sebastijanzindl.galore.compose.screens.enablePushNotifications.EnablePushNotificationScreen
 import com.sebastijanzindl.galore.compose.screens.home.HomeScreen
-import com.sebastijanzindl.galore.compose.screens.onboarding.OnboardingScreen
+import com.sebastijanzindl.galore.compose.screens.featureShowcase.FeatureShowcaseScreen
 
 fun NavGraphBuilder.onboardingNavGraph(
     navController: NavController
@@ -20,7 +21,7 @@ fun NavGraphBuilder.onboardingNavGraph(
         composable(
             route = Screen.Onboarding.route,
         ) {
-            OnboardingScreen(
+            FeatureShowcaseScreen(
                 navigateToPushNotificationScreen = {
                     navController.navigate(Screen.EnablePushNotifications.route) {
                         popUpTo(Screen.Onboarding.route) {
@@ -36,13 +37,12 @@ fun NavGraphBuilder.onboardingNavGraph(
         composable(
             route = Screen.EnablePushNotifications.route
         ) {
-            HomeScreen(navigateToAuth = {
-                navController.navigate(Screen.Welcome.route) {
-                    popUpTo(NavGraph.Main.route) {
-                        inclusive = true
+            EnablePushNotificationScreen(
+                navigateToMain = {
+                    navController.navigate(NavGraph.Main.route) {
                     }
                 }
-            })
+            )
         }
     }
 }
