@@ -4,7 +4,6 @@ import android.Manifest
 import android.os.Build
 import androidx.activity.compose.rememberLauncherForActivityResult
 import androidx.activity.result.contract.ActivityResultContracts
-import androidx.annotation.RequiresApi
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Spacer
@@ -38,21 +37,21 @@ import com.sebastijanzindl.galore.viewmodels.MainViewModel
 @Composable
 fun EnablePushNotificationScreen(
     modifier: Modifier = Modifier,
-    navigateToMain: () -> Unit,
+    navigateToFavouriteFlavours: () -> Unit,
     appViewModel: MainViewModel = hiltViewModel<MainViewModel>()
 ) {
     val lottieSpec: LottieCompositionSpec = LottieCompositionSpec.RawRes(R.raw.enable_notifications_lottie)
     val composition by rememberLottieComposition(lottieSpec)
 
     if(appViewModel.enabledNotifications) {
-        navigateToMain();
+        navigateToFavouriteFlavours();
     }
 
     val openPremissionLauncher = rememberLauncherForActivityResult(
         contract = ActivityResultContracts.RequestPermission(),
         onResult = {
             appViewModel.setHasEnabledNotifications(it)
-            navigateToMain();
+            navigateToFavouriteFlavours();
         }
     )
 
@@ -107,7 +106,7 @@ fun EnablePushNotificationScreen(
                     )
                 }
                 TextButton(onClick = {
-                    navigateToMain()
+                    navigateToFavouriteFlavours()
                 }) {
                     Text(
                         text = "Don't Notify Me"
@@ -125,7 +124,7 @@ fun EnablePushNotificationScreen(
 private fun Preview1() {
     GaloreTheme {
         EnablePushNotificationScreen(
-            navigateToMain =  {}
+            navigateToFavouriteFlavours =  {}
         )
     }
 }

@@ -4,8 +4,9 @@ import androidx.navigation.NavController
 import androidx.navigation.NavGraphBuilder
 import androidx.navigation.compose.composable
 import androidx.navigation.navigation
+import com.sebastijanzindl.galore.compose.screens.allSet.AllSetScreen
 import com.sebastijanzindl.galore.compose.screens.enablePushNotifications.EnablePushNotificationScreen
-import com.sebastijanzindl.galore.compose.screens.home.HomeScreen
+import com.sebastijanzindl.galore.compose.screens.favouriteFlavours.FavouriteFlavoursScreen
 import com.sebastijanzindl.galore.compose.screens.featureShowcase.FeatureShowcaseScreen
 
 fun NavGraphBuilder.onboardingNavGraph(
@@ -38,11 +39,51 @@ fun NavGraphBuilder.onboardingNavGraph(
             route = Screen.EnablePushNotifications.route
         ) {
             EnablePushNotificationScreen(
-                navigateToMain = {
-                    navController.navigate(NavGraph.Main.route) {
+                navigateToFavouriteFlavours = {
+                    navController.navigate(Screen.FavouriteFlavours.route) {
+                        popUpTo(Screen.EnablePushNotifications.route) {
+                            inclusive = true;
+                        }
                     }
                 }
             )
         }
+
+        /**
+         * Favourite Flavours - Screen part of the onboarding process so we can determine what kind of
+         * cocktail flavours the user wants
+         */
+        composable(
+            route = Screen.FavouriteFlavours.route
+        ) {
+            FavouriteFlavoursScreen(
+                navigateToAllSet = {
+                    navController.navigate(Screen.AllSet.route) {
+                        popUpTo(Screen.FavouriteFlavours.route) {
+                            inclusive = true;
+                        }
+                    }
+                }
+            )
+        }
+
+        /**
+         * All Set - Screen to show that the onboarding process is finished and the user can enter the application
+         */
+        composable(
+            route = Screen.AllSet.route
+        ) {
+            AllSetScreen(
+                navigateToMain = {
+                    navController.navigate(NavGraph.Main.route) {
+                        popUpTo(NavGraph.Onboarding.route) {
+                            inclusive = true;
+                        }
+                    }
+                }
+            )
+        }
+
+
     }
 }

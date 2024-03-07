@@ -24,7 +24,9 @@ sealed class Screen(val route: String, val navArguments: List<NamedNavArgument> 
 
     data object EnablePushNotifications: Screen("enable-push-notifications");
 
-    data object FlavourSetup: Screen("flavour-setup");
+    data object FavouriteFlavours: Screen("favourite-flavours-setup");
+
+    data object AllSet: Screen("all-set");
 
     /**
      * Main Graph
