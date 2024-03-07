@@ -12,6 +12,8 @@ import androidx.compose.foundation.lazy.grid.items
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Add
 import androidx.compose.material3.Button
+import androidx.compose.material3.ButtonColors
+import androidx.compose.material3.ButtonDefaults
 import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.OutlinedButton
@@ -23,6 +25,7 @@ import androidx.compose.runtime.mutableStateListOf
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
@@ -50,8 +53,6 @@ fun FavouriteFlavoursScreen(
         } else {
             userFavouriteFlavours.add(flavourName)
         }
-
-
     }
 
     Scaffold (
@@ -110,8 +111,19 @@ fun FlavourButton(
     buttonText: String,
     isInList: Boolean,
 ) {
+
+    val buttonColor: Color =  if(isInList) {
+        MaterialTheme.colorScheme.inverseOnSurface
+    } else {
+        Color.Transparent
+    }
+
     OutlinedButton(
-        onClick = onClick
+        onClick = onClick,
+        colors = ButtonDefaults.outlinedButtonColors(
+            containerColor = buttonColor
+        )
+
     ) {
         if(!isInList) {
             Icon(Icons.Default.Add, contentDescription = "", tint = MaterialTheme.colorScheme.primary)
