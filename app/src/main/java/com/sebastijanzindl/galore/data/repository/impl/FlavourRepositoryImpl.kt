@@ -8,7 +8,6 @@ import java.util.UUID
 class FlavourRepositoryImpl(
     private val postgrest: Postgrest
 ): FlavourRepository {
-
     override suspend fun getAllFlavours(): List<Flavour> {
        return postgrest.from("flavours").select().decodeList<Flavour>()
     }
@@ -17,9 +16,7 @@ class FlavourRepositoryImpl(
             select()
         }.decodeList<Flavour>()
     }
-
     override suspend fun getUserFlavours(userId: UUID): List<Flavour> {
         TODO("Not yet implemented")
     }
-
 }
