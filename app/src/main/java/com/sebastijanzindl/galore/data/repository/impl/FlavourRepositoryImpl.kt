@@ -16,7 +16,7 @@ class FlavourRepositoryImpl(
             select()
         }.decodeList<Flavour>()
     }
-    override suspend fun getUserFlavours(userId: UUID): List<Flavour> {
+    override suspend fun getUserFlavours(userId: String): List<Flavour> {
         TODO("Not yet implemented")
     }
 }

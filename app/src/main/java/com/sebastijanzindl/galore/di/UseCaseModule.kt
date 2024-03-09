@@ -16,15 +16,22 @@ import dagger.hilt.components.SingletonComponent
 @InstallIn(SingletonComponent::class)
 @Module
 abstract class UseCaseModule {
+    /**
+     * Authentication Repository Use Cases
+     */
     @Binds
     abstract fun bindSignUpUseCase(impl: SignUpUseCaseImpl): SignUpUseCase
 
     @Binds
     abstract fun bindSignInGoogleUseCase(impl: SignInGoogleUseCaseImpl): SignInGoogleUseCase
-
     @Binds
     abstract fun bindSignOutUseCase(impl: SignOutUseCaseImpl): SignOutUseCase
-
     @Binds
     abstract fun bindSignInUseCase(impl: SignInUseCaseImpl): SignInUseCase
+
+    /**
+     * Flavour Repository Use Cases
+     */
+
+    @Binds
 }
