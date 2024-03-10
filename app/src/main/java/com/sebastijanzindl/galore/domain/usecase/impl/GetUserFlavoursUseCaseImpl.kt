@@ -9,7 +9,6 @@ import javax.inject.Inject
 class GetUserFlavoursUseCaseImpl @Inject constructor(
     private val flavourRepository: FlavourRepository
 ) : GetUserFlavoursUseCase {
-
     override suspend fun execute(input: GetUserFlavoursUseCase.Input): GetUserFlavoursUseCase.Output =
         withContext(Dispatchers.IO) {
             val result = flavourRepository.getUserFlavours(input.userId)
@@ -18,6 +17,5 @@ class GetUserFlavoursUseCaseImpl @Inject constructor(
             } else {
                 GetUserFlavoursUseCase.Output.Failure
             }
-
         }
 }
