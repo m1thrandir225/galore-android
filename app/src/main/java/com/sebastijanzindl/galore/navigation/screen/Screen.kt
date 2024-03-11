@@ -1,4 +1,4 @@
-package com.sebastijanzindl.galore.presentation.navigation
+package com.sebastijanzindl.galore.navigation.screen
 
 import androidx.navigation.NamedNavArgument
 

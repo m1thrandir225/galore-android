@@ -1,9 +1,10 @@
-package com.sebastijanzindl.galore.presentation.navigation
+package com.sebastijanzindl.galore.navigation.graph
 
 import androidx.navigation.NavController
 import androidx.navigation.NavGraphBuilder
 import androidx.navigation.compose.composable
 import androidx.navigation.navigation
+import com.sebastijanzindl.galore.navigation.screen.Screen
 import com.sebastijanzindl.galore.presentation.screens.splash.SplashScreen
 
 fun NavGraphBuilder.splashNavGraph(

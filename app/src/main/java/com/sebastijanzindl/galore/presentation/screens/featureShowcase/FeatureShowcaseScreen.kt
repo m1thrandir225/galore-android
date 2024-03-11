@@ -44,7 +44,7 @@ import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import com.sebastijanzindl.galore.R
-import com.sebastijanzindl.galore.presentation.components.Logo
+import com.sebastijanzindl.galore.presentation.component.Logo
 import com.sebastijanzindl.galore.ui.theme.GaloreTheme
 import kotlinx.coroutines.launch
 

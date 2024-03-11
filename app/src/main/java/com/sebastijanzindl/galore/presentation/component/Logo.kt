@@ -1,4 +1,4 @@
-package com.sebastijanzindl.galore.presentation.components
+package com.sebastijanzindl.galore.presentation.component
 
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text

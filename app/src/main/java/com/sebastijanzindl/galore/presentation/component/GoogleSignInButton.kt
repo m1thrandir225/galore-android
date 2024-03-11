@@ -1,4 +1,4 @@
-package com.sebastijanzindl.galore.presentation.components
+package com.sebastijanzindl.galore.presentation.component
 
 
 import android.util.Log

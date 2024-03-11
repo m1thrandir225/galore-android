@@ -21,7 +21,7 @@ import com.airbnb.lottie.compose.LottieCompositionSpec
 import com.airbnb.lottie.compose.LottieConstants
 import com.airbnb.lottie.compose.rememberLottieComposition
 import com.sebastijanzindl.galore.R
-import com.sebastijanzindl.galore.presentation.components.Logo
+import com.sebastijanzindl.galore.presentation.component.Logo
 import com.sebastijanzindl.galore.ui.theme.GaloreTheme
 
 

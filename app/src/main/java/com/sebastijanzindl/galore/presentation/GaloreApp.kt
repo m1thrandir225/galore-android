@@ -13,7 +13,7 @@ import androidx.core.content.ContextCompat
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.compose.currentBackStackEntryAsState
 import androidx.navigation.compose.rememberNavController
-import com.sebastijanzindl.galore.presentation.navigation.GaloreNavHost
+import com.sebastijanzindl.galore.navigation.GaloreNavHost
 import com.sebastijanzindl.galore.presentation.viewmodels.MainViewModel
 
 @Composable

@@ -1,4 +1,4 @@
-package com.sebastijanzindl.galore.presentation.navigation
+package com.sebastijanzindl.galore.navigation.graph
 
 sealed class NavGraph(val route: String) {
     data object Auth: NavGraph("auth");
