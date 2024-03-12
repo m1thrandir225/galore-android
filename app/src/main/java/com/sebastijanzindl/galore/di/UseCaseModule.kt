@@ -25,20 +25,17 @@ abstract class UseCaseModule {
      */
     @Binds
     abstract fun bindSignUpUseCase(impl: SignUpUseCaseImpl): SignUpUseCase
-
     @Binds
     abstract fun bindSignInGoogleUseCase(impl: SignInGoogleUseCaseImpl): SignInGoogleUseCase
     @Binds
     abstract fun bindSignOutUseCase(impl: SignOutUseCaseImpl): SignOutUseCase
     @Binds
     abstract fun bindSignInUseCase(impl: SignInUseCaseImpl): SignInUseCase
-
     /**
      * Flavour Repository Use Cases
      */
     @Binds
     abstract fun bindGetUserFlavoursUseCase(impl: GetUserFlavoursUseCaseImpl): GetUserFlavoursUseCase
-
     @Binds
     abstract fun bindGetAllFlavoursUseCase(impl: GetAllFlavoursUseCaseImpl): GetAllFlavoursUseCase
 
