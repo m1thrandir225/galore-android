@@ -1,11 +1,22 @@
 package com.sebastijanzindl.galore.domain.models
 
+import kotlinx.serialization.SerialName
 import kotlinx.serialization.Serializable
 
 @Serializable
 data class UserProfile(
-    val firstName: String,
-    val lastName: String,
+    @SerialName("id")
+    val id: String,
+
+    @SerialName("full_name")
+    val fullName: String,
+
+    @SerialName("email")
     val email: String,
-    val likedFlavours: List<Flavour>
+
+    @SerialName("avatar_url")
+    val avatarUrl: String,
+
+    @SerialName("updated_at")
+    val updatedAt: String,
 )
