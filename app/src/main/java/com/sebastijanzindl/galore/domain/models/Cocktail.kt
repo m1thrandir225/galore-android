@@ -21,36 +21,10 @@ data class Cocktail(
     val ingredients: String,
 
     @SerialName("tags")
-    val tags: Array<String>,
+    val tags: List<Tag>?,
+
+    val flavours: List<Flavour>?,
 
     @SerialName("created_at")
     val createdAt: String,
-) {
-    override fun equals(other: Any?): Boolean {
-        if (this === other) return true
-        if (javaClass != other?.javaClass) return false
-
-        other as Cocktail
-
-        if (id != other.id) return false
-        if (name != other.name) return false
-        if (image != other.image) return false
-        if (steps != other.steps) return false
-        if (ingredients != other.ingredients) return false
-        if (!tags.contentEquals(other.tags)) return false
-        if (createdAt != other.createdAt) return false
-
-        return true
-    }
-
-    override fun hashCode(): Int {
-        var result = id.hashCode()
-        result = 31 * result + name.hashCode()
-        result = 31 * result + image.hashCode()
-        result = 31 * result + steps.hashCode()
-        result = 31 * result + ingredients.hashCode()
-        result = 31 * result + tags.contentHashCode()
-        result = 31 * result + createdAt.hashCode()
-        return result
-    }
-}
+)
