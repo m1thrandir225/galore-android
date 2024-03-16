@@ -66,12 +66,10 @@ fun WelcomeScreen(
                 style = MaterialTheme.typography.bodyMedium,
                 modifier = Modifier.offset(y = (-18).dp)
             )
-
             Button(onClick = onGettingStartedClick) {
                 Text(text = "Get Started",
                     modifier = Modifier.padding(horizontal = 36.dp )
                 )
-                
             }
         }
     }
