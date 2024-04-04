@@ -67,7 +67,7 @@ fun FeatureShowcaseScreen(
         3
     }
     val onContinuePress = {
-        val currentPage = pagerState.currentPage + 1
+        val currentPage = pagerState.currentPage;
         if (currentPage < maxCarouselSlides) {
             coroutineScope.launch {
                 pagerState.animateScrollToPage(currentPage + 1)
