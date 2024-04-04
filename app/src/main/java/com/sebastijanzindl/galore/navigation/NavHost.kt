@@ -22,6 +22,5 @@ fun GaloreNavHost(
         onboardingNavGraph(navController)
         authNavGraph(navController)
         mainNavGraph(navController)
-
     }
 }

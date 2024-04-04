@@ -75,8 +75,8 @@ fun NavGraphBuilder.authNavGraph(
                 },
                 navigateToOnboarding = {
                     navController.navigate(Screen.Onboarding.route) {
-                        popUpTo(Screen.Onboarding.route) {
-                            inclusive = true
+                        popUpTo(NavGraph.Auth.route) {
+                            inclusive = false
                         }
                     }
                 }

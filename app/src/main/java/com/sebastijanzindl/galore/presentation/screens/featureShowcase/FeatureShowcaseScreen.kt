@@ -68,13 +68,14 @@ fun FeatureShowcaseScreen(
     }
     val onContinuePress = {
         val currentPage = pagerState.currentPage;
-        if (currentPage < maxCarouselSlides) {
+        if (currentPage == 2) {
+            navigateToPushNotificationScreen();
+        } else {
             coroutineScope.launch {
                 pagerState.animateScrollToPage(currentPage + 1)
             }
-        } else {
-            navigateToPushNotificationScreen()
         }
+
     }
 
     Scaffold (modifier = modifier) {
