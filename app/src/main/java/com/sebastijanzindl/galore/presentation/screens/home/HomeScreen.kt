@@ -2,6 +2,7 @@ package com.sebastijanzindl.galore.presentation.screens.home
 
 import androidx.compose.foundation.ExperimentalFoundationApi
 import androidx.compose.foundation.layout.Arrangement
+import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
@@ -64,10 +65,16 @@ fun HomeScreen(
             )
         }
     ) { contentPadding ->
-        Button(modifier = Modifier.padding(top = contentPadding.calculateTopPadding()), onClick = {
+        Column (verticalArrangement = Arrangement.SpaceEvenly){
+            Button(modifier = Modifier.padding(top = contentPadding.calculateTopPadding()), onClick = {
 //            viewModel.logout(navigateToAuth)
-        }) {
-            Text(text = "Logout")
+            }) {
+                Text(text = "Logout")
+            }
+
+            Text(text = "Hello World");
+
+            Text("Hello world 2");
         }
 
         if(showBottomSheet) {
