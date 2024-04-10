@@ -64,16 +64,4 @@ class AuthenticationRepositoryImpl @Inject constructor(
            false
        }
     }
-
-    override suspend fun getLoggedInUserID(): String {
-        return try {
-           val user = auth.currentUserOrNull();
-            if(user?.id == null) {
-                throw Exception("The user is not signed in")
-            }
-            return user.id
-        } catch (e: Exception) {
-            ""
-        }
-    }
 }

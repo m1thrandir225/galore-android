@@ -10,17 +10,10 @@ import javax.inject.Inject
 
 class GetUserProfileUseCaseImpl @Inject constructor(
     private val userProfileRepository: UserProfileRepository,
-    private val authenticationRepository: AuthenticationRepository
 ) : GetUserProfileUseCase {
     override suspend fun execute(input: GetUserProfileUseCase.Input): GetUserProfileUseCase.Output  =
         withContext(Dispatchers.IO) {
-            val userId = authenticationRepository.getLoggedInUserID();
-
-            if(userId.isNotEmpty()) {
-                val result = userProfileRepository.getCurrentUserProfile(userId)
-                GetUserProfileUseCase.Output(result)
-            } else {
-                GetUserProfileUseCase.Output(result =  null)
-            }
+            val result = userProfileRepository.getCurrentUserProfile()
+            GetUserProfileUseCase.Output(result)
         }
 }

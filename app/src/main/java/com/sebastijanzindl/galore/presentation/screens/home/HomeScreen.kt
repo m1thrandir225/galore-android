@@ -92,7 +92,7 @@ fun HomeScreen(
             Text("Hello world 2");
         }
 
-        if(showBottomSheet) {
+        if(showBottomSheet && uiState.userProfile != null) {
             ProfileBottomSheet(
                 userProfile = uiState.userProfile!!,
                 sheetState = sheetState,
