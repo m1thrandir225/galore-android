@@ -38,6 +38,7 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.sp
 import androidx.hilt.navigation.compose.hiltViewModel
 import com.sebastijanzindl.galore.R
+import com.sebastijanzindl.galore.presentation.component.LoadingSpinner
 import com.sebastijanzindl.galore.presentation.component.Logo
 import com.sebastijanzindl.galore.presentation.component.MenuItem
 import com.sebastijanzindl.galore.presentation.component.ProfileBottomSheet
@@ -71,52 +72,51 @@ fun HomeScreen(
         showBottomSheet = false
     }
 
-    uiState?.let {
-        Scaffold(
-            modifier = modifier.nestedScroll(scrollBehaviour.nestedScrollConnection),
-            topBar = {
-                HomeTopAppBar(
-                    scrollBehaviour = scrollBehaviour,
-                    openBottomSheet = openBottomSheet
-                )
-            }
-        ) { contentPadding ->
-            Column (verticalArrangement = Arrangement.SpaceEvenly){
-                Button(modifier = Modifier.padding(top = contentPadding.calculateTopPadding()), onClick = {
-                    viewModel.logout(navigateToAuth)
-                }) {
-                    Text(text = "Logout")
-                }
-
-                Text(text = "Hello World");
-
-                Text("Hello world 2");
-            }
-
-            if(showBottomSheet) {
-                ProfileBottomSheet(
-                    userProfile = uiState,
-                    sheetState = sheetState,
-                    onDismissRequest = dismissBottomSheet,
-                    modifier = Modifier
-                ) {
-                    MenuItem(
-                        buttonIcon = {  Icon(Icons.Default.Settings, "") },
-                        title = "Settings") {
-                        navigateToSettings()
-                    }
-                    MenuItem(buttonIcon = {  Icon(painterResource(id = R.drawable.question_mark_24px), "") }, title = "Help") {
-                        navigateToHelp();
-                    }
-                    MenuItem(buttonIcon = {  Icon(painterResource(id = R.drawable.logout_24px), "") }, title = "Logout") {
-                        navigateToAuth();
-                    }
-                }
-            }
-
+    Scaffold(
+        modifier = modifier.nestedScroll(scrollBehaviour.nestedScrollConnection),
+        topBar = {
+            HomeTopAppBar(
+                scrollBehaviour = scrollBehaviour,
+                openBottomSheet = openBottomSheet
+            )
         }
-    } ?: run {
-        Text(text = "loading...")
+    ) { contentPadding ->
+       uiState?.let {
+           Column (verticalArrangement = Arrangement.SpaceEvenly){
+               Button(modifier = Modifier.padding(top = contentPadding.calculateTopPadding()), onClick = {
+                   viewModel.logout(navigateToAuth)
+               }) {
+                   Text(text = "Logout")
+               }
+
+               Text(text = "Hello World");
+
+               Text("Hello world 2");
+           }
+
+           if(showBottomSheet) {
+               ProfileBottomSheet(
+                   userProfile = uiState,
+                   sheetState = sheetState,
+                   onDismissRequest = dismissBottomSheet,
+                   modifier = Modifier
+               ) {
+                   MenuItem(
+                       buttonIcon = {  Icon(Icons.Default.Settings, "") },
+                       title = "Settings") {
+                       navigateToSettings()
+                   }
+                   MenuItem(buttonIcon = {  Icon(painterResource(id = R.drawable.question_mark_24px), "") }, title = "Help") {
+                       navigateToHelp();
+                   }
+                   MenuItem(buttonIcon = {  Icon(painterResource(id = R.drawable.logout_24px), "") }, title = "Logout") {
+                       navigateToAuth();
+                   }
+               }
+           }
+       } ?: run {
+           LoadingSpinner()
+       }
     }
 }
 
