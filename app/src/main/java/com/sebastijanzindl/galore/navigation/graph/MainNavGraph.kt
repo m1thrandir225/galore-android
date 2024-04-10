@@ -19,7 +19,9 @@ fun NavGraphBuilder.mainNavGraph(
                             inclusive = true
                         }
                     }
-                }
+                },
+                navigateToSettings = {},
+                navigateToHelp = {}
             )
         }
     }

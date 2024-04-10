@@ -8,6 +8,7 @@ import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.AccountCircle
+import androidx.compose.material.icons.filled.Settings
 import androidx.compose.material3.Button
 import androidx.compose.material3.CenterAlignedTopAppBar
 import androidx.compose.material3.ExperimentalMaterial3Api
@@ -23,6 +24,7 @@ import androidx.compose.material3.TopAppBarDefaults
 import androidx.compose.material3.TopAppBarScrollBehavior
 import androidx.compose.material3.rememberModalBottomSheetState
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
@@ -31,10 +33,14 @@ import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.input.nestedscroll.nestedScroll
+import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.sp
 import androidx.hilt.navigation.compose.hiltViewModel
+import com.sebastijanzindl.galore.R
 import com.sebastijanzindl.galore.presentation.component.Logo
+import com.sebastijanzindl.galore.presentation.component.MenuItem
+import com.sebastijanzindl.galore.presentation.component.ProfileBottomSheet
 import com.sebastijanzindl.galore.ui.theme.GaloreTheme
 import kotlinx.coroutines.launch
 
@@ -42,10 +48,15 @@ import kotlinx.coroutines.launch
 @Composable
 fun HomeScreen(
     modifier: Modifier = Modifier,
-//    viewModel: HomeScreenViewModel = hiltViewModel(),
+    viewModel: HomeScreenViewModel = hiltViewModel(),
     navigateToAuth: () -> Unit,
+    navigateToSettings: () -> Unit,
+    navigateToHelp: () -> Unit,
 ) {
     val sheetState = rememberModalBottomSheetState()
+
+    val uiState by viewModel.uiState.collectAsState()
+
     val scope = rememberCoroutineScope()
     var showBottomSheet by remember {
         mutableStateOf(false)
@@ -54,6 +65,10 @@ fun HomeScreen(
 
     val openBottomSheet = {
         showBottomSheet = true
+    }
+
+    val dismissBottomSheet = {
+        showBottomSheet = false
     }
 
     Scaffold(
@@ -78,17 +93,22 @@ fun HomeScreen(
         }
 
         if(showBottomSheet) {
-            ModalBottomSheet(onDismissRequest = {
-                showBottomSheet = false
-            }, sheetState = sheetState) {
-                Button(onClick = {
-                    scope.launch { sheetState.hide() }.invokeOnCompletion {
-                        if (!sheetState.isVisible) {
-                            showBottomSheet = false
-                        }
-                    }
-                }) {
-                    Text("Hide bottom sheet")
+            ProfileBottomSheet(
+                userProfile = uiState.userProfile!!,
+                sheetState = sheetState,
+                onDismissRequest = dismissBottomSheet,
+                modifier = Modifier
+            ) {
+                MenuItem(
+                    buttonIcon = {  Icon(Icons.Default.Settings, "") },
+                    title = "Settings") {
+                    navigateToSettings()
+                }
+                MenuItem(buttonIcon = {  Icon(painterResource(id = R.drawable.question_mark_24px), "") }, title = "Help") {
+                    navigateToHelp();
+                }
+                MenuItem(buttonIcon = {  Icon(painterResource(id = R.drawable.logout_24px), "") }, title = "Logout") {
+                    navigateToAuth();
                 }
             }
         }
@@ -123,6 +143,6 @@ private fun HomeTopAppBar(
 @Composable
 private fun HomeScreenPreview() {
     GaloreTheme {
-        HomeScreen(navigateToAuth = {})
+        HomeScreen(navigateToAuth = {}, navigateToHelp = {}, navigateToSettings = {})
     }
 }

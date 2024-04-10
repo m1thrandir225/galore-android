@@ -40,7 +40,8 @@ fun ProfileBottomSheet(
     userProfile: UserProfile,
     sheetState: SheetState,
     onDismissRequest: () -> Unit,
-    modifier: Modifier
+    modifier: Modifier,
+    menuItems: @Composable () -> Unit,
 ) {
     ModalBottomSheet(
         modifier = modifier,
@@ -58,14 +59,11 @@ fun ProfileBottomSheet(
                 avatarUrl = userProfile.avatarUrl
             )
             Column (
-                modifier = Modifier.fillMaxWidth(),
+                modifier = Modifier
+                    .fillMaxWidth(),
+                verticalArrangement = Arrangement.spacedBy(12.dp)
             ) {
-                MenuItem(buttonIcon = {  Icon(Icons.Default.Settings, "") }, title = "Settings") {
-                    println("Settings Clicked")
-                }
-                MenuItem(buttonIcon = {  Icon(Icons.Default.Settings, "") }, title = "Settings") {
-                    println("Settings Clicked")
-                }
+               menuItems()
             }
         }
     }
@@ -115,7 +113,7 @@ fun UserInfoShowcase(
 @Composable
 private fun UserInfoPreview() {
     GaloreTheme {
-        UserInfoShowcase(fullName = "Sebastijan Zindl", "sebastijanprime32@gmail.com", null);
+        UserInfoShowcase(fullName = "Sebastijan Zindl", "sebastijanprime32@gmail.com", null)
     }
 }
 
@@ -137,7 +135,20 @@ private fun BottomSheetPreview() {
             userProfile = userProfile,
             sheetState = sheetState,
             onDismissRequest = onDismissRequest,
-            modifier = Modifier
+            modifier = Modifier,
+            menuItems = {
+                MenuItem(
+                    buttonIcon = {  Icon(Icons.Default.Settings, "") },
+                    title = "Settings") {
+                    println("Settings Clicked")
+                }
+                MenuItem(buttonIcon = {  Icon(painterResource(id = R.drawable.question_mark_24px), "") }, title = "Help") {
+                    println("Settings Clicked")
+                }
+                MenuItem(buttonIcon = {  Icon(painterResource(id = R.drawable.logout_24px), "") }, title = "Logout") {
+                    println("Settings Clicked")
+                }
+            }
         )
     }
 }

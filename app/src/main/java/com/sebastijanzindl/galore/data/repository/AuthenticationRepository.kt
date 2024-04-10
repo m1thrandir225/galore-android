@@ -5,4 +5,6 @@ interface AuthenticationRepository {
     suspend fun signUp(email: String, password: String, fullName: String): Boolean
     suspend fun signInWithGoogle(token: String, rawNonce: String): Boolean
     suspend fun signOut(): Boolean
+
+    suspend fun getLoggedInUserID(): String
 }

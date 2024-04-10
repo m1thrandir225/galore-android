@@ -2,12 +2,14 @@ package com.sebastijanzindl.galore.di
 
 import com.sebastijanzindl.galore.domain.usecase.GetAllFlavoursUseCase
 import com.sebastijanzindl.galore.domain.usecase.GetUserFlavoursUseCase
+import com.sebastijanzindl.galore.domain.usecase.GetUserProfileUseCase
 import com.sebastijanzindl.galore.domain.usecase.SignInGoogleUseCase
 import com.sebastijanzindl.galore.domain.usecase.SignInUseCase
 import com.sebastijanzindl.galore.domain.usecase.SignOutUseCase
 import com.sebastijanzindl.galore.domain.usecase.SignUpUseCase
 import com.sebastijanzindl.galore.domain.usecase.impl.GetAllFlavoursUseCaseImpl
 import com.sebastijanzindl.galore.domain.usecase.impl.GetUserFlavoursUseCaseImpl
+import com.sebastijanzindl.galore.domain.usecase.impl.GetUserProfileUseCaseImpl
 import com.sebastijanzindl.galore.domain.usecase.impl.SignInGoogleUseCaseImpl
 import com.sebastijanzindl.galore.domain.usecase.impl.SignInUseCaseImpl
 import com.sebastijanzindl.galore.domain.usecase.impl.SignOutUseCaseImpl
@@ -39,4 +41,6 @@ abstract class UseCaseModule {
     @Binds
     abstract fun bindGetAllFlavoursUseCase(impl: GetAllFlavoursUseCaseImpl): GetAllFlavoursUseCase
 
+    @Binds
+    abstract  fun bindGetUserProfileUseCase(impl: GetUserProfileUseCaseImpl): GetUserProfileUseCase
 }
