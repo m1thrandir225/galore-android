@@ -14,21 +14,14 @@ class UserProfileRepositoryImpl @Inject constructor(
     private val postgrest: Postgrest,
     private val auth: Auth
 ): UserProfileRepository{
-    override suspend fun getCurrentUserProfile(): UserProfile? {
-        try {
-            val userInfo = auth.retrieveUserForCurrentSession(updateSession = true);
-
-            return postgrest.from("profiles")
-                .select()
-                {
-                    filter {
-                        eq("id", userInfo.id)
-                    }
-                }.decodeSingle<UserProfile>()
-        } catch(e: Exception) {
-            e.message?.let { Log.i("Error", it) }
-        }
-
-        return null
+    override suspend fun getCurrentUserProfile(): UserProfile {
+        val userInfo = auth.retrieveUserForCurrentSession(updateSession = true);
+        return postgrest.from("profiles")
+            .select()
+            {
+                filter {
+                    eq("id", userInfo.id)
+                }
+            }.decodeSingle<UserProfile>()
     }
 }
