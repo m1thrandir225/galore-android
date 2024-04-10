@@ -4,13 +4,16 @@ import androidx.compose.foundation.ExperimentalFoundationApi
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
+import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.width
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.AccountCircle
 import androidx.compose.material.icons.filled.Settings
 import androidx.compose.material3.Button
 import androidx.compose.material3.CenterAlignedTopAppBar
+import androidx.compose.material3.CircularProgressIndicator
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
@@ -35,6 +38,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.input.nestedscroll.nestedScroll
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.tooling.preview.Preview
+import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.hilt.navigation.compose.hiltViewModel
 import com.sebastijanzindl.galore.R
@@ -72,51 +76,61 @@ fun HomeScreen(
         showBottomSheet = false
     }
 
-    Scaffold(
-        modifier = modifier.nestedScroll(scrollBehaviour.nestedScrollConnection),
-        topBar = {
-            HomeTopAppBar(
-                scrollBehaviour = scrollBehaviour,
-                openBottomSheet = openBottomSheet
-            )
+    uiState?.let {
+        Scaffold(
+            modifier = modifier.nestedScroll(scrollBehaviour.nestedScrollConnection),
+            topBar = {
+                HomeTopAppBar(
+                    scrollBehaviour = scrollBehaviour,
+                    openBottomSheet = openBottomSheet
+                )
+            }
+        ) { contentPadding ->
+            Column (verticalArrangement = Arrangement.SpaceEvenly){
+                Button(modifier = Modifier.padding(top = contentPadding.calculateTopPadding()), onClick = {
+                    viewModel.logout(navigateToAuth)
+                }) {
+                    Text(text = "Logout")
+                }
+
+                Text(text = "Hello World");
+
+                Text("Hello world 2");
+            }
+
+            if(showBottomSheet) {
+                ProfileBottomSheet(
+                    userProfile = uiState,
+                    sheetState = sheetState,
+                    onDismissRequest = dismissBottomSheet,
+                    modifier = Modifier
+                ) {
+                    MenuItem(
+                        buttonIcon = {  Icon(Icons.Default.Settings, "") },
+                        title = "Settings") {
+                        navigateToSettings()
+                    }
+                    MenuItem(buttonIcon = {  Icon(painterResource(id = R.drawable.question_mark_24px), "") }, title = "Help") {
+                        navigateToHelp();
+                    }
+                    MenuItem(buttonIcon = {  Icon(painterResource(id = R.drawable.logout_24px), "") }, title = "Logout") {
+                        navigateToAuth();
+                    }
+                }
+            }
         }
-    ) { contentPadding ->
-       uiState?.let {
-           Column (verticalArrangement = Arrangement.SpaceEvenly){
-               Button(modifier = Modifier.padding(top = contentPadding.calculateTopPadding()), onClick = {
-                   viewModel.logout(navigateToAuth)
-               }) {
-                   Text(text = "Logout")
-               }
-
-               Text(text = "Hello World");
-
-               Text("Hello world 2");
-           }
-
-           if(showBottomSheet) {
-               ProfileBottomSheet(
-                   userProfile = uiState,
-                   sheetState = sheetState,
-                   onDismissRequest = dismissBottomSheet,
-                   modifier = Modifier
-               ) {
-                   MenuItem(
-                       buttonIcon = {  Icon(Icons.Default.Settings, "") },
-                       title = "Settings") {
-                       navigateToSettings()
-                   }
-                   MenuItem(buttonIcon = {  Icon(painterResource(id = R.drawable.question_mark_24px), "") }, title = "Help") {
-                       navigateToHelp();
-                   }
-                   MenuItem(buttonIcon = {  Icon(painterResource(id = R.drawable.logout_24px), "") }, title = "Logout") {
-                       navigateToAuth();
-                   }
-               }
-           }
-       } ?: run {
-           LoadingSpinner()
-       }
+    } ?: run {
+        Scaffold {
+            Column (
+                modifier = Modifier
+                    .padding(top = it.calculateTopPadding())
+                    .fillMaxSize(),
+                horizontalAlignment = Alignment.CenterHorizontally,
+                verticalArrangement = Arrangement.Center
+            ) {
+                LoadingSpinner()
+            }
+        }
     }
 }
 
