@@ -17,11 +17,11 @@ data class UserProfile(
     @SerialName("avatar_url")
     val avatarUrl: String,
 
-    @SerialName("user_liked_cocktails")
-    val likedCocktails: List<Cocktail>?,
-
-    @SerialName("user_liked_flavours")
-    val likedFlavours: List<Flavour>?,
+//    @SerialName("user_liked_cocktails")
+//    val likedCocktails: List<Cocktail>?,
+//
+//    @SerialName("user_liked_flavours")
+//    val likedFlavours: List<Flavour>?,
 
     @SerialName("updated_at")
     val updatedAt: String,

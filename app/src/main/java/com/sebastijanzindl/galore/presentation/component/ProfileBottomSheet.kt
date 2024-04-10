@@ -37,7 +37,7 @@ import com.sebastijanzindl.galore.ui.theme.GaloreTheme
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun ProfileBottomSheet(
-    userProfile: UserProfile,
+    userProfile: UserProfile?,
     sheetState: SheetState,
     onDismissRequest: () -> Unit,
     modifier: Modifier,
@@ -53,11 +53,13 @@ fun ProfileBottomSheet(
             horizontalAlignment = Alignment.CenterHorizontally,
             verticalArrangement = Arrangement.spacedBy(24.dp)
         ) {
-            UserInfoShowcase(
-                fullName = userProfile.fullName,
-                email = userProfile.email,
-                avatarUrl = userProfile.avatarUrl
-            )
+            if (userProfile != null) {
+                UserInfoShowcase(
+                    fullName = userProfile.fullName,
+                    email = userProfile.email,
+                    avatarUrl = userProfile.avatarUrl
+                )
+            }
             Column (
                 modifier = Modifier
                     .fillMaxWidth(),
@@ -129,7 +131,7 @@ private fun BottomSheetPreview() {
         sheetOpen = false
     }
 
-    val userProfile = UserProfile("1", avatarUrl = "", email = "sebastijan.zindl@protonmail.com", fullName = "Sebastijan Zindl", likedCocktails = null, likedFlavours = null, updatedAt = "")
+    val userProfile = UserProfile("1", avatarUrl = "", email = "sebastijan.zindl@protonmail.com", fullName = "Sebastijan Zindl", updatedAt = "")
     GaloreTheme {
         ProfileBottomSheet(
             userProfile = userProfile,

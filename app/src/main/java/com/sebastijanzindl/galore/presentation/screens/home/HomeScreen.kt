@@ -71,50 +71,53 @@ fun HomeScreen(
         showBottomSheet = false
     }
 
-    Scaffold(
-        modifier = modifier.nestedScroll(scrollBehaviour.nestedScrollConnection),
-        topBar = {
-            HomeTopAppBar(
-                scrollBehaviour = scrollBehaviour,
-                openBottomSheet = openBottomSheet
-            )
-        }
-    ) { contentPadding ->
-        Column (verticalArrangement = Arrangement.SpaceEvenly){
-            Button(modifier = Modifier.padding(top = contentPadding.calculateTopPadding()), onClick = {
-//            viewModel.logout(navigateToAuth)
-            }) {
-                Text(text = "Logout")
+    uiState?.let {
+        Scaffold(
+            modifier = modifier.nestedScroll(scrollBehaviour.nestedScrollConnection),
+            topBar = {
+                HomeTopAppBar(
+                    scrollBehaviour = scrollBehaviour,
+                    openBottomSheet = openBottomSheet
+                )
+            }
+        ) { contentPadding ->
+            Column (verticalArrangement = Arrangement.SpaceEvenly){
+                Button(modifier = Modifier.padding(top = contentPadding.calculateTopPadding()), onClick = {
+                    viewModel.logout(navigateToAuth)
+                }) {
+                    Text(text = "Logout")
+                }
+
+                Text(text = "Hello World");
+
+                Text("Hello world 2");
             }
 
-            Text(text = "Hello World");
-
-            Text("Hello world 2");
-        }
-
-        if(showBottomSheet && uiState.userProfile != null) {
-            ProfileBottomSheet(
-                userProfile = uiState.userProfile!!,
-                sheetState = sheetState,
-                onDismissRequest = dismissBottomSheet,
-                modifier = Modifier
-            ) {
-                MenuItem(
-                    buttonIcon = {  Icon(Icons.Default.Settings, "") },
-                    title = "Settings") {
-                    navigateToSettings()
-                }
-                MenuItem(buttonIcon = {  Icon(painterResource(id = R.drawable.question_mark_24px), "") }, title = "Help") {
-                    navigateToHelp();
-                }
-                MenuItem(buttonIcon = {  Icon(painterResource(id = R.drawable.logout_24px), "") }, title = "Logout") {
-                    navigateToAuth();
+            if(showBottomSheet) {
+                ProfileBottomSheet(
+                    userProfile = uiState,
+                    sheetState = sheetState,
+                    onDismissRequest = dismissBottomSheet,
+                    modifier = Modifier
+                ) {
+                    MenuItem(
+                        buttonIcon = {  Icon(Icons.Default.Settings, "") },
+                        title = "Settings") {
+                        navigateToSettings()
+                    }
+                    MenuItem(buttonIcon = {  Icon(painterResource(id = R.drawable.question_mark_24px), "") }, title = "Help") {
+                        navigateToHelp();
+                    }
+                    MenuItem(buttonIcon = {  Icon(painterResource(id = R.drawable.logout_24px), "") }, title = "Logout") {
+                        navigateToAuth();
+                    }
                 }
             }
-        }
 
+        }
+    } ?: run {
+        Text(text = "loading...")
     }
-
 }
 
 

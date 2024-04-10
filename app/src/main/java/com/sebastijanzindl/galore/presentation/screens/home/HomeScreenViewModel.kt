@@ -21,25 +21,26 @@ class HomeScreenViewModel @Inject constructor(
     private val getUserProfileUseCase: GetUserProfileUseCase,
 ): ViewModel(){
 
-    private val _uiState = MutableStateFlow(HomeScreenUiState(null));
+    private val _uiState = MutableStateFlow<UserProfile?>(null);
 
-    val uiState: StateFlow<HomeScreenUiState> = _uiState.asStateFlow();
+    val uiState = _uiState.asStateFlow();
 
     init {
-        viewModelScope.launch {
-            val result = getUserProfileUseCase.execute(
-                GetUserProfileUseCase.Input()
-            );
-            when(result.result) {
-                is UserProfile -> {
-                    _uiState.value = HomeScreenUiState(result.result)
-                } else -> {
-                }
-            }
-
-        }
+        getUserProfileData()
     }
 
+    private fun getUserProfileData() {
+        viewModelScope.launch {
+            try {
+                val result = getUserProfileUseCase.execute(
+                    GetUserProfileUseCase.Input()
+                );
+                _uiState.value =  result.result;
+            } catch (e: Exception) {
+                //
+            }
+        }
+    }
     fun logout(navigateToAuth: () -> Unit) {
         viewModelScope.launch {
             val result = signOutUseCase.execute(SignOutUseCase.Input())
@@ -57,5 +58,7 @@ class HomeScreenViewModel @Inject constructor(
 }
 
 data class HomeScreenUiState(
+
     val userProfile: UserProfile?
+
 )
