@@ -18,7 +18,6 @@ class CocktailRepositoryImpl(
                 name
             )
         """.trimIndent())
-
         return postgrest.from("cocktails").select(
             columns = columns
         ) {
@@ -28,7 +27,7 @@ class CocktailRepositoryImpl(
         }.decodeList<Cocktail>()
     }
     override suspend fun getCocktailsByKeyword(query: String): List<Cocktail?> {
-        TODO("Not yet implemented")
+        TODO("Implement RPC call on backend")
     }
     override suspend fun getSingleCocktail(cocktailName: String): Cocktail? {
         return postgrest.from("cocktails")
