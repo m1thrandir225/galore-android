@@ -7,4 +7,5 @@ interface CocktailRepository {
   suspend fun getCocktailsByFlavour(flavourName: String): List<Cocktail?>
   suspend fun getCocktailsByKeyword(query: String): List<Cocktail?>
   suspend fun getSingleCocktail(cocktailName: String): Cocktail?
+  
 }
