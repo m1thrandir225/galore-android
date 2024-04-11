@@ -24,16 +24,15 @@ class AuthenticationRepositoryImpl @Inject constructor(
             false
         }
     }
-    override suspend fun signUp(email: String, password: String, fullName: String): Boolean {
-        val firstName = fullName.split(" ")[0];
-        val lastName = fullName.split(" ")[1];
+    override suspend fun signUp(userEmail: String, userPassword: String, fullName: String): Boolean {
         return try {
             auth.signUpWith(Email) {
-                this.email = email
-                this.password = password
+                email = userEmail
+                password = userPassword
                 data = buildJsonObject {
-                    put("first_name", firstName)
-                    put("last_name", lastName)
+                    put("full_name", fullName)
+                    put("email", email)
+                    put("avatar_url", "")
                 }
             }
             true

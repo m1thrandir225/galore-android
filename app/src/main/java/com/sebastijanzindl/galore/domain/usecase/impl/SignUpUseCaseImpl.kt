@@ -12,8 +12,8 @@ class SignUpUseCaseImpl @Inject constructor(
     override suspend fun execute(input: SignUpUseCase.Input): SignUpUseCase.Output =
         withContext(Dispatchers.IO) {
             val result = authenticationRepository.signUp(
-                email = input.email,
-                password = input.password,
+                userEmail = input.email,
+                userPassword = input.password,
                 fullName = input.fullName
             )
             if(result) {
