@@ -6,5 +6,4 @@ import java.util.UUID
 interface FlavourRepository {
     suspend fun getAllFlavours(): List<Flavour>
     suspend fun getUserFlavours(userId: String): List<Flavour>
-    suspend fun addFlavoursToFavourites(flavours: List<Flavour>): List<Flavour>
 }
