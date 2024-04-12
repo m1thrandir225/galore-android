@@ -20,11 +20,10 @@ data class Cocktail(
     @SerialName("ingredients")
     val ingredients: String,
 
-    @SerialName("tags")
-    val tags: List<Tag>?,
-
-    val flavours: List<Flavour>?,
 
     @SerialName("created_at")
     val createdAt: String,
+
+    @SerialName("embedding")
+    val embedding: List<Float>
 )
