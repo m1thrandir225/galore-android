@@ -25,5 +25,5 @@ data class Cocktail(
     val createdAt: String,
 
     @SerialName("embedding")
-    val embedding: List<Float>
+    val embeddingVector: List<Float>
 )

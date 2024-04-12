@@ -13,4 +13,7 @@ data class Tag(
 
     @SerialName("created_at")
     val createdAt: String,
+
+    @SerialName("embedding")
+    val embeddingVector:  List<Float>
 )

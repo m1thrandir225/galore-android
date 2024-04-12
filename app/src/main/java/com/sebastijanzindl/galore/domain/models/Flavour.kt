@@ -14,5 +14,8 @@ data class Flavour(
     val name: String,
 
     @SerialName("created_at")
-    val createdAt: String
+    val createdAt: String,
+
+    @SerialName("embedding")
+    val embeddingVector: List<Float>,
 )
