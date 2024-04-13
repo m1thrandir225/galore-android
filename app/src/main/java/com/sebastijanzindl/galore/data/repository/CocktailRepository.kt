@@ -8,5 +8,4 @@ interface CocktailRepository {
   suspend fun getCocktailsByTag(tag: String): List<Cocktail>
   suspend fun getCocktailsByKeyword(query: String): List<Cocktail?>
   suspend fun getSingleCocktail(cocktailName: String): Cocktail?
-
 }
