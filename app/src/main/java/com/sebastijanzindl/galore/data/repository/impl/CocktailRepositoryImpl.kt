@@ -37,4 +37,8 @@ class CocktailRepositoryImpl(
                 }
             }.decodeSingleOrNull<Cocktail>()
     }
+
+    override suspend fun getCocktailsByTag(tag: String): List<Cocktail> {
+        TODO("Not yet implemented")
+    }
 }

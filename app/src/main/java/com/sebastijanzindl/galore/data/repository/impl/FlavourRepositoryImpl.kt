@@ -11,11 +11,7 @@ class FlavourRepositoryImpl(
     override suspend fun getAllFlavours(): List<Flavour> {
        return postgrest.from("flavours").select().decodeList<Flavour>()
     }
-    override suspend fun addFlavoursToFavourites(flavours: List<Flavour>): List<Flavour> {
-        return postgrest.from("flavours").insert(flavours) {
-            select()
-        }.decodeList<Flavour>()
-    }
+
     override suspend fun getUserFlavours(userId: String): List<Flavour> {
         TODO("Not yet implemented")
     }

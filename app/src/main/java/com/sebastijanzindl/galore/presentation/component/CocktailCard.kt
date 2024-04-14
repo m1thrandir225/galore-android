@@ -1,7 +1,14 @@
 package com.sebastijanzindl.galore.presentation.component
 
+import androidx.compose.foundation.Image
+import androidx.compose.material3.Card
+import androidx.compose.material3.CardElevation
+import androidx.compose.material3.OutlinedCard
+import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.tooling.preview.Preview
+import com.sebastijanzindl.galore.R
 import com.sebastijanzindl.galore.domain.models.Cocktail
 import com.sebastijanzindl.galore.ui.theme.GaloreTheme
 import kotlinx.datetime.LocalDate
@@ -12,7 +19,15 @@ fun  CocktailCard (
     onHeartPress: () -> Unit,
     onCardPress: () -> Unit
 ) {
+    OutlinedCard(
+        onClick = onCardPress,
 
+    ) {
+        Image(painter = painterResource(id = R.drawable.google_logo), contentDescription = "")
+        Text(text = "Hello World");
+        Text(text = "Hello!")
+
+    }
 }
 
 

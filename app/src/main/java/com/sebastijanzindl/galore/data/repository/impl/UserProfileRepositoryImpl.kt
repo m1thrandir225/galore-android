@@ -24,4 +24,12 @@ class UserProfileRepositoryImpl @Inject constructor(
                 }
             }.decodeSingle<UserProfile>()
     }
+
+    override suspend fun deleteUserProfile(): Boolean {
+        TODO("Not yet implemented")
+    }
+
+    override suspend fun updateUserProfile(updatedProfile: UserProfile): UserProfile {
+        TODO("Not yet implemented")
+    }
 }
