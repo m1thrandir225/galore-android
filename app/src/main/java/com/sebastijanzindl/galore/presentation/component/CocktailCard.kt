@@ -27,6 +27,7 @@ import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.tooling.preview.Preview
+import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
 import coil.compose.AsyncImage
 import coil.request.ImageRequest
@@ -35,8 +36,15 @@ import com.sebastijanzindl.galore.domain.models.Cocktail
 import com.sebastijanzindl.galore.ui.theme.GaloreTheme
 import kotlinx.datetime.LocalDate
 
+enum class CocktailCardType(val value: Dp) {
+    Horizontal(350.dp),
+    Vertical(200.dp)
+}
+
 @Composable
-fun  CocktailCard (
+fun CocktailCard (
+    modifier: Modifier = Modifier,
+    cardType: CocktailCardType = CocktailCardType.Vertical,
     cocktail: Cocktail,
     onHeartPress: () -> Unit,
     onCardPress: () -> Unit,
@@ -45,7 +53,7 @@ fun  CocktailCard (
 
     OutlinedCard(
         onClick = onCardPress,
-        modifier = Modifier.width(200.dp)
+        modifier = modifier.width(cardType.value)
     ) {
         AsyncImage(
             modifier = Modifier.fillMaxWidth()
@@ -94,7 +102,7 @@ fun  CocktailCard (
 
 @Preview
 @Composable
-private fun CocktailCardPreview() {
+private fun VerticalCocktailCardPreview() {
     var isFavourite by remember {
         mutableStateOf(false)
     }
@@ -118,5 +126,37 @@ private fun CocktailCardPreview() {
             onHeartPress = changeIsFavourite,
             isFavourite = isFavourite
         )
+
+    }
+}
+
+@Preview
+@Composable
+private fun HorizontalCocktailCardPreview() {
+    var isFavourite by remember {
+        mutableStateOf(false)
+    }
+
+    val changeIsFavourite = {
+        isFavourite = !isFavourite
+    }
+    GaloreTheme {
+        val cocktail = Cocktail(
+            id = "1",
+            image = "https://images.unsplash.com/photo-1712928247899-2932f4c7dea3?q=80&w=2071&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D",
+            createdAt = LocalDate.parse("2024-02-24").toString(),
+            embeddingVector = listOf(0.10, 1.22, 1.55),
+            ingredients = "Gin, Tonic",
+            name = "Gin & Tonic",
+            steps = "\"{\\\"steps\\\":{\\\"1\\\":\\\"Getaglassandputgininit-about10%oftheglass\\\",\\\"2\\\":\\\"Puticeandsomelemonalongsidetheginintheglass\\\",\\\"3\\\":\\\"Finishthecocktailwiththetonic\\\"}}\""
+        )
+        CocktailCard(
+            cardType = CocktailCardType.Horizontal,
+            cocktail = cocktail,
+            onCardPress = {},
+            onHeartPress = changeIsFavourite,
+            isFavourite = isFavourite
+        )
+
     }
 }
