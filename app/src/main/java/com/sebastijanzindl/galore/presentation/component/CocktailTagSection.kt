@@ -90,16 +90,16 @@ fun CocktailTagSection(
 
         ) { page ->
             CocktailCard(
-                cocktail = cocktails[selectedItem.value],
+                cocktail = cocktails[page],
                 onHeartPress = {
-                               if(favourites.contains(cocktails[selectedItem.value])) {
-                                   favourites.remove(cocktails[selectedItem.value])
+                               if(favourites.contains(cocktails[page])) {
+                                   favourites.remove(cocktails[page])
                                } else {
-                                   favourites.add(cocktails[selectedItem.value])
+                                   favourites.add(cocktails[page])
                                }
                 },
                 onCardPress = { /*TODO*/ },
-                isFavourite = favourites.contains(cocktails[selectedItem.value])
+                isFavourite = favourites.contains(cocktails[page])
             )
         }
     }

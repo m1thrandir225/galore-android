@@ -7,19 +7,15 @@ import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
-import androidx.compose.foundation.layout.width
+import androidx.compose.foundation.lazy.LazyColumn
+import androidx.compose.foundation.lazy.items
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.AccountCircle
 import androidx.compose.material.icons.filled.Settings
 import androidx.compose.material3.Button
-import androidx.compose.material3.CenterAlignedTopAppBar
-import androidx.compose.material3.CircularProgressIndicator
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
-import androidx.compose.material3.MaterialTheme
-import androidx.compose.material3.MediumTopAppBar
-import androidx.compose.material3.ModalBottomSheet
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
 import androidx.compose.material3.TopAppBar
@@ -38,7 +34,6 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.input.nestedscroll.nestedScroll
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.tooling.preview.Preview
-import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.hilt.navigation.compose.hiltViewModel
 import com.sebastijanzindl.galore.R
@@ -49,8 +44,12 @@ import com.sebastijanzindl.galore.presentation.component.Logo
 import com.sebastijanzindl.galore.presentation.component.MenuItem
 import com.sebastijanzindl.galore.presentation.component.ProfileBottomSheet
 import com.sebastijanzindl.galore.ui.theme.GaloreTheme
-import kotlinx.coroutines.launch
 import kotlinx.datetime.LocalDate
+
+data class Section(
+    val cocktails: List<Cocktail>,
+    val tagName: String,
+)
 
 @OptIn(ExperimentalMaterial3Api::class, ExperimentalFoundationApi::class)
 @Composable
@@ -78,81 +77,62 @@ fun HomeScreen(
     val dismissBottomSheet = {
         showBottomSheet = false
     }
+
     val cocktails = listOf(
         Cocktail(
             id = "1",
-            image = "https://images.unsplash.com/photo-1712928247899-2932f4c7dea3?q=80&w=2071&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D",
+            image = "https://images.unsplash.com/photo-1609951651556-5334e2706168?q=80&w=3087&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D",
             createdAt = LocalDate.parse("2024-02-24").toString(),
             embeddingVector = listOf(0.10, 1.22, 1.55),
             ingredients = "Gin, Tonic",
             name = "Gin & Tonic",
-            steps = "\"{\\\"steps\\\":{\\\"1\\\":\\\"Getaglassandputgininit-about10%oftheglass\\\",\\\"2\\\":\\\"Puticeandsomelemonalongsidetheginintheglass\\\",\\\"3\\\":\\\"Finishthecocktailwiththetonic\\\"}}\""
+            steps = ""
         ),
         Cocktail(
             id = "2",
-            image = "https://images.unsplash.com/photo-1712928247899-2932f4c7dea3?q=80&w=2071&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D",
+            image = "https://plus.unsplash.com/premium_photo-1687354207716-b74e8c056def?q=80&w=3088&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D",
             createdAt = LocalDate.parse("2024-02-24").toString(),
             embeddingVector = listOf(0.10, 1.22, 1.55),
-            ingredients = "Coke & Rum",
-            name = "Gin & Tonic",
-            steps = "\"{\\\"steps\\\":{\\\"1\\\":\\\"Getaglassandputgininit-about10%oftheglass\\\",\\\"2\\\":\\\"Puticeandsomelemonalongsidetheginintheglass\\\",\\\"3\\\":\\\"Finishthecocktailwiththetonic\\\"}}\""
+            ingredients = "Rum & Coke",
+            name = "Rum & Coke",
+            steps = ""
         ),
         Cocktail(
-            id = "1",
-            image = "https://images.unsplash.com/photo-1712928247899-2932f4c7dea3?q=80&w=2071&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D",
+            id = "3",
+            image = "https://images.unsplash.com/photo-1551538827-9c037cb4f32a?q=80&w=2761&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D",
             createdAt = LocalDate.parse("2024-02-24").toString(),
             embeddingVector = listOf(0.10, 1.22, 1.55),
-            ingredients = "Gin, Tonic",
-            name = "Gin & Tonic",
-            steps = "\"{\\\"steps\\\":{\\\"1\\\":\\\"Getaglassandputgininit-about10%oftheglass\\\",\\\"2\\\":\\\"Puticeandsomelemonalongsidetheginintheglass\\\",\\\"3\\\":\\\"Finishthecocktailwiththetonic\\\"}}\""
+            ingredients = "Mojito",
+            name = "Mojito",
+            steps = ""
         ),
         Cocktail(
-            id = "2",
-            image = "https://images.unsplash.com/photo-1712928247899-2932f4c7dea3?q=80&w=2071&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D",
+            id = "4",
+            image = "https://images.unsplash.com/photo-1587223962930-cb7f31384c19?q=80&w=3087&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D",
             createdAt = LocalDate.parse("2024-02-24").toString(),
             embeddingVector = listOf(0.10, 1.22, 1.55),
-            ingredients = "Coke & Rum",
-            name = "Gin & Tonic",
-            steps = "\"{\\\"steps\\\":{\\\"1\\\":\\\"Getaglassandputgininit-about10%oftheglass\\\",\\\"2\\\":\\\"Puticeandsomelemonalongsidetheginintheglass\\\",\\\"3\\\":\\\"Finishthecocktailwiththetonic\\\"}}\""
+            ingredients = "Martini",
+            name = "Martini",
+            steps = ""
         ),
-        Cocktail(
-            id = "1",
-            image = "https://images.unsplash.com/photo-1712928247899-2932f4c7dea3?q=80&w=2071&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D",
-            createdAt = LocalDate.parse("2024-02-24").toString(),
-            embeddingVector = listOf(0.10, 1.22, 1.55),
-            ingredients = "Gin, Tonic",
-            name = "Gin & Tonic",
-            steps = "\"{\\\"steps\\\":{\\\"1\\\":\\\"Getaglassandputgininit-about10%oftheglass\\\",\\\"2\\\":\\\"Puticeandsomelemonalongsidetheginintheglass\\\",\\\"3\\\":\\\"Finishthecocktailwiththetonic\\\"}}\""
+
+        )
+
+
+    val sections = listOf(
+        Section(
+            cocktails = cocktails,
+            tagName = "After a long day"
         ),
-        Cocktail(
-            id = "2",
-            image = "https://images.unsplash.com/photo-1712928247899-2932f4c7dea3?q=80&w=2071&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D",
-            createdAt = LocalDate.parse("2024-02-24").toString(),
-            embeddingVector = listOf(0.10, 1.22, 1.55),
-            ingredients = "Coke & Rum",
-            name = "Gin & Tonic",
-            steps = "\"{\\\"steps\\\":{\\\"1\\\":\\\"Getaglassandputgininit-about10%oftheglass\\\",\\\"2\\\":\\\"Puticeandsomelemonalongsidetheginintheglass\\\",\\\"3\\\":\\\"Finishthecocktailwiththetonic\\\"}}\""
+        Section(
+            cocktails = cocktails,
+            tagName = "Something Exciting"
         ),
-        Cocktail(
-            id = "1",
-            image = "https://images.unsplash.com/photo-1712928247899-2932f4c7dea3?q=80&w=2071&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D",
-            createdAt = LocalDate.parse("2024-02-24").toString(),
-            embeddingVector = listOf(0.10, 1.22, 1.55),
-            ingredients = "Gin, Tonic",
-            name = "Gin & Tonic",
-            steps = "\"{\\\"steps\\\":{\\\"1\\\":\\\"Getaglassandputgininit-about10%oftheglass\\\",\\\"2\\\":\\\"Puticeandsomelemonalongsidetheginintheglass\\\",\\\"3\\\":\\\"Finishthecocktailwiththetonic\\\"}}\""
-        ),
-        Cocktail(
-            id = "2",
-            image = "https://images.unsplash.com/photo-1712928247899-2932f4c7dea3?q=80&w=2071&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D",
-            createdAt = LocalDate.parse("2024-02-24").toString(),
-            embeddingVector = listOf(0.10, 1.22, 1.55),
-            ingredients = "Coke & Rum",
-            name = "Gin & Tonic",
-            steps = "\"{\\\"steps\\\":{\\\"1\\\":\\\"Getaglassandputgininit-about10%oftheglass\\\",\\\"2\\\":\\\"Puticeandsomelemonalongsidetheginintheglass\\\",\\\"3\\\":\\\"Finishthecocktailwiththetonic\\\"}}\""
+        Section(
+            cocktails = cocktails,
+            tagName = "To cool down"
         )
     )
-
     uiState?.let {
         Scaffold(
             modifier = modifier.nestedScroll(scrollBehaviour.nestedScrollConnection),
@@ -163,19 +143,26 @@ fun HomeScreen(
                 )
             }
         ) { contentPadding ->
-            Column (verticalArrangement = Arrangement.SpaceEvenly){
-                Button(modifier = Modifier.padding(top = contentPadding.calculateTopPadding()), onClick = {
-                    viewModel.logout(navigateToAuth)
-                }) {
-                    Text(text = "Logout")
+            LazyColumn  (
+                modifier = Modifier.padding(top = contentPadding.calculateTopPadding())
+            ) {
+                items(sections) { section ->
+                    CocktailTagSection(cocktails = section.cocktails, tagName = section.tagName, navigateToSection = {})
                 }
-
-                Text(text = "Hello World");
-
-                Text("Hello world 2");
-
-                CocktailTagSection(cocktails = cocktails, tagName = "After a Long Day", navigateToSection = {})
             }
+//            Column (verticalArrangement = Arrangement.SpaceEvenly){
+//                Button(modifier = Modifier.padding(top = contentPadding.calculateTopPadding()), onClick = {
+//                    viewModel.logout(navigateToAuth)
+//                }) {
+//                    Text(text = "Logout")
+//                }
+//
+//                Text(text = "Hello World");
+//
+//                Text("Hello world 2");
+//
+//
+//            }
 
 
             if(showBottomSheet) {
