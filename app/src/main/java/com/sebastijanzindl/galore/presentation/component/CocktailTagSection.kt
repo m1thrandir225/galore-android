@@ -80,17 +80,16 @@ fun CocktailTagSection(
             }
 
         }
-
-
         HorizontalPager(
             state = pagerState,
-            pageSize = PageSize.Fixed(CocktailCardType.Vertical.value),
+            pageSize = PageSize.Fixed(cocktailCardType.value),
             pageSpacing = 24.dp,
             flingBehavior = fling,
             contentPadding = PaddingValues(horizontal = 24.dp)
 
         ) { page ->
             CocktailCard(
+
                 cocktail = cocktails[page],
                 onHeartPress = {
                                if(favourites.contains(cocktails[page])) {
@@ -100,7 +99,8 @@ fun CocktailTagSection(
                                }
                 },
                 onCardPress = { /*TODO*/ },
-                isFavourite = favourites.contains(cocktails[page])
+                isFavourite = favourites.contains(cocktails[page]),
+                cardType = cocktailCardType,
             )
         }
     }
@@ -168,6 +168,6 @@ private fun CocktailTagSectionPreview() {
             )
 
         )
-        CocktailTagSection(cocktails = cocktails, tagName = "Preview Section", navigateToSection = {})
+        CocktailTagSection(cocktails = cocktails, tagName = "Preview Section", cocktailCardType = CocktailCardType.Horizontal, navigateToSection = {})
     }
 }
