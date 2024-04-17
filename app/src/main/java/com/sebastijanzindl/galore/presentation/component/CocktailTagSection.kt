@@ -39,6 +39,7 @@ fun CocktailTagSection(
     modifier: Modifier = Modifier,
     cocktails: List<Cocktail>,
     tagName: String,
+    cocktailCardType: CocktailCardType = CocktailCardType.Vertical,
     navigateToSection: () -> Unit,
 ) {
     val pagerState = rememberPagerState(pageCount = {
