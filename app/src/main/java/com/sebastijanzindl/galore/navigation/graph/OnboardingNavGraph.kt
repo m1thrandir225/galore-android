@@ -76,7 +76,7 @@ fun NavGraphBuilder.onboardingNavGraph(
         ) {
             AllSetScreen(
                 navigateToMain = {
-                    navController.navigate(NavGraph.Main.route) {
+                    navController.navigate(Screen.Home.route) {
                         popUpTo(NavGraph.Onboarding.route) {
                             inclusive = true;
                         }
