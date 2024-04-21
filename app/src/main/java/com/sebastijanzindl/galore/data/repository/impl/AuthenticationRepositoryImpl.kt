@@ -24,7 +24,7 @@ class AuthenticationRepositoryImpl @Inject constructor(
             false
         }
     }
-    override suspend fun signUp(userEmail: String, userPassword: String, fullName: String): Boolean {
+    override suspend fun signUp(userEmail: String, userPassword: String, fullName: String, avatarUrl: String): Boolean {
         return try {
             auth.signUpWith(Email) {
                 email = userEmail
@@ -32,7 +32,8 @@ class AuthenticationRepositoryImpl @Inject constructor(
                 data = buildJsonObject {
                     put("full_name", fullName)
                     put("email", email)
-                    put("avatar_url", "")
+                    put("avatar_url", avatarUrl)
+
                 }
             }
             true

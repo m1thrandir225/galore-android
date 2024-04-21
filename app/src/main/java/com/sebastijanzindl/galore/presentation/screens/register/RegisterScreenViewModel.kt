@@ -71,7 +71,7 @@ class RegisterScreenViewModel @Inject constructor(
                 SignUpUseCase.Input(
                     email = email,
                     password = password,
-                    fullName = fullName
+                    fullName = fullName,
                 )
             )
             when(result) {

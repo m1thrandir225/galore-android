@@ -14,7 +14,8 @@ class SignUpUseCaseImpl @Inject constructor(
             val result = authenticationRepository.signUp(
                 userEmail = input.email,
                 userPassword = input.password,
-                fullName = input.fullName
+                fullName = input.fullName,
+                avatarUrl = "https://robohash.org/${input.fullName}"
             )
             if(result) {
                 SignUpUseCase.Output.Success
