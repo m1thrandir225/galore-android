@@ -14,7 +14,6 @@ import androidx.compose.foundation.pager.PagerSnapDistance
 import androidx.compose.foundation.pager.rememberPagerState
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.automirrored.filled.KeyboardArrowRight
-import androidx.compose.material.icons.filled.KeyboardArrowRight
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
 import androidx.compose.material3.MaterialTheme
@@ -25,10 +24,8 @@ import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.tooling.preview.Preview
-import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
 import com.sebastijanzindl.galore.domain.models.Cocktail
-import com.sebastijanzindl.galore.domain.models.Tag
 import com.sebastijanzindl.galore.ui.theme.GaloreTheme
 import kotlinx.datetime.LocalDate
 
@@ -40,8 +37,9 @@ fun CocktailTagSection(
     cocktails: List<Cocktail>,
     tagName: String,
     cocktailCardType: CocktailCardType = CocktailCardType.Vertical,
+    canNavigateToSection: Boolean = false,
     navigateToSection: () -> Unit,
-) {
+    ) {
     val pagerState = rememberPagerState(pageCount = {
         cocktails.count()
     });
@@ -75,9 +73,12 @@ fun CocktailTagSection(
                 style = MaterialTheme.typography.headlineSmall,
                 color = MaterialTheme.colorScheme.onSurface,
             )
-            IconButton(onClick = navigateToSection ) {
-                Icon(Icons.AutoMirrored.Filled.KeyboardArrowRight, contentDescription = "arrow right")
+            if(!canNavigateToSection) {
+                IconButton(onClick = navigateToSection ) {
+                    Icon(Icons.AutoMirrored.Filled.KeyboardArrowRight, contentDescription = "arrow right")
+                }
             }
+
 
         }
         HorizontalPager(
@@ -89,7 +90,6 @@ fun CocktailTagSection(
 
         ) { page ->
             CocktailCard(
-
                 cocktail = cocktails[page],
                 onHeartPress = {
                                if(favourites.contains(cocktails[page])) {

@@ -12,12 +12,10 @@ import androidx.compose.foundation.lazy.items
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.AccountCircle
 import androidx.compose.material.icons.filled.Settings
-import androidx.compose.material3.Button
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
 import androidx.compose.material3.Scaffold
-import androidx.compose.material3.Text
 import androidx.compose.material3.TopAppBar
 import androidx.compose.material3.TopAppBarDefaults
 import androidx.compose.material3.TopAppBarScrollBehavior
@@ -38,6 +36,7 @@ import androidx.compose.ui.unit.sp
 import androidx.hilt.navigation.compose.hiltViewModel
 import com.sebastijanzindl.galore.R
 import com.sebastijanzindl.galore.domain.models.Cocktail
+import com.sebastijanzindl.galore.presentation.component.CocktailCardType
 import com.sebastijanzindl.galore.presentation.component.CocktailTagSection
 import com.sebastijanzindl.galore.presentation.component.LoadingSpinner
 import com.sebastijanzindl.galore.presentation.component.Logo
@@ -49,6 +48,7 @@ import kotlinx.datetime.LocalDate
 data class Section(
     val cocktails: List<Cocktail>,
     val tagName: String,
+    val isFeatured: Boolean = false,
 )
 
 @OptIn(ExperimentalMaterial3Api::class, ExperimentalFoundationApi::class)
@@ -115,11 +115,15 @@ fun HomeScreen(
             name = "Martini",
             steps = ""
         ),
-
         )
 
 
     val sections = listOf(
+        Section(
+            cocktails = cocktails,
+            tagName = "Today's Picks",
+            isFeatured = true,
+        ),
         Section(
             cocktails = cocktails,
             tagName = "After a long day"
@@ -133,6 +137,7 @@ fun HomeScreen(
             tagName = "To cool down"
         )
     )
+
     uiState?.let {
         Scaffold(
             modifier = modifier.nestedScroll(scrollBehaviour.nestedScrollConnection),
@@ -146,24 +151,16 @@ fun HomeScreen(
             LazyColumn  (
                 modifier = Modifier.padding(top = contentPadding.calculateTopPadding())
             ) {
+
                 items(sections) { section ->
-                    CocktailTagSection(cocktails = section.cocktails, tagName = section.tagName, navigateToSection = {})
+                    val cocktailCardType = if(section.isFeatured) {
+                        CocktailCardType.Horizontal
+                    } else {
+                        CocktailCardType.Vertical
+                    }
+                    CocktailTagSection(cocktails = section.cocktails, tagName = section.tagName, canNavigateToSection = section.isFeatured, cocktailCardType = cocktailCardType , navigateToSection = {})
                 }
             }
-//            Column (verticalArrangement = Arrangement.SpaceEvenly){
-//                Button(modifier = Modifier.padding(top = contentPadding.calculateTopPadding()), onClick = {
-//                    viewModel.logout(navigateToAuth)
-//                }) {
-//                    Text(text = "Logout")
-//                }
-//
-//                Text(text = "Hello World");
-//
-//                Text("Hello world 2");
-//
-//
-//            }
-
 
             if(showBottomSheet) {
                 ProfileBottomSheet(

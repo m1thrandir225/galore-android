@@ -37,7 +37,7 @@ import com.sebastijanzindl.galore.ui.theme.GaloreTheme
 import kotlinx.datetime.LocalDate
 
 enum class CocktailCardType(val value: Dp) {
-    Horizontal(350.dp),
+    Horizontal(280.dp),
     Vertical(200.dp)
 }
 
