@@ -140,14 +140,14 @@ private fun BottomSheetPreview() {
             modifier = Modifier,
             menuItems = {
                 MenuItem(
-                    buttonIcon = {  Icon(Icons.Default.Settings, "") },
+                    buttonIcon = ButtonComposableWrapper { Icon(Icons.Default.Settings, "") },
                     title = "Settings") {
                     println("Settings Clicked")
                 }
-                MenuItem(buttonIcon = {  Icon(painterResource(id = R.drawable.question_mark_24px), "") }, title = "Help") {
+                MenuItem(buttonIcon = ButtonComposableWrapper {  Icon(painterResource(id = R.drawable.question_mark_24px), "") }, title = "Help") {
                     println("Settings Clicked")
                 }
-                MenuItem(buttonIcon = {  Icon(painterResource(id = R.drawable.logout_24px), "") }, title = "Logout") {
+                MenuItem(buttonIcon = ButtonComposableWrapper {  Icon(painterResource(id = R.drawable.logout_24px), "") }, title = "Logout") {
                     println("Settings Clicked")
                 }
             }

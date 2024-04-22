@@ -25,7 +25,6 @@ import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
-import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
@@ -36,6 +35,7 @@ import androidx.compose.ui.unit.sp
 import androidx.hilt.navigation.compose.hiltViewModel
 import com.sebastijanzindl.galore.R
 import com.sebastijanzindl.galore.domain.models.Cocktail
+import com.sebastijanzindl.galore.presentation.component.ButtonComposableWrapper
 import com.sebastijanzindl.galore.presentation.component.CocktailCardType
 import com.sebastijanzindl.galore.presentation.component.CocktailTagSection
 import com.sebastijanzindl.galore.presentation.component.LoadingSpinner
@@ -169,14 +169,14 @@ fun HomeScreen(
                     modifier = Modifier
                 ) {
                     MenuItem(
-                        buttonIcon = {  Icon(Icons.Default.Settings, "") },
+                        buttonIcon = ButtonComposableWrapper {  Icon(Icons.Default.Settings, "") },
                         title = "Settings") {
                         navigateToSettings()
                     }
-                    MenuItem(buttonIcon = {  Icon(painterResource(id = R.drawable.question_mark_24px), "") }, title = "Help") {
+                    MenuItem(buttonIcon = ButtonComposableWrapper {  Icon(painterResource(id = R.drawable.question_mark_24px), "") }, title = "Help") {
                         navigateToHelp()
                     }
-                    MenuItem(buttonIcon = {  Icon(painterResource(id = R.drawable.logout_24px), "") }, title = "Logout") {
+                    MenuItem(buttonIcon = ButtonComposableWrapper {  Icon(painterResource(id = R.drawable.logout_24px), "") }, title = "Logout") {
                         navigateToAuth()
                     }
                 }
