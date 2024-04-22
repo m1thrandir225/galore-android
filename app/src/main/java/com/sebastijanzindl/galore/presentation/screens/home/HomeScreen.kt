@@ -62,9 +62,8 @@ fun HomeScreen(
 ) {
     val sheetState = rememberModalBottomSheetState()
 
-    val uiState by viewModel.uiState.collectAsState()
+    val userProfile by viewModel.userProfile.collectAsState()
 
-    val scope = rememberCoroutineScope()
     var showBottomSheet by remember {
         mutableStateOf(false)
     }
@@ -138,7 +137,7 @@ fun HomeScreen(
         )
     )
 
-    uiState?.let {
+    userProfile?.let {
         Scaffold(
             modifier = modifier.nestedScroll(scrollBehaviour.nestedScrollConnection),
             topBar = {
@@ -164,7 +163,7 @@ fun HomeScreen(
 
             if(showBottomSheet) {
                 ProfileBottomSheet(
-                    userProfile = uiState,
+                    userProfile = userProfile,
                     sheetState = sheetState,
                     onDismissRequest = dismissBottomSheet,
                     modifier = Modifier
@@ -175,10 +174,10 @@ fun HomeScreen(
                         navigateToSettings()
                     }
                     MenuItem(buttonIcon = {  Icon(painterResource(id = R.drawable.question_mark_24px), "") }, title = "Help") {
-                        navigateToHelp();
+                        navigateToHelp()
                     }
                     MenuItem(buttonIcon = {  Icon(painterResource(id = R.drawable.logout_24px), "") }, title = "Logout") {
-                        navigateToAuth();
+                        navigateToAuth()
                     }
                 }
             }

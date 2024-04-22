@@ -1,7 +1,5 @@
 package com.sebastijanzindl.galore.presentation.screens.home
 
-import androidx.compose.runtime.MutableState
-import androidx.compose.runtime.mutableStateOf
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.sebastijanzindl.galore.domain.models.UserProfile
@@ -9,7 +7,6 @@ import com.sebastijanzindl.galore.domain.usecase.GetUserProfileUseCase
 import com.sebastijanzindl.galore.domain.usecase.SignOutUseCase
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableStateFlow
-import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.launch
 import javax.inject.Inject
@@ -21,9 +18,9 @@ class HomeScreenViewModel @Inject constructor(
     private val getUserProfileUseCase: GetUserProfileUseCase,
 ): ViewModel(){
 
-    private val _uiState = MutableStateFlow<UserProfile?>(null);
+    private val _userProfile = MutableStateFlow<UserProfile?>(null);
 
-    val uiState = _uiState.asStateFlow();
+    val userProfile = _userProfile.asStateFlow();
 
     init {
         getUserProfileData()
@@ -35,7 +32,7 @@ class HomeScreenViewModel @Inject constructor(
                 val result = getUserProfileUseCase.execute(
                     GetUserProfileUseCase.Input()
                 );
-                _uiState.value =  result.result;
+                _userProfile.value =  result.result;
             } catch (e: Exception) {
                 //
             }
