@@ -5,6 +5,7 @@ import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.heightIn
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.material.icons.Icons
@@ -44,9 +45,10 @@ fun ProfileBottomSheet(
     menuItems: @Composable () -> Unit,
 ) {
     ModalBottomSheet(
-        modifier = modifier,
+        modifier = modifier.heightIn(max = 450.dp),
         onDismissRequest = onDismissRequest,
-        sheetState = sheetState
+        sheetState = sheetState,
+
     ) {
         Column(
             modifier = Modifier.fillMaxSize(),
