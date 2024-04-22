@@ -6,5 +6,5 @@ sealed class NavGraph(val route: String) {
     data object Main: NavGraph("main");
 
     data object Splash: NavGraph("loading")
-
+    data object Settings: NavGraph("settings")
 }
