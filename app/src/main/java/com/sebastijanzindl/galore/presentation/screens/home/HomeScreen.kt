@@ -171,13 +171,17 @@ fun HomeScreen(
                     MenuItem(
                         buttonIcon = ButtonComposableWrapper {  Icon(Icons.Default.Settings, "") },
                         title = "Settings") {
-                        navigateToSettings()
+                        dismissBottomSheet().also {
+                            navigateToSettings()
+                        }
                     }
                     MenuItem(buttonIcon = ButtonComposableWrapper {  Icon(painterResource(id = R.drawable.question_mark_24px), "") }, title = "Help") {
                         navigateToHelp()
                     }
                     MenuItem(buttonIcon = ButtonComposableWrapper {  Icon(painterResource(id = R.drawable.logout_24px), "") }, title = "Logout") {
-                        navigateToAuth()
+                        dismissBottomSheet().also {
+                            navigateToAuth()
+                        }
                     }
                 }
             }
