@@ -7,6 +7,7 @@ import com.sebastijanzindl.galore.navigation.graph.NavGraph
 import com.sebastijanzindl.galore.navigation.graph.authNavGraph
 import com.sebastijanzindl.galore.navigation.graph.mainNavGraph
 import com.sebastijanzindl.galore.navigation.graph.onboardingNavGraph
+import com.sebastijanzindl.galore.navigation.graph.settingsNavGraph
 import com.sebastijanzindl.galore.navigation.graph.splashNavGraph
 
 @Composable
@@ -22,5 +23,6 @@ fun GaloreNavHost(
         onboardingNavGraph(navController)
         authNavGraph(navController)
         mainNavGraph(navController)
+        settingsNavGraph(navController)
     }
 }

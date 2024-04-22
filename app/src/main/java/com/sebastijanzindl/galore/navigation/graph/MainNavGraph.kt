@@ -20,7 +20,9 @@ fun NavGraphBuilder.mainNavGraph(
                         }
                     }
                 },
-                navigateToSettings = {},
+                navigateToSettings = {
+                    navController.navigate(NavGraph.Settings.route);
+                },
                 navigateToHelp = {}
             )
         }
