@@ -12,7 +12,6 @@ sealed class Screen(val route: String, val navArguments: List<NamedNavArgument> 
     /**
      * Authentication Nav Graph
      */
-
     data object Welcome: Screen("welcome");
     data object Register: Screen("register");
     data object Login: Screen("login");
@@ -37,4 +36,14 @@ sealed class Screen(val route: String, val navArguments: List<NamedNavArgument> 
 
     data object Search: Screen("/search?q=")
 
+    /**
+     * Settings Graph
+     */
+    data object SettingsOverview: Screen("settings-overview")
+
+    data object AccountSettings: Screen("account-settings")
+
+    data object PasswordAndSecurity: Screen("password-and-security")
+
+    data object NotificationSettings: Screen("notification-settings")
 }
