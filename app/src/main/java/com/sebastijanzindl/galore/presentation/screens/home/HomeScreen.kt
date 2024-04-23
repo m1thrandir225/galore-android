@@ -60,7 +60,7 @@ fun HomeScreen(
     navigateToSettings: () -> Unit,
     navigateToHelp: () -> Unit,
 ) {
-    val sheetState = rememberModalBottomSheetState()
+    val sheetState = rememberModalBottomSheetState( skipPartiallyExpanded = true )
 
     val userProfile by viewModel.userProfile.collectAsState()
 
@@ -160,7 +160,6 @@ fun HomeScreen(
                     CocktailTagSection(cocktails = section.cocktails, tagName = section.tagName, canNavigateToSection = section.isFeatured, cocktailCardType = cocktailCardType , navigateToSection = {})
                 }
             }
-
             if(showBottomSheet) {
                 ProfileBottomSheet(
                     userProfile = userProfile,

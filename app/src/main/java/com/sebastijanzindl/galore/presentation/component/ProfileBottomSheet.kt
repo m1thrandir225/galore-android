@@ -3,9 +3,8 @@ package com.sebastijanzindl.galore.presentation.component
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
-import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
-import androidx.compose.foundation.layout.heightIn
+import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.material.icons.Icons
@@ -45,13 +44,13 @@ fun ProfileBottomSheet(
     menuItems: @Composable () -> Unit,
 ) {
     ModalBottomSheet(
-        modifier = modifier.heightIn(max = 450.dp),
+        modifier = modifier.height(500.dp),
         onDismissRequest = onDismissRequest,
         sheetState = sheetState,
 
     ) {
         Column(
-            modifier = Modifier.fillMaxSize(),
+            modifier = Modifier.fillMaxWidth().height(1050.dp),
             horizontalAlignment = Alignment.CenterHorizontally,
             verticalArrangement = Arrangement.spacedBy(24.dp)
         ) {
@@ -69,6 +68,12 @@ fun ProfileBottomSheet(
             ) {
                menuItems()
             }
+
+//            Spacer(
+//                Modifier.windowInsetsBottomHeight(
+//                    WindowInset
+//                )
+//            )
         }
     }
 }
@@ -125,7 +130,7 @@ private fun UserInfoPreview() {
 @Preview(apiLevel = 33)
 @Composable
 private fun BottomSheetPreview() {
-    val sheetState = rememberModalBottomSheetState()
+    val sheetState = rememberModalBottomSheetState( skipPartiallyExpanded = true)
     var sheetOpen by remember {
         mutableStateOf(true)
     }
@@ -136,10 +141,10 @@ private fun BottomSheetPreview() {
     val userProfile = UserProfile("1", avatarUrl = "", email = "sebastijan.zindl@protonmail.com", fullName = "Sebastijan Zindl", updatedAt = "")
     GaloreTheme {
         ProfileBottomSheet(
+            modifier = Modifier,
             userProfile = userProfile,
             sheetState = sheetState,
             onDismissRequest = onDismissRequest,
-            modifier = Modifier,
             menuItems = {
                 MenuItem(
                     buttonIcon = ButtonComposableWrapper { Icon(Icons.Default.Settings, "") },
