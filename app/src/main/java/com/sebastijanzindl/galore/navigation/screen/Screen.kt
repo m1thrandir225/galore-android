@@ -7,8 +7,6 @@ sealed class Screen(val route: String, val navArguments: List<NamedNavArgument> 
      * Splash Screen
      */
     data object Splash: Screen("splash")
-
-
     /**
      * Authentication Nav Graph
      */

@@ -25,6 +25,7 @@ import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
+import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
@@ -43,6 +44,7 @@ import com.sebastijanzindl.galore.presentation.component.Logo
 import com.sebastijanzindl.galore.presentation.component.MenuItem
 import com.sebastijanzindl.galore.presentation.component.ProfileBottomSheet
 import com.sebastijanzindl.galore.ui.theme.GaloreTheme
+import kotlinx.coroutines.launch
 import kotlinx.datetime.LocalDate
 
 data class Section(
@@ -50,7 +52,6 @@ data class Section(
     val tagName: String,
     val isFeatured: Boolean = false,
 )
-
 @OptIn(ExperimentalMaterial3Api::class, ExperimentalFoundationApi::class)
 @Composable
 fun HomeScreen(
@@ -60,6 +61,7 @@ fun HomeScreen(
     navigateToSettings: () -> Unit,
     navigateToHelp: () -> Unit,
 ) {
+    val scope = rememberCoroutineScope();
     val sheetState = rememberModalBottomSheetState( skipPartiallyExpanded = true )
 
     val userProfile by viewModel.userProfile.collectAsState()
@@ -113,8 +115,8 @@ fun HomeScreen(
             ingredients = "Martini",
             name = "Martini",
             steps = ""
-        ),
         )
+    )
 
 
     val sections = listOf(
@@ -170,15 +172,23 @@ fun HomeScreen(
                     MenuItem(
                         buttonIcon = ButtonComposableWrapper {  Icon(Icons.Default.Settings, "") },
                         title = "Settings") {
-                        dismissBottomSheet().also {
+                        scope.launch {
+                            sheetState.hide()
+                        }.invokeOnCompletion {
                             navigateToSettings()
                         }
                     }
                     MenuItem(buttonIcon = ButtonComposableWrapper {  Icon(painterResource(id = R.drawable.question_mark_24px), "") }, title = "Help") {
-                        navigateToHelp()
+                        scope.launch {
+                            sheetState.hide()
+                        }.invokeOnCompletion {
+                            navigateToHelp()
+                        }
                     }
                     MenuItem(buttonIcon = ButtonComposableWrapper {  Icon(painterResource(id = R.drawable.logout_24px), "") }, title = "Logout") {
-                        dismissBottomSheet().also {
+                        scope.launch {
+                            sheetState.hide()
+                        }.invokeOnCompletion {
                             navigateToAuth()
                         }
                     }
