@@ -11,7 +11,11 @@ import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.AccountCircle
+import androidx.compose.material.icons.filled.Home
+import androidx.compose.material.icons.filled.Search
 import androidx.compose.material.icons.filled.Settings
+import androidx.compose.material.icons.outlined.Home
+import androidx.compose.material.icons.outlined.Search
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
@@ -29,13 +33,18 @@ import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.input.nestedscroll.nestedScroll
 import androidx.compose.ui.res.painterResource
-import androidx.compose.ui.tooling.preview.Preview
+import androidx.compose.ui.res.vectorResource
 import androidx.compose.ui.unit.sp
 import androidx.hilt.navigation.compose.hiltViewModel
+import androidx.navigation.NavController
 import com.sebastijanzindl.galore.R
 import com.sebastijanzindl.galore.domain.models.Cocktail
+import com.sebastijanzindl.galore.navigation.screen.Screen
+import com.sebastijanzindl.galore.presentation.component.BottomNavigationBar
+import com.sebastijanzindl.galore.presentation.component.BottomNavigationItem
 import com.sebastijanzindl.galore.presentation.component.ButtonComposableWrapper
 import com.sebastijanzindl.galore.presentation.component.CocktailCardType
 import com.sebastijanzindl.galore.presentation.component.CocktailTagSection
@@ -43,7 +52,6 @@ import com.sebastijanzindl.galore.presentation.component.LoadingSpinner
 import com.sebastijanzindl.galore.presentation.component.Logo
 import com.sebastijanzindl.galore.presentation.component.MenuItem
 import com.sebastijanzindl.galore.presentation.component.ProfileBottomSheet
-import com.sebastijanzindl.galore.ui.theme.GaloreTheme
 import kotlinx.coroutines.launch
 import kotlinx.datetime.LocalDate
 
@@ -60,8 +68,10 @@ fun HomeScreen(
     navigateToAuth: () -> Unit,
     navigateToSettings: () -> Unit,
     navigateToHelp: () -> Unit,
+    navController: NavController,
 ) {
-    val scope = rememberCoroutineScope();
+    val coroutineScope = rememberCoroutineScope();
+
     val sheetState = rememberModalBottomSheetState( skipPartiallyExpanded = true )
 
     val userProfile by viewModel.userProfile.collectAsState()
@@ -78,6 +88,33 @@ fun HomeScreen(
     val dismissBottomSheet = {
         showBottomSheet = false
     }
+
+    val navigationItems: List<BottomNavigationItem> = listOf(
+        BottomNavigationItem(
+            title = "Home",
+            selectedIcon = Icons.Filled.Home,
+            unselectedIcon = Icons.Outlined.Home,
+            route = Screen.Home.route
+        ),
+        BottomNavigationItem(
+            title = "Search",
+            selectedIcon = Icons.Filled.Search,
+            unselectedIcon =  Icons.Outlined.Search,
+            route = Screen.Search.route
+        ),
+        BottomNavigationItem(
+            title = "Generate Cocktail",
+            selectedIcon = ImageVector.vectorResource(id = R.drawable.sparkles_filled),
+            unselectedIcon = ImageVector.vectorResource(id = R.drawable.sparkles),
+            route = Screen.GenerateCocktail.route
+        ),
+        BottomNavigationItem(
+            title = "Saved",
+            selectedIcon = ImageVector.vectorResource(id = R.drawable.book_filled),
+            unselectedIcon = ImageVector.vectorResource(id = R.drawable.book_24px),
+            route = Screen.Home.route
+        )
+    )
 
     val cocktails = listOf(
         Cocktail(
@@ -147,10 +184,13 @@ fun HomeScreen(
                     scrollBehaviour = scrollBehaviour,
                     openBottomSheet = openBottomSheet
                 )
+            },
+            bottomBar = {
+                BottomNavigationBar(navController = navController, items = navigationItems)
             }
         ) { contentPadding ->
             LazyColumn  (
-                modifier = Modifier.padding(top = contentPadding.calculateTopPadding())
+                modifier = Modifier.padding(top = contentPadding.calculateTopPadding(), bottom = contentPadding.calculateBottomPadding())
             ) {
 
                 items(sections) { section ->
@@ -172,21 +212,21 @@ fun HomeScreen(
                     MenuItem(
                         buttonIcon = ButtonComposableWrapper {  Icon(Icons.Default.Settings, "") },
                         title = "Settings") {
-                        scope.launch {
+                        coroutineScope.launch {
                             sheetState.hide()
                         }.invokeOnCompletion {
                             navigateToSettings()
                         }
                     }
                     MenuItem(buttonIcon = ButtonComposableWrapper {  Icon(painterResource(id = R.drawable.question_mark_24px), "") }, title = "Help") {
-                        scope.launch {
+                        coroutineScope.launch {
                             sheetState.hide()
                         }.invokeOnCompletion {
                             navigateToHelp()
                         }
                     }
                     MenuItem(buttonIcon = ButtonComposableWrapper {  Icon(painterResource(id = R.drawable.logout_24px), "") }, title = "Logout") {
-                        scope.launch {
+                        coroutineScope.launch {
                             sheetState.hide()
                         }.invokeOnCompletion {
                             navigateToAuth()
@@ -230,12 +270,4 @@ private fun HomeTopAppBar(
                          }
                       }
     }, scrollBehavior = scrollBehaviour)
-}
-
-@Preview(apiLevel = 33)
-@Composable
-private fun HomeScreenPreview() {
-    GaloreTheme {
-        HomeScreen(navigateToAuth = {}, navigateToHelp = {}, navigateToSettings = {})
-    }
 }

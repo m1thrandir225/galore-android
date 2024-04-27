@@ -6,6 +6,7 @@ import androidx.navigation.navigation
 import com.sebastijanzindl.galore.navigation.screen.Screen
 import com.sebastijanzindl.galore.presentation.screens.home.HomeScreen
 
+
 fun NavGraphBuilder.mainNavGraph(
     navController: NavController
 ) {
@@ -23,7 +24,8 @@ fun NavGraphBuilder.mainNavGraph(
                 navigateToSettings = {
                     navController.navigate(NavGraph.Settings.route);
                 },
-                navigateToHelp = {}
+                navigateToHelp = {},
+                navController = navController
             )
         }
     }

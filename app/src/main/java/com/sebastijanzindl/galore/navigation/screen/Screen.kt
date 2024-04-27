@@ -30,9 +30,12 @@ sealed class Screen(val route: String, val navArguments: List<NamedNavArgument> 
      */
     data object Home: Screen("home")
 
-    data object Cocktail: Screen("/cocktail/")
+    data object Cocktail: Screen("cocktail")
 
     data object Search: Screen("/search?q=")
+
+    data object GenerateCocktail: Screen ("generate-cocktail")
+    data object Favourites: Screen("favourites")
 
     /**
      * Settings Graph
