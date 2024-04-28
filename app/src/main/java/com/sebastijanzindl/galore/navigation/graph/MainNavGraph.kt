@@ -28,5 +28,6 @@ fun NavGraphBuilder.mainNavGraph(
                 navController = navController
             )
         }
+
     }
 }
