@@ -39,7 +39,7 @@ import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.vectorResource
 import androidx.compose.ui.unit.sp
 import androidx.hilt.navigation.compose.hiltViewModel
-import androidx.navigation.NavController
+import androidx.navigation.NavDestination
 import com.sebastijanzindl.galore.R
 import com.sebastijanzindl.galore.domain.models.Cocktail
 import com.sebastijanzindl.galore.navigation.screen.Screen
@@ -65,10 +65,13 @@ data class Section(
 fun HomeScreen(
     modifier: Modifier = Modifier,
     viewModel: HomeScreenViewModel = hiltViewModel(),
-    navigateToAuth: () -> Unit,
+    navigateToAuth: () -> Unit, //Used to be able to logout
     navigateToSettings: () -> Unit,
     navigateToHelp: () -> Unit,
-    navController: NavController,
+    navigateToSearch: () -> Unit,
+    navigateToGenerateCocktails: () -> Unit,
+    navigateToLibrary: () -> Unit,
+    currentRoute: NavDestination?
 ) {
     val coroutineScope = rememberCoroutineScope();
 
@@ -92,27 +95,31 @@ fun HomeScreen(
     val navigationItems: List<BottomNavigationItem> = listOf(
         BottomNavigationItem(
             title = "Home",
+            route = Screen.Home.route,
             selectedIcon = Icons.Filled.Home,
             unselectedIcon = Icons.Outlined.Home,
-            route = Screen.Home.route
+            onClick = {},
         ),
         BottomNavigationItem(
             title = "Search",
+            route = Screen.GenerateCocktail.route,
             selectedIcon = Icons.Filled.Search,
             unselectedIcon =  Icons.Outlined.Search,
-            route = Screen.Search.route
+            onClick = navigateToSearch
         ),
         BottomNavigationItem(
-            title = "Generate Cocktail",
+            title = "Generate",
+            route = Screen.GenerateCocktail.route,
             selectedIcon = ImageVector.vectorResource(id = R.drawable.sparkles_filled),
             unselectedIcon = ImageVector.vectorResource(id = R.drawable.sparkles),
-            route = Screen.GenerateCocktail.route
+            onClick = navigateToGenerateCocktails
         ),
         BottomNavigationItem(
-            title = "Saved",
+            title = "Library",
+            route = Screen.Favourites.route,
             selectedIcon = ImageVector.vectorResource(id = R.drawable.book_filled),
             unselectedIcon = ImageVector.vectorResource(id = R.drawable.book_24px),
-            route = Screen.Home.route
+            onClick = navigateToLibrary
         )
     )
 
@@ -186,7 +193,7 @@ fun HomeScreen(
                 )
             },
             bottomBar = {
-                BottomNavigationBar(navController = navController, items = navigationItems)
+                BottomNavigationBar(currentRoute = currentRoute, items = navigationItems)
             }
         ) { contentPadding ->
             LazyColumn  (

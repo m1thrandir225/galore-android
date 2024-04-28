@@ -1,4 +1,4 @@
-package com.sebastijanzindl.galore.presentation.screens.favouriteCocktails
+package com.sebastijanzindl.galore.presentation.screens.search
 
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.padding
@@ -20,10 +20,10 @@ import com.sebastijanzindl.galore.presentation.component.BottomNavigationBar
 import com.sebastijanzindl.galore.presentation.component.BottomNavigationItem
 
 @Composable
-fun FavouriteCocktailsScreen(
+fun SearchScreen(
     modifier: Modifier = Modifier,
     navigateToHome: () -> Unit,
-    navigateToSearch: () -> Unit,
+    navigateToFavouriteCocktails: () -> Unit,
     navigateToGenerateCocktails: () -> Unit,
     currentRoute: NavDestination?
 ) {
@@ -40,7 +40,7 @@ fun FavouriteCocktailsScreen(
             route = Screen.GenerateCocktail.route,
             selectedIcon = Icons.Filled.Search,
             unselectedIcon =  Icons.Outlined.Search,
-            onClick = navigateToSearch,
+            onClick = {},
         ),
         BottomNavigationItem(
             title = "Generate",
@@ -54,7 +54,7 @@ fun FavouriteCocktailsScreen(
             route = Screen.Favourites.route,
             selectedIcon = ImageVector.vectorResource(id = R.drawable.book_filled),
             unselectedIcon = ImageVector.vectorResource(id = R.drawable.book_24px),
-            onClick = {}
+            onClick = navigateToFavouriteCocktails
         )
     )
     Scaffold (
@@ -67,7 +67,7 @@ fun FavouriteCocktailsScreen(
         Column (
             modifier = Modifier.padding(top = it.calculateTopPadding(), bottom = it.calculateBottomPadding())
         ) {
-            Text(text = "Favourite Cocktails")
+            Text(text = "Search")
         }
     }
 }
