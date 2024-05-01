@@ -18,21 +18,26 @@ fun NavGraphBuilder.mainNavGraph(
         val  currentRoute = navController.currentDestination
 
         val navigateToHome = {
-            navController.navigate(Screen.Home.route);
+            navController.navigate(Screen.Home.route) {
+                popUpTo(route = currentRoute?.route.toString())
+            }
         }
         val navigateToSearch = {
-            navController.navigate(Screen.Search.route);
+            navController.navigate(Screen.Search.route) {
+                popUpTo(route = currentRoute?.route.toString())
+            }
         }
-
         val navigateToGenerate = {
-            navController.navigate(Screen.GenerateCocktail.route);
+            navController.navigate(Screen.GenerateCocktail.route) {
+                popUpTo(route = currentRoute?.route.toString())
+            }
         }
 
         val navigateToLibrary = {
-            navController.navigate(Screen.Favourites.route);
+            navController.navigate(Screen.Favourites.route) {
+                popUpTo(route = currentRoute?.route.toString())
+            };
         }
-
-
         composable(route = Screen.Home.route) {
             HomeScreen(
                 navigateToAuth = {

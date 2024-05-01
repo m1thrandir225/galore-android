@@ -10,7 +10,6 @@ import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.launch
 import javax.inject.Inject
-import kotlin.Exception
 
 @HiltViewModel
 class HomeScreenViewModel @Inject constructor(
@@ -21,11 +20,9 @@ class HomeScreenViewModel @Inject constructor(
     private val _userProfile = MutableStateFlow<UserProfile?>(null);
 
     val userProfile = _userProfile.asStateFlow();
-
     init {
         getUserProfileData()
     }
-
     private fun getUserProfileData() {
         viewModelScope.launch {
             try {
