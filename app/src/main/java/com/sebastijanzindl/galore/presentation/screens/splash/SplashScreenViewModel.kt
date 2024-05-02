@@ -10,6 +10,5 @@ import javax.inject.Inject
 class SplashScreenViewModel @Inject constructor(
     private val supabaseClient: SupabaseClient
 ) : ViewModel() {
-
     val sessionStatus = supabaseClient.auth.sessionStatus
 }
