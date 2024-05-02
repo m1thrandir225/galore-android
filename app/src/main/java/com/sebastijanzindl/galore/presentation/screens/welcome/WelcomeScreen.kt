@@ -35,7 +35,7 @@ import com.sebastijanzindl.galore.ui.theme.GaloreTheme
 @Composable
 fun WelcomeScreen(
     modifier: Modifier = Modifier,
-    onGettingStartedClick: () -> Unit
+    navigateToRegister: () -> Unit
 ) {
     val welcomeBackground = painterResource(id = R.drawable.welcome_background)
     Box(modifier = modifier.fillMaxSize().statusBarsPadding().systemBarsPadding()) {
@@ -66,7 +66,7 @@ fun WelcomeScreen(
                 style = MaterialTheme.typography.bodyMedium,
                 modifier = Modifier.offset(y = (-18).dp)
             )
-            Button(onClick = onGettingStartedClick) {
+            Button(onClick = navigateToRegister) {
                 Text(text = "Get Started",
                     modifier = Modifier.padding(horizontal = 36.dp )
                 )
@@ -79,6 +79,6 @@ fun WelcomeScreen(
 @Composable
 private fun WelcomeScreenPreview() {
     GaloreTheme() {
-        WelcomeScreen(onGettingStartedClick = {})
+        WelcomeScreen(navigateToRegister = {})
     }
 }

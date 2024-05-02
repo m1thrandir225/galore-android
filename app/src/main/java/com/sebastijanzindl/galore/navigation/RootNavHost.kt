@@ -2,6 +2,7 @@ package com.sebastijanzindl.galore.navigation
 
 import androidx.compose.animation.EnterTransition
 import androidx.compose.animation.ExitTransition
+import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.runtime.Composable
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.NavHost
@@ -9,7 +10,8 @@ import androidx.navigation.compose.NavHost
 @Composable
 fun RootNavHost(
     navHostController: NavHostController,
-    isAuthenticated: Boolean
+    isAuthenticated: Boolean,
+    paddingValues: PaddingValues
 ) {
     NavHost(
         navController = navHostController,
@@ -21,7 +23,8 @@ fun RootNavHost(
             ExitTransition.None
         }
     ) {
-        authNavGraph(navController = navHostController)
+        authNavGraph(navController = navHostController, paddingValues)
+        onboardingNavGraph(navController = navHostController)
         mainNavGraph(navController = navHostController)
     }
 }

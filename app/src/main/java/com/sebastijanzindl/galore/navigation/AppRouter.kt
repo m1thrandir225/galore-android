@@ -18,7 +18,8 @@ private object  Routes {
     /**
      * Onboarding Graph Routes
      */
-    const val ONBOARDING = "feature-showcase"
+    const val ONBOARDING = "onboarding"
+    const val FEATURE_SHOWCASE = "feature-showcase"
     const val ENABLE_PUSH_NOTIFICATIONS = "enable-push-notifications"
     const val SETUP_FAVOURITE_FLAVOURS = "favourite-flavours-setup"
     const val ALL_SET = "all-set"
@@ -102,5 +103,14 @@ sealed class AppScreen(val route: String, val navArguments: List<NamedNavArgumen
         object NotificationSettings: AppScreen(Routes.NOTIFICATION_SETTINGS)
 
         object PasswordAndSecurity: AppScreen(Routes.PASSWORD_SECURITY)
+    }
+
+    object Onboarding : AppScreen(Routes.ONBOARDING) {
+        object FeatureShowcase : AppScreen(Routes.FEATURE_SHOWCASE)
+        object EnablePushNotifications : AppScreen(Routes.ENABLE_PUSH_NOTIFICATIONS)
+
+        object SetupFavouriteFlavours : AppScreen(Routes.SETUP_FAVOURITE_FLAVOURS)
+
+        object AllSet : AppScreen(Routes.ALL_SET)
     }
 }
