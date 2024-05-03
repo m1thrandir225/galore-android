@@ -1,47 +1,21 @@
 package com.sebastijanzindl.galore.presentation.screens.home
 
 import androidx.compose.foundation.ExperimentalFoundationApi
-import androidx.compose.foundation.layout.Arrangement
-import androidx.compose.foundation.layout.Column
-import androidx.compose.foundation.layout.Row
-import androidx.compose.foundation.layout.fillMaxSize
-import androidx.compose.foundation.layout.fillMaxWidth
-import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
-import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.filled.AccountCircle
-import androidx.compose.material.icons.filled.Settings
 import androidx.compose.material3.ExperimentalMaterial3Api
-import androidx.compose.material3.Icon
-import androidx.compose.material3.IconButton
-import androidx.compose.material3.Scaffold
-import androidx.compose.material3.TopAppBar
-import androidx.compose.material3.TopAppBarDefaults
-import androidx.compose.material3.TopAppBarScrollBehavior
 import androidx.compose.material3.rememberModalBottomSheetState
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.runtime.setValue
-import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.res.painterResource
-import androidx.compose.ui.unit.sp
 import androidx.hilt.navigation.compose.hiltViewModel
-import com.sebastijanzindl.galore.R
 import com.sebastijanzindl.galore.domain.models.Cocktail
-import com.sebastijanzindl.galore.presentation.component.ButtonComposableWrapper
 import com.sebastijanzindl.galore.presentation.component.CocktailCardType
 import com.sebastijanzindl.galore.presentation.component.CocktailTagSection
-import com.sebastijanzindl.galore.presentation.component.LoadingSpinner
-import com.sebastijanzindl.galore.presentation.component.Logo
-import com.sebastijanzindl.galore.presentation.component.MenuItem
-import com.sebastijanzindl.galore.presentation.component.ProfileBottomSheet
-import kotlinx.coroutines.launch
 import kotlinx.datetime.LocalDate
 
 data class Section(
@@ -65,12 +39,9 @@ fun HomeScreen(
 
     val sheetState = rememberModalBottomSheetState( skipPartiallyExpanded = true )
 
-    val userProfile by viewModel.userProfile.collectAsState()
-
     var showBottomSheet by remember {
         mutableStateOf(false)
     }
-    val scrollBehaviour = TopAppBarDefaults.enterAlwaysScrollBehavior()
 
     val openBottomSheet = {
         showBottomSheet = true
@@ -139,84 +110,18 @@ fun HomeScreen(
             tagName = "To cool down"
         )
     )
-    userProfile?.let {
-            LazyColumn  (
-            ) {
+    LazyColumn  (
+    ) {
 
-                items(sections) { section ->
-                    val cocktailCardType = if(section.isFeatured) {
-                        CocktailCardType.Horizontal
-                    } else {
-                        CocktailCardType.Vertical
-                    }
-                    CocktailTagSection(cocktails = section.cocktails, tagName = section.tagName, canNavigateToSection = section.isFeatured, cocktailCardType = cocktailCardType , navigateToSection = {})
-                }
+        items(sections) { section ->
+            val cocktailCardType = if(section.isFeatured) {
+                CocktailCardType.Horizontal
+            } else {
+                CocktailCardType.Vertical
             }
-            if(showBottomSheet) {
-                ProfileBottomSheet(
-                    userProfile = userProfile,
-                    sheetState = sheetState,
-                    onDismissRequest = dismissBottomSheet,
-                    modifier = Modifier
-                ) {
-                    MenuItem(
-                        buttonIcon = ButtonComposableWrapper {  Icon(Icons.Default.Settings, "") },
-                        title = "Settings") {
-                        coroutineScope.launch {
-                            sheetState.hide()
-                        }.invokeOnCompletion {
-                            navigateToSettings()
-                        }
-                    }
-                    MenuItem(buttonIcon = ButtonComposableWrapper {  Icon(painterResource(id = R.drawable.question_mark_24px), "") }, title = "Help") {
-                        coroutineScope.launch {
-                            sheetState.hide()
-                        }.invokeOnCompletion {
-                            navigateToHelp()
-                        }
-                    }
-                    MenuItem(buttonIcon = ButtonComposableWrapper {  Icon(painterResource(id = R.drawable.logout_24px), "") }, title = "Logout") {
-                        coroutineScope.launch {
-                            sheetState.hide()
-                        }.invokeOnCompletion {
-                            navigateToAuth()
-                        }
-                    }
-                }
-            }
-    } ?: run {
-        Scaffold {
-            Column (
-                modifier = Modifier
-                    .padding(top = it.calculateTopPadding())
-                    .fillMaxSize(),
-                horizontalAlignment = Alignment.CenterHorizontally,
-                verticalArrangement = Arrangement.Center
-            ) {
-                LoadingSpinner()
-            }
+            CocktailTagSection(cocktails = section.cocktails, tagName = section.tagName, canNavigateToSection = section.isFeatured, cocktailCardType = cocktailCardType , navigateToSection = {})
         }
     }
 }
 
 
-@OptIn(ExperimentalMaterial3Api::class, ExperimentalFoundationApi::class)
-@Composable
-private fun HomeTopAppBar(
-    modifier: Modifier = Modifier,
-    scrollBehaviour: TopAppBarScrollBehavior,
-    openBottomSheet: () -> Unit
-) {
-    TopAppBar(title = {
-                      Row (
-                          Modifier.fillMaxWidth(),
-                          horizontalArrangement = Arrangement.SpaceBetween,
-                          verticalAlignment = Alignment.CenterVertically
-                      ) {
-                          Logo(fontSize = 24.sp)
-                         IconButton(onClick = { openBottomSheet() }) {
-                             Icon(Icons.Filled.AccountCircle, contentDescription = "Account")
-                         }
-                      }
-    }, scrollBehavior = scrollBehaviour)
-}
