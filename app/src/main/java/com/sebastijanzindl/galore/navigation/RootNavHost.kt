@@ -6,16 +6,17 @@ import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.runtime.Composable
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.NavHost
+import androidx.navigation.compose.composable
+import com.sebastijanzindl.galore.presentation.screens.splash.SplashScreen
 
 @Composable
 fun RootNavHost(
     navHostController: NavHostController,
-    isAuthenticated: Boolean,
     paddingValues: PaddingValues
 ) {
     NavHost(
         navController = navHostController,
-        startDestination = if(isAuthenticated) AppScreen.Main.route else AppScreen.Auth.route,
+        startDestination = AppScreen.SplashScreen.route,
         enterTransition = {
             EnterTransition.None
         },
@@ -26,5 +27,23 @@ fun RootNavHost(
         authNavGraph(navController = navHostController, paddingValues)
         onboardingNavGraph(navController = navHostController)
         mainNavGraph(navController = navHostController)
+        composable(route = AppScreen.SplashScreen.route) {
+            SplashScreen(
+                navigateToMain = {
+                    navHostController.navigate(AppScreen.Main.Home.route) {
+                        popUpTo(AppScreen.SplashScreen.route) {
+                            inclusive = true;
+                        }
+                    }
+                },
+                navigateToAuth = {
+                    navHostController.navigate(AppScreen.Auth.Welcome.route) {
+                        popUpTo(AppScreen.SplashScreen.route) {
+                            inclusive = true;
+                        }
+                    }
+                }
+            )
+        }
     }
 }

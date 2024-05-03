@@ -8,7 +8,6 @@ import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.SnackbarHostState
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
@@ -24,7 +23,6 @@ import com.sebastijanzindl.galore.navigation.AppScreen
 import com.sebastijanzindl.galore.navigation.RootNavHost
 import com.sebastijanzindl.galore.presentation.component.BottomNavigationBar
 import com.sebastijanzindl.galore.presentation.viewmodels.MainViewModel
-import io.github.jan.supabase.gotrue.SessionStatus
 
 @RequiresApi(Build.VERSION_CODES.TIRAMISU)
 @Composable
@@ -80,12 +78,8 @@ fun GaloreApp(
             topBarState.value = true
         }
     }
-    val sessionStatus = viewModel.sessionStatus.collectAsState()
 
-    val isAuthenticated = when(sessionStatus.value) {
-        is SessionStatus.Authenticated -> true
-        else -> false
-    }
+
     Scaffold (
         modifier = Modifier.fillMaxSize(),
         bottomBar = {
@@ -96,7 +90,6 @@ fun GaloreApp(
     ){paddingValues ->
         RootNavHost(
             navHostController = navController,
-            isAuthenticated = isAuthenticated,
             paddingValues
         )
     }

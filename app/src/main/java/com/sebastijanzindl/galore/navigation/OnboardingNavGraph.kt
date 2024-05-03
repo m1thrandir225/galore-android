@@ -5,6 +5,7 @@ import androidx.navigation.NavGraphBuilder
 import androidx.navigation.compose.composable
 import androidx.navigation.navigation
 import com.sebastijanzindl.galore.presentation.screens.allSet.AllSetScreen
+import com.sebastijanzindl.galore.presentation.screens.enablePushNotifications.EnablePushNotificationScreen
 import com.sebastijanzindl.galore.presentation.screens.favouriteFlavours.FavouriteFlavoursScreen
 import com.sebastijanzindl.galore.presentation.screens.featureShowcase.FeatureShowcaseScreen
 
@@ -21,6 +22,19 @@ fun NavGraphBuilder.onboardingNavGraph(
             FeatureShowcaseScreen(
                 navigateToPushNotificationScreen = {
                     navController.navigate(AppScreen.Onboarding.EnablePushNotifications.route)
+                }
+            )
+        }
+        composable(
+            route = AppScreen.Onboarding.EnablePushNotifications.route
+        ) {
+            EnablePushNotificationScreen(
+                navigateToFavouriteFlavours = {
+                    navController.navigate(AppScreen.Onboarding.SetupFavouriteFlavours.route) {
+                        popUpTo(AppScreen.Onboarding.EnablePushNotifications.route) {
+                            inclusive = true;
+                        }
+                    }
                 }
             )
         }

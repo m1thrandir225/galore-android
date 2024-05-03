@@ -7,6 +7,8 @@ import androidx.navigation.navArgument
 import com.sebastijanzindl.galore.R
 
 private object  Routes {
+
+    const val SPLASH = "splash"
     /**
      * Auth Graph Routes
      */
@@ -60,6 +62,7 @@ sealed class TopLevelDestination (
 
 sealed class AppScreen(val route: String, val navArguments: List<NamedNavArgument> = emptyList()
 ) {
+    object SplashScreen: AppScreen(Routes.SPLASH);
     object Auth: AppScreen(Routes.AUTH) {
         object Welcome: AppScreen(Routes.WELECOME)
         object Login : AppScreen(Routes.LOGIN)

@@ -61,14 +61,13 @@ fun RegisterScreen(
     paddingValues: PaddingValues
 ) {
     val composition by rememberLottieComposition(spec = LottieCompositionSpec.RawRes(R.raw.register_lottie))
-    val scrollState = rememberScrollState();
-    val focusManager = LocalFocusManager.current;
+    val scrollState = rememberScrollState()
+    val focusManager = LocalFocusManager.current
 
     Column(
-
         verticalArrangement = Arrangement.SpaceAround,
         horizontalAlignment = Alignment.CenterHorizontally,
-        modifier = Modifier
+        modifier = modifier
             .fillMaxSize()
             .verticalScroll(scrollState)
             .padding(
