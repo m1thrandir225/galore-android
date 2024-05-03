@@ -72,6 +72,10 @@ fun GaloreApp(
             bottomBarState.value = false
             topBarState.value = false
         }
+        AppScreen.SplashScreen.route -> {
+            bottomBarState.value = false
+            topBarState.value = false
+        }
         //TODO: find more elegant solution then a when expression
         else -> {
             bottomBarState.value = true
