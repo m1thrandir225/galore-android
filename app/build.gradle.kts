@@ -1,4 +1,3 @@
-import com.android.build.gradle.internal.cxx.configure.gradleLocalProperties
 import java.io.FileInputStream
 import java.util.Properties
 
@@ -102,11 +101,11 @@ dependencies {
     //Dagger-Hilt
     val hiltVer = "2.50"
     implementation ("com.google.dagger:hilt-android:$hiltVer")
-    implementation("androidx.hilt:hilt-navigation-compose:1.1.0")
+    implementation("androidx.hilt:hilt-navigation-compose:1.2.0")
     ksp("com.google.dagger:hilt-compiler:$hiltVer")
 
     //Navigation
-    val navVersion = "2.7.6"
+    val navVersion = "2.7.7"
     implementation("androidx.navigation:navigation-compose:$navVersion")
 
     //Lottie
@@ -114,25 +113,26 @@ dependencies {
     implementation ("com.airbnb.android:lottie-compose:$lottieVersion")
 
     //Supabase
-    val supabase_version = "2.1.5"
-    val ktor_version = "2.3.8"
-    implementation ("io.github.jan-tennert.supabase:postgrest-kt:$supabase_version")
-    implementation ("io.github.jan-tennert.supabase:storage-kt:$supabase_version")
-    implementation ("io.github.jan-tennert.supabase:gotrue-kt:$supabase_version")
-    implementation("io.github.jan-tennert.supabase:coil-integration:$supabase_version")
-    implementation ("io.ktor:ktor-client-android:$ktor_version")
-    implementation ("io.ktor:ktor-client-core:$ktor_version")
-    implementation ("io.ktor:ktor-utils:$ktor_version")
+    val supabaseVersion = "2.3.1"
+    val ktorVersion = "2.3.8"
+    implementation ("io.github.jan-tennert.supabase:postgrest-kt:$supabaseVersion")
+    implementation ("io.github.jan-tennert.supabase:storage-kt:$supabaseVersion")
+    implementation ("io.github.jan-tennert.supabase:gotrue-kt:$supabaseVersion")
+    implementation("io.github.jan-tennert.supabase:coil-integration:$supabaseVersion")
+    implementation("io.github.jan-tennert.supabase:compose-auth:$supabaseVersion")
+    implementation ("io.ktor:ktor-client-android:$ktorVersion")
+    implementation ("io.ktor:ktor-client-core:$ktorVersion")
+    implementation ("io.ktor:ktor-utils:$ktorVersion")
 
     //Credential Manager
-    implementation("androidx.credentials:credentials:1.3.0-alpha01")
-    implementation("androidx.credentials:credentials-play-services-auth:1.3.0-alpha01")
+    implementation("androidx.credentials:credentials:1.3.0-alpha03")
+    implementation("androidx.credentials:credentials-play-services-auth:1.3.0-alpha03")
 
 
     //Sign in with Google
-    val googleid_ver = "1.1.0"
+    val googleidVersion = "1.1.0"
 
-    implementation ("com.google.android.libraries.identity.googleid:googleid:$googleid_ver")
+    implementation ("com.google.android.libraries.identity.googleid:googleid:$googleidVersion")
 
 //    //Arrow
 //    implementation("io.arrow-kt:arrow-core:1.2.1")

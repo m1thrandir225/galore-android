@@ -96,26 +96,27 @@ fun GaloreApp(
 
 
     when(navBackStackEntry?.destination?.route) {
-        AppScreen.Auth.Login.route -> {
-            bottomBarState.value = false
-            topBarState.value = false
-        }
-        AppScreen.Auth.Register.route -> {
-            bottomBarState.value = false
-            topBarState.value = false
-        }
-        AppScreen.Auth.Welcome.route -> {
-            bottomBarState.value = false
-            topBarState.value = false
-        }
-        AppScreen.SplashScreen.route -> {
-            bottomBarState.value = false
-            topBarState.value = false
-        }
-        //TODO: find more elegant solution then a when expression
-        else -> {
+        AppScreen.Main.Home.route -> {
             bottomBarState.value = true
             topBarState.value = true
+        }
+        AppScreen.Main.Search.route -> {
+            bottomBarState.value = true
+            topBarState.value = true
+        }
+
+        AppScreen.Main.Library.route -> {
+            bottomBarState.value = true
+            topBarState.value = true
+        }
+        AppScreen.Main.Generate.route -> {
+            bottomBarState.value = true
+            topBarState.value = true
+        }
+
+        else -> {
+            bottomBarState.value = false
+            topBarState.value = false
         }
     }
 
