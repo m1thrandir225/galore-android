@@ -37,16 +37,19 @@ fun SplashScreen(
     val lottieProgress by animateLottieCompositionAsState(composition = composition)
     val status by viewModel.sessionStatus.collectAsState();
 
-    if (lottieProgress == 1.0f) {
+    if(lottieProgress == 1.0f) {
         when(status) {
-            is SessionStatus.Authenticated  -> {
+            is SessionStatus.Authenticated -> {
                 navigateToMain();
-            } else -> {
-            navigateToAuth();
+            }
+
+            is SessionStatus.NotAuthenticated -> {
+                navigateToAuth();
+            }
+            else -> {
             }
         }
     }
-
     Box (
         contentAlignment = Alignment.Center,
         modifier = modifier
@@ -59,7 +62,6 @@ fun SplashScreen(
                 .height(200.dp),
             composition = composition,
             iterations = LottieConstants.IterateForever,
-
         )
     }
 }

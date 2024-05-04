@@ -7,6 +7,7 @@ import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.ExperimentalLayoutApi
+import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
@@ -26,7 +27,6 @@ import androidx.compose.material3.Button
 import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.OutlinedTextField
-import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
@@ -58,192 +58,191 @@ fun RegisterScreen(
     sharedViewModel: AuthSharedViewModel = hiltViewModel<AuthSharedViewModel>(),
     navigateToLogin: () -> Unit,
     navigateToOnboarding: () -> Unit,
+    paddingValues: PaddingValues
 ) {
     val composition by rememberLottieComposition(spec = LottieCompositionSpec.RawRes(R.raw.register_lottie))
-    val scrollState = rememberScrollState();
-    val focusManager = LocalFocusManager.current;
+    val scrollState = rememberScrollState()
+    val focusManager = LocalFocusManager.current
 
-    Scaffold(modifier = modifier) {
-        contentPadding ->
-        Column(
-            verticalArrangement = Arrangement.SpaceAround,
-            horizontalAlignment = Alignment.CenterHorizontally,
+    Column(
+        verticalArrangement = Arrangement.SpaceAround,
+        horizontalAlignment = Alignment.CenterHorizontally,
+        modifier = modifier
+            .fillMaxSize()
+            .verticalScroll(scrollState)
+            .padding(
+                top = paddingValues.calculateTopPadding(),
+                bottom = paddingValues.calculateBottomPadding(),
+                start = 24.dp,
+                end = 24.dp
+            )
+            .imePadding()
+            .imeNestedScroll()
+    ) {
+        Box(
             modifier = Modifier
-                .fillMaxSize()
-                .verticalScroll(scrollState)
-                .padding(
-                    top = contentPadding.calculateTopPadding(),
-                    bottom = contentPadding.calculateBottomPadding(),
-                    start = 24.dp,
-                    end = 24.dp
-                )
-                .imePadding()
-                .imeNestedScroll()
-        ) {
-            Box(
-                modifier = Modifier
-                    .fillMaxWidth()
-                    .height(200.dp)
-            ){
-                Logo(modifier = Modifier.align(Alignment.TopCenter))
-                LottieAnimation(modifier = Modifier
-                    .fillMaxWidth()
-                    .align(Alignment.Center)
-                    ,composition = composition, iterations = LottieConstants.IterateForever)
-            }
-
-            Column(
-                verticalArrangement = Arrangement.spacedBy(8.dp),
-                horizontalAlignment = Alignment.Start,
-                modifier = Modifier.fillMaxWidth()
-            ) {
-                Text(
-                    text ="Register",
-                    modifier = Modifier.padding(bottom = 12.dp),
-                    style = MaterialTheme.typography.headlineMedium
-                )
-                OutlinedTextField(
-                    modifier = Modifier.fillMaxWidth(),
-                    value = viewModel.fullName,
-                    onValueChange = { newValue -> viewModel.updateFullName(newValue) },
-                    label = {
-                        Text("Name")
-                    },
-                    keyboardOptions = KeyboardOptions(
-                        keyboardType = KeyboardType.Text,
-                        imeAction = ImeAction.Next
-                    ),
-                    keyboardActions = KeyboardActions(
-                        onNext = {
-                            focusManager.moveFocus(FocusDirection.Down)
-                        }
-                    ),
-                    trailingIcon = {
-                        if(viewModel.hasFullNameError) {
-                            Icon(Icons.Filled.Info, "Error", tint = MaterialTheme.colorScheme.error)
-                        }
-                    },
-                    supportingText = {
-                        if(viewModel.hasFullNameError) {
-                            Text(text = "Field must not be empty.")
-                        }
-                    },
-                    isError = viewModel.hasFullNameError
-                )
-                OutlinedTextField(
-                    modifier = Modifier.fillMaxWidth(),
-                    value = viewModel.email,
-                    onValueChange = { newValue -> viewModel.updateEmail(newValue) },
-                    label = {
-                        Text(text = "Email")
-                    },
-                    keyboardOptions = KeyboardOptions(
-                        keyboardType = KeyboardType.Email,
-                        imeAction =  ImeAction.Next
-                    ),
-                    keyboardActions = KeyboardActions(
-                        onNext = {
-                            focusManager.moveFocus(FocusDirection.Down)
-                        }
-                    ),
-                    trailingIcon = {
-                        if(viewModel.hasEmailError) {
-                            Icon(Icons.Filled.Info, "Error", tint = MaterialTheme.colorScheme.error)
-                        }
-                    },
-                    supportingText = {
-                        if(viewModel.hasEmailError) {
-                            Text(text = "Field is not valid.")
-                        }
-                    },
-                    isError = viewModel.hasEmailError
-                )
-                OutlinedTextField(
-                    modifier = Modifier.fillMaxWidth(),
-                    value = viewModel.password,
-                    onValueChange = { newValue -> viewModel.updatePassword(newValue) },
-                    label = {
-                        Text("Password")
-                    },
-                    visualTransformation = PasswordVisualTransformation(),
-                    keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Password, imeAction = ImeAction.Done),
-                    keyboardActions = KeyboardActions(
-                        onDone = {
-                            viewModel.registerUser(navigateToOnboarding)
-                        }
-                    ),
-                    trailingIcon = {
-                        if(viewModel.hasPasswordError) {
-                            Icon(Icons.Filled.Info, "Error", tint = MaterialTheme.colorScheme.error)
-                        }
-                    },
-                    supportingText = {
-                        if(viewModel.hasPasswordError) {
-                            Text(text = "Field must be at least 8 characters long.")
-                        }
-                    },
-                    isError = viewModel.hasPasswordError
-                )
-            }
-
-            Button(
-                onClick = { viewModel.registerUser(navigateToOnboarding) },
-                modifier = Modifier
-                    .padding(vertical = 12.dp)
-                    .fillMaxWidth()
-
-            ) {
-                Text(text = "Continue")
-            }
-
-            Row(
-                horizontalArrangement = Arrangement.spacedBy(8.dp)
-            ){
-                Text(
-                    text = "Already have an account ?",
-                    style = MaterialTheme.typography.labelSmall,
-                    color = MaterialTheme.colorScheme.onBackground
-                )
-                Text(
-                    modifier = Modifier.clickable(
-                        onClick = navigateToLogin
-                    ),
-                    text = "Login",
-                    style = MaterialTheme.typography.labelSmall,
-                    color = MaterialTheme.colorScheme.primary,
-                )
-            }
-            Row(
-                horizontalArrangement = Arrangement.spacedBy(8.dp),
-                verticalAlignment = Alignment.CenterVertically,
-                modifier = Modifier.padding(vertical = 24.dp)
-            ) {
-                Box(modifier = Modifier
-                    .background(
-                        MaterialTheme.colorScheme.primary,
-                        shape = RoundedCornerShape(size = 31.dp)
-                    )
-                    .width(138.dp)
-                    .height(3.dp)
-                )
-                Text(
-                    text = "or",
-                    style = MaterialTheme.typography.labelSmall,
-                    color = MaterialTheme.colorScheme.onBackground
-                )
-                Box(modifier = Modifier
-                    .background(
-                        MaterialTheme.colorScheme.primary,
-                        shape = RoundedCornerShape(size = 31.dp)
-                    )
-                    .width(138.dp)
-                    .height(3.dp)
-                )
-            }
-
-            GoogleSignInButton(viewModel = sharedViewModel, onSuccessCallback = navigateToOnboarding)
+                .fillMaxWidth()
+                .height(200.dp)
+        ){
+            Logo(modifier = Modifier.align(Alignment.TopCenter))
+            LottieAnimation(modifier = Modifier
+                .fillMaxWidth()
+                .align(Alignment.Center)
+                ,composition = composition, iterations = LottieConstants.IterateForever)
         }
+
+        Column(
+            verticalArrangement = Arrangement.spacedBy(8.dp),
+            horizontalAlignment = Alignment.Start,
+            modifier = Modifier.fillMaxWidth()
+        ) {
+            Text(
+                text ="Register",
+                modifier = Modifier.padding(bottom = 12.dp),
+                style = MaterialTheme.typography.headlineMedium
+            )
+            OutlinedTextField(
+                modifier = Modifier.fillMaxWidth(),
+                value = viewModel.fullName,
+                onValueChange = { newValue -> viewModel.updateFullName(newValue) },
+                label = {
+                    Text("Name")
+                },
+                keyboardOptions = KeyboardOptions(
+                    keyboardType = KeyboardType.Text,
+                    imeAction = ImeAction.Next
+                ),
+                keyboardActions = KeyboardActions(
+                    onNext = {
+                        focusManager.moveFocus(FocusDirection.Down)
+                    }
+                ),
+                trailingIcon = {
+                    if(viewModel.hasFullNameError) {
+                        Icon(Icons.Filled.Info, "Error", tint = MaterialTheme.colorScheme.error)
+                    }
+                },
+                supportingText = {
+                    if(viewModel.hasFullNameError) {
+                        Text(text = "Field must not be empty.")
+                    }
+                },
+                isError = viewModel.hasFullNameError
+            )
+            OutlinedTextField(
+                modifier = Modifier.fillMaxWidth(),
+                value = viewModel.email,
+                onValueChange = { newValue -> viewModel.updateEmail(newValue) },
+                label = {
+                    Text(text = "Email")
+                },
+                keyboardOptions = KeyboardOptions(
+                    keyboardType = KeyboardType.Email,
+                    imeAction =  ImeAction.Next
+                ),
+                keyboardActions = KeyboardActions(
+                    onNext = {
+                        focusManager.moveFocus(FocusDirection.Down)
+                    }
+                ),
+                trailingIcon = {
+                    if(viewModel.hasEmailError) {
+                        Icon(Icons.Filled.Info, "Error", tint = MaterialTheme.colorScheme.error)
+                    }
+                },
+                supportingText = {
+                    if(viewModel.hasEmailError) {
+                        Text(text = "Field is not valid.")
+                    }
+                },
+                isError = viewModel.hasEmailError
+            )
+            OutlinedTextField(
+                modifier = Modifier.fillMaxWidth(),
+                value = viewModel.password,
+                onValueChange = { newValue -> viewModel.updatePassword(newValue) },
+                label = {
+                    Text("Password")
+                },
+                visualTransformation = PasswordVisualTransformation(),
+                keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Password, imeAction = ImeAction.Done),
+                keyboardActions = KeyboardActions(
+                    onDone = {
+                        viewModel.registerUser(navigateToOnboarding)
+                    }
+                ),
+                trailingIcon = {
+                    if(viewModel.hasPasswordError) {
+                        Icon(Icons.Filled.Info, "Error", tint = MaterialTheme.colorScheme.error)
+                    }
+                },
+                supportingText = {
+                    if(viewModel.hasPasswordError) {
+                        Text(text = "Field must be at least 8 characters long.")
+                    }
+                },
+                isError = viewModel.hasPasswordError
+            )
+        }
+
+        Button(
+            onClick = { viewModel.registerUser(navigateToOnboarding) },
+            modifier = Modifier
+                .padding(vertical = 12.dp)
+                .fillMaxWidth()
+
+        ) {
+            Text(text = "Continue")
+        }
+
+        Row(
+            horizontalArrangement = Arrangement.spacedBy(8.dp)
+        ){
+            Text(
+                text = "Already have an account ?",
+                style = MaterialTheme.typography.labelSmall,
+                color = MaterialTheme.colorScheme.onBackground
+            )
+            Text(
+                modifier = Modifier.clickable(
+                    onClick = navigateToLogin
+                ),
+                text = "Login",
+                style = MaterialTheme.typography.labelSmall,
+                color = MaterialTheme.colorScheme.primary,
+            )
+        }
+        Row(
+            horizontalArrangement = Arrangement.spacedBy(8.dp),
+            verticalAlignment = Alignment.CenterVertically,
+            modifier = Modifier.padding(vertical = 24.dp)
+        ) {
+            Box(modifier = Modifier
+                .background(
+                    MaterialTheme.colorScheme.primary,
+                    shape = RoundedCornerShape(size = 31.dp)
+                )
+                .width(138.dp)
+                .height(3.dp)
+            )
+            Text(
+                text = "or",
+                style = MaterialTheme.typography.labelSmall,
+                color = MaterialTheme.colorScheme.onBackground
+            )
+            Box(modifier = Modifier
+                .background(
+                    MaterialTheme.colorScheme.primary,
+                    shape = RoundedCornerShape(size = 31.dp)
+                )
+                .width(138.dp)
+                .height(3.dp)
+            )
+        }
+
+        GoogleSignInButton(viewModel = sharedViewModel, onSuccessCallback = navigateToOnboarding)
     }
+
 }
 
 
@@ -251,6 +250,6 @@ fun RegisterScreen(
 @Composable
 private fun RegisterScreenPreview() {
     GaloreTheme {
-        RegisterScreen(navigateToLogin = {}, viewModel = hiltViewModel<RegisterScreenViewModel>(), navigateToOnboarding = {})
+        RegisterScreen(navigateToLogin = {}, viewModel = hiltViewModel<RegisterScreenViewModel>(), navigateToOnboarding = {}, paddingValues = PaddingValues())
     }
 }

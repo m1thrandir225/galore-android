@@ -1,7 +1,6 @@
 package com.sebastijanzindl.galore.presentation.component
 
 
-import android.util.Log
 import android.widget.Toast
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Row
@@ -18,17 +17,11 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.unit.dp
-import androidx.credentials.CredentialManager
-import androidx.credentials.GetCredentialRequest
-import com.google.android.libraries.identity.googleid.GetGoogleIdOption
-import com.google.android.libraries.identity.googleid.GoogleIdTokenCredential
-import com.google.android.libraries.identity.googleid.GoogleIdTokenParsingException
 import com.sebastijanzindl.galore.R
 import com.sebastijanzindl.galore.presentation.viewmodels.AuthSharedViewModel
+import io.github.jan.supabase.compose.auth.composable.NativeSignInResult
+import io.github.jan.supabase.compose.auth.composable.rememberSignInWithGoogle
 import io.github.jan.supabase.postgrest.Postgrest
-import kotlinx.coroutines.launch
-import java.security.MessageDigest
-import java.util.UUID
 
 @Composable
 fun GoogleSignInButton(
@@ -36,56 +29,31 @@ fun GoogleSignInButton(
     viewModel: AuthSharedViewModel,
     onSuccessCallback: () -> Unit,
 ) {
-    val context = LocalContext.current;
-    val coroutineScope =  rememberCoroutineScope()
-    val postgrest = Postgrest;
-    val onClick: () -> Unit = {
-        val credentialManager = CredentialManager.create(context)
+    val context = LocalContext.current
+    rememberCoroutineScope()
+    Postgrest
 
-        val rawNonce = UUID.randomUUID().toString();
-        val bytes = rawNonce.toByteArray()
-        val md = MessageDigest.getInstance("SHA-256")
-        val digest = md.digest(bytes)
-        val hashedNonce = digest.fold("") { str, it -> str + "%02x".format(it)}
-
-        val googleIdOption: GetGoogleIdOption = GetGoogleIdOption.Builder()
-            .setFilterByAuthorizedAccounts(false)
-            .setServerClientId("243120785119-dq5o2t3v582v57raap8k3od9p8r8lbob.apps.googleusercontent.com")
-            .setNonce(hashedNonce)
-            .build()
-
-        val request: GetCredentialRequest = GetCredentialRequest.Builder()
-            .addCredentialOption(googleIdOption)
-            .build()
-
-        coroutineScope.launch {
-           try {
-               val result = credentialManager.getCredential(
-                   request = request,
-                   context = context,
-               )
-               val credential = result.credential
-
-               val googleIdTokenCredential = GoogleIdTokenCredential
-                   .createFrom(credential.data)
-               val googleIdToken = googleIdTokenCredential.idToken
-
-               viewModel.signInWithGoogle(token = googleIdToken, rawNonce = rawNonce);
-
-               Log.i("wow", googleIdToken)
-               Toast.makeText(context, "You are signed in !", Toast.LENGTH_SHORT).show()
-
-               onSuccessCallback();
-           } catch (e: GoogleIdTokenParsingException) {
-               Toast.makeText(context, e.message, Toast.LENGTH_SHORT).show()
-           } catch (e: Exception) {
-               Toast.makeText(context, e.message, Toast.LENGTH_SHORT).show()
-           }
-        }
-    }
+    val googleSignIn = viewModel.supabaseComposeAuth.rememberSignInWithGoogle(
+        onResult = { result -> //optional error handling
+            when (result) {
+                is NativeSignInResult.Success -> {
+                    onSuccessCallback()
+                }
+                is NativeSignInResult.ClosedByUser -> {
+                    Toast.makeText(context, "Google Signing Closed by user", Toast.LENGTH_SHORT).show()
+                }
+                is NativeSignInResult.Error -> {
+                    Toast.makeText(context, "Error While Signing in: $result", Toast.LENGTH_SHORT).show()
+                }
+                is NativeSignInResult.NetworkError -> {
+                    Toast.makeText(context, "Network error while signing-in", Toast.LENGTH_SHORT).show()
+                }
+            }
+        },
+    )
 
      Button(
-         onClick = onClick,
+         onClick = { googleSignIn.startFlow() },
          colors = ButtonDefaults.buttonColors(
              MaterialTheme.colorScheme.secondary
          ),

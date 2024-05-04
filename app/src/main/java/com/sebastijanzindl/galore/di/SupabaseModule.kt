@@ -1,14 +1,16 @@
 package com.sebastijanzindl.galore.di
 
+import com.sebastijanzindl.galore.BuildConfig
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
 import dagger.hilt.components.SingletonComponent
-import com.sebastijanzindl.galore.BuildConfig
 import io.github.jan.supabase.SupabaseClient
+import io.github.jan.supabase.compose.auth.ComposeAuth
+import io.github.jan.supabase.compose.auth.composeAuth
+import io.github.jan.supabase.compose.auth.googleNativeLogin
 import io.github.jan.supabase.createSupabaseClient
 import io.github.jan.supabase.gotrue.Auth
-import io.github.jan.supabase.gotrue.FlowType
 import io.github.jan.supabase.gotrue.auth
 import io.github.jan.supabase.postgrest.Postgrest
 import io.github.jan.supabase.postgrest.postgrest
@@ -28,6 +30,11 @@ object SupabaseModule {
         ) {
             install(Postgrest)
             install(Auth)
+            install(ComposeAuth) {
+                googleNativeLogin(
+                    serverClientId = "243120785119-dq5o2t3v582v57raap8k3od9p8r8lbob.apps.googleusercontent.com"
+                )
+            }
             install(Storage)
         }
     }
@@ -46,5 +53,11 @@ object SupabaseModule {
     @Singleton
     fun provideSupabaseStorage(client: SupabaseClient): Storage {
         return client.storage
+    }
+
+    @Provides
+    @Singleton
+    fun provideSupabaseComposeAuth(client: SupabaseClient): ComposeAuth {
+        return client.composeAuth
     }
 }
