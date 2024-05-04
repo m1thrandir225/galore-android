@@ -13,6 +13,7 @@ import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
 import androidx.hilt.navigation.compose.hiltViewModel
+import androidx.navigation.NavController
 import com.sebastijanzindl.galore.domain.models.Cocktail
 import com.sebastijanzindl.galore.presentation.component.CocktailCardType
 import com.sebastijanzindl.galore.presentation.component.CocktailTagSection
@@ -28,12 +29,7 @@ data class Section(
 fun HomeScreen(
     modifier: Modifier = Modifier,
     viewModel: HomeScreenViewModel = hiltViewModel(),
-    navigateToAuth: () -> Unit, //Used to be able to logout
-    navigateToSettings: () -> Unit,
-    navigateToHelp: () -> Unit,
-    navigateToSearch: () -> Unit,
-    navigateToGenerateCocktails: () -> Unit,
-    navigateToLibrary: () -> Unit,
+    navController: NavController
 ) {
     val coroutineScope = rememberCoroutineScope();
 
@@ -111,8 +107,8 @@ fun HomeScreen(
         )
     )
     LazyColumn  (
+        modifier = modifier
     ) {
-
         items(sections) { section ->
             val cocktailCardType = if(section.isFeatured) {
                 CocktailCardType.Horizontal

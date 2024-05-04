@@ -24,9 +24,17 @@ fun RootNavHost(
             ExitTransition.None
         }
     ) {
-        authNavGraph(navController = navHostController, paddingValues)
-        onboardingNavGraph(navController = navHostController)
-        mainNavGraph(navController = navHostController)
+        authNavGraph(
+            navController = navHostController,
+            paddingValues = paddingValues
+        )
+        onboardingNavGraph(
+            navController = navHostController
+        )
+        mainNavGraph(
+            navController = navHostController,
+            paddingValues = paddingValues
+        )
         composable(route = AppScreen.SplashScreen.route) {
             SplashScreen(
                 navigateToMain = {

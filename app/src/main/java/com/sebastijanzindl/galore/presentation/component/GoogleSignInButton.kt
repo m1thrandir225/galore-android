@@ -29,15 +29,15 @@ fun GoogleSignInButton(
     viewModel: AuthSharedViewModel,
     onSuccessCallback: () -> Unit,
 ) {
-    val context = LocalContext.current;
-    val coroutineScope =  rememberCoroutineScope()
-    val postgrest = Postgrest;
+    val context = LocalContext.current
+    rememberCoroutineScope()
+    Postgrest
 
     val googleSignIn = viewModel.supabaseComposeAuth.rememberSignInWithGoogle(
         onResult = { result -> //optional error handling
             when (result) {
                 is NativeSignInResult.Success -> {
-                    onSuccessCallback();
+                    onSuccessCallback()
                 }
                 is NativeSignInResult.ClosedByUser -> {
                     Toast.makeText(context, "Google Signing Closed by user", Toast.LENGTH_SHORT).show()
