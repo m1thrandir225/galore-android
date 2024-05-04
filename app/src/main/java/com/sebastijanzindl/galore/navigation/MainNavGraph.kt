@@ -43,7 +43,6 @@ fun NavGraphBuilder.mainNavGraph(
             GenerateCocktailScreen(
                 modifier = Modifier.padding(paddingValues)
             )
-
         }
         composable(
             route = AppScreen.Main.Library.route

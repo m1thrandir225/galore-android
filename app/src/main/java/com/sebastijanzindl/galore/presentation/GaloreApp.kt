@@ -38,13 +38,15 @@ import com.sebastijanzindl.galore.presentation.component.HomeTopAppBar
 import com.sebastijanzindl.galore.presentation.component.MenuItem
 import com.sebastijanzindl.galore.presentation.component.ProfileBottomSheet
 import com.sebastijanzindl.galore.presentation.viewmodels.MainViewModel
+import com.sebastijanzindl.galore.presentation.viewmodels.ProfileSharedViewModel
 import kotlinx.coroutines.launch
 
 @OptIn(ExperimentalMaterial3Api::class)
 @RequiresApi(Build.VERSION_CODES.TIRAMISU)
 @Composable
 fun GaloreApp(
-    viewModel: MainViewModel = hiltViewModel()
+    viewModel: MainViewModel = hiltViewModel(),
+    userProfileViewModel: ProfileSharedViewModel = hiltViewModel()
 ) {
     val navController = rememberNavController()
 
@@ -77,15 +79,15 @@ fun GaloreApp(
     }
 
     var showBottomSheet by remember {
-        mutableStateOf(false);
+        mutableStateOf(false)
     }
 
-    val sheetState = rememberModalBottomSheetState(skipPartiallyExpanded = true);
+    val sheetState = rememberModalBottomSheetState(skipPartiallyExpanded = true)
 
-    val userProfile by viewModel.userProfile.collectAsState()
+    val userProfile by userProfileViewModel.userProfile.collectAsState()
 
     val openBottomSheet = {
-        showBottomSheet= true;
+        showBottomSheet= true
     }
 
     val dismissBottomSheet = {
@@ -145,6 +147,7 @@ fun GaloreApp(
                 userProfile = userProfile,
                 sheetState = sheetState,
                 onDismissRequest = dismissBottomSheet,
+                refetchProfile = { userProfileViewModel.fetchUserProfile() },
                 modifier = Modifier
             ) {
                 MenuItem(
@@ -152,25 +155,29 @@ fun GaloreApp(
                     title = "Settings") {
                     coroutineScope.launch {
                         sheetState.hide()
+                        showBottomSheet = false
+                        navController.navigate(AppScreen.Settings.route)
                     }
                 }
                 MenuItem(buttonIcon = ButtonComposableWrapper {  Icon(painterResource(id = R.drawable.question_mark_24px), "") }, title = "Help") {
                     coroutineScope.launch {
                         sheetState.hide()
+                        showBottomSheet = false
+                        navController.navigate(AppScreen.Settings.route)
                     }
-
                 }
                 MenuItem(buttonIcon = ButtonComposableWrapper {  Icon(painterResource(id = R.drawable.logout_24px), "") }, title = "Logout") {
                     coroutineScope.launch {
-                        sheetState.hide();
-                    }
-                    viewModel.logout {
-                        navController.navigate(AppScreen.Auth.Welcome.route) {
-                            popUpTo(AppScreen.Main.route) {
-                                inclusive = true;
+                        sheetState.hide()
+                        showBottomSheet = false
+                        userProfileViewModel.logout {
+                            navController.navigate(AppScreen.Auth.Welcome.route) {
+                                popUpTo(AppScreen.Main.route) {
+                                    inclusive = true
+                                }
                             }
                         }
-                    };
+                    }
                 }
             }
         }

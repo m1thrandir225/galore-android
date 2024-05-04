@@ -6,7 +6,6 @@ import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
@@ -20,14 +19,14 @@ import com.airbnb.lottie.compose.LottieConstants
 import com.airbnb.lottie.compose.animateLottieCompositionAsState
 import com.airbnb.lottie.compose.rememberLottieComposition
 import com.sebastijanzindl.galore.R
+import com.sebastijanzindl.galore.presentation.viewmodels.ProfileSharedViewModel
 import com.sebastijanzindl.galore.ui.theme.GaloreTheme
-import io.github.jan.supabase.gotrue.SessionStatus
 
 
 @Composable
 fun SplashScreen(
     modifier: Modifier = Modifier,
-    viewModel: SplashScreenViewModel = hiltViewModel(),
+    userProfileSharedViewModel: ProfileSharedViewModel = hiltViewModel(),
     navigateToMain: () -> Unit,
     navigateToAuth: () -> Unit,
 ) {
@@ -35,18 +34,17 @@ fun SplashScreen(
     val composition by rememberLottieComposition(lottieSpec)
 
     val lottieProgress by animateLottieCompositionAsState(composition = composition)
-    val status by viewModel.sessionStatus.collectAsState();
+
+    val status = userProfileSharedViewModel.isAuthenticated
 
     if(lottieProgress == 1.0f) {
         when(status) {
-            is SessionStatus.Authenticated -> {
+            true -> {
                 navigateToMain();
             }
 
-            is SessionStatus.NotAuthenticated -> {
+            false -> {
                 navigateToAuth();
-            }
-            else -> {
             }
         }
     }

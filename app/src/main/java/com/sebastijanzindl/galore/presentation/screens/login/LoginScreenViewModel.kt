@@ -10,7 +10,6 @@ import androidx.lifecycle.viewModelScope
 import com.sebastijanzindl.galore.domain.usecase.SignInUseCase
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.launch
-import java.lang.Exception
 import javax.inject.Inject
 
 @HiltViewModel
@@ -46,7 +45,7 @@ class LoginScreenViewModel @Inject constructor(
     private fun validatePassword(input: String) {
         hasPasswordError = input.length < 8;
     }
-    fun loginUser(navigateToHome: () -> Unit) {
+    fun loginUser(successCallback: () -> Unit) {
         viewModelScope.launch {
             val result = signInUseCase.execute(
                 SignInUseCase.Input(
@@ -56,7 +55,7 @@ class LoginScreenViewModel @Inject constructor(
             )
             when(result) {
                 is SignInUseCase.Output.Success -> {
-                    navigateToHome();
+                    successCallback();
                 }
                 else -> {
                     throw Exception("there has been a problem while logging you in")
