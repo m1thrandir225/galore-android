@@ -99,7 +99,6 @@ sealed class AppScreen(val route: String, val navArguments: List<NamedNavArgumen
             }
         ));
     }
-
     object Settings : AppScreen(Routes.SETTINGS) {
 
         object SettingsOverview: AppScreen(Routes.SETTINGS_OVERVIEW)

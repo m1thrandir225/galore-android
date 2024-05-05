@@ -34,9 +34,9 @@ import com.sebastijanzindl.galore.navigation.AppScreen
 import com.sebastijanzindl.galore.navigation.RootNavHost
 import com.sebastijanzindl.galore.presentation.component.BottomNavigationBar
 import com.sebastijanzindl.galore.presentation.component.ButtonComposableWrapper
-import com.sebastijanzindl.galore.presentation.component.HomeTopAppBar
 import com.sebastijanzindl.galore.presentation.component.MenuItem
 import com.sebastijanzindl.galore.presentation.component.ProfileBottomSheet
+import com.sebastijanzindl.galore.presentation.component.TopAppBar
 import com.sebastijanzindl.galore.presentation.viewmodels.MainViewModel
 import com.sebastijanzindl.galore.presentation.viewmodels.ProfileSharedViewModel
 import kotlinx.coroutines.launch
@@ -96,8 +96,9 @@ fun GaloreApp(
 
     val scrollBehaviour = TopAppBarDefaults.enterAlwaysScrollBehavior()
 
+    val currentRoute = navBackStackEntry?.destination?.route;
 
-    when(navBackStackEntry?.destination?.route) {
+    when(currentRoute) {
         AppScreen.Main.Home.route -> {
             bottomBarState.value = true
             topBarState.value = true
@@ -116,6 +117,12 @@ fun GaloreApp(
             topBarState.value = true
         }
 
+        AppScreen.Settings.SettingsOverview.route -> {
+            topBarState.value = true
+            bottomBarState.value = false
+
+        }
+
         else -> {
             bottomBarState.value = false
             topBarState.value = false
@@ -125,11 +132,18 @@ fun GaloreApp(
     Scaffold (
         modifier = Modifier.fillMaxSize(),
         snackbarHost = {
-                       SnackbarHost(hostState = snackBarHostState)
+            SnackbarHost(hostState = snackBarHostState)
         },
         topBar = {
             if(topBarState.value) {
-                HomeTopAppBar(scrollBehaviour = scrollBehaviour, openBottomSheet = openBottomSheet)
+                TopAppBar(
+                    scrollBehaviour = scrollBehaviour,
+                    openBottomSheet = openBottomSheet,
+                    navigateBack = {
+                        navController.popBackStack()
+                    },
+                    currentRoute = currentRoute
+                )
             }
         },
         bottomBar = {
@@ -142,6 +156,9 @@ fun GaloreApp(
             navHostController = navController,
             paddingValues
         )
+        /**
+         * The Application top bar bottom sheet component
+         */
         if(showBottomSheet) {
             ProfileBottomSheet(
                 userProfile = userProfile,
