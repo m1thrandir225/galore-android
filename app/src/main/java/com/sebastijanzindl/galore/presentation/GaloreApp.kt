@@ -77,7 +77,6 @@ fun GaloreApp(
     val topBarState = rememberSaveable {
         mutableStateOf(true)
     }
-
     var showBottomSheet by remember {
         mutableStateOf(false)
     }
@@ -120,7 +119,6 @@ fun GaloreApp(
         AppScreen.Settings.SettingsOverview.route -> {
             topBarState.value = true
             bottomBarState.value = false
-
         }
 
         else -> {
@@ -128,7 +126,6 @@ fun GaloreApp(
             topBarState.value = false
         }
     }
-
     Scaffold (
         modifier = Modifier.fillMaxSize(),
         snackbarHost = {
