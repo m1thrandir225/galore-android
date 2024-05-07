@@ -48,6 +48,7 @@ import com.sebastijanzindl.galore.R
 import com.sebastijanzindl.galore.presentation.component.GoogleSignInButton
 import com.sebastijanzindl.galore.presentation.component.Logo
 import com.sebastijanzindl.galore.presentation.viewmodels.AuthSharedViewModel
+import com.sebastijanzindl.galore.presentation.viewmodels.ProfileSharedViewModel
 import com.sebastijanzindl.galore.ui.theme.GaloreTheme
 
 @OptIn(ExperimentalLayoutApi::class)
@@ -55,7 +56,8 @@ import com.sebastijanzindl.galore.ui.theme.GaloreTheme
 fun RegisterScreen(
     modifier: Modifier = Modifier,
     viewModel: RegisterScreenViewModel = hiltViewModel(),
-    sharedViewModel: AuthSharedViewModel = hiltViewModel<AuthSharedViewModel>(),
+    sharedViewModel: AuthSharedViewModel = hiltViewModel(),
+    profileSharedViewModel: ProfileSharedViewModel = hiltViewModel(),
     navigateToLogin: () -> Unit,
     navigateToOnboarding: () -> Unit,
     paddingValues: PaddingValues
@@ -63,6 +65,10 @@ fun RegisterScreen(
     val composition by rememberLottieComposition(spec = LottieCompositionSpec.RawRes(R.raw.register_lottie))
     val scrollState = rememberScrollState()
     val focusManager = LocalFocusManager.current
+
+    val registerUser = {
+        navigateToOnboarding()
+    }
 
     Column(
         verticalArrangement = Arrangement.SpaceAround,
@@ -165,10 +171,13 @@ fun RegisterScreen(
                     Text("Password")
                 },
                 visualTransformation = PasswordVisualTransformation(),
-                keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Password, imeAction = ImeAction.Done),
+                keyboardOptions = KeyboardOptions(
+                    keyboardType = KeyboardType.Password,
+                    imeAction = ImeAction.Done
+                ),
                 keyboardActions = KeyboardActions(
                     onDone = {
-                        viewModel.registerUser(navigateToOnboarding)
+                        viewModel.registerUser(successCallback = registerUser)
                     }
                 ),
                 trailingIcon = {
@@ -184,9 +193,8 @@ fun RegisterScreen(
                 isError = viewModel.hasPasswordError
             )
         }
-
         Button(
-            onClick = { viewModel.registerUser(navigateToOnboarding) },
+            onClick = { viewModel.registerUser(successCallback = registerUser) },
             modifier = Modifier
                 .padding(vertical = 12.dp)
                 .fillMaxWidth()
@@ -240,16 +248,14 @@ fun RegisterScreen(
             )
         }
 
-        GoogleSignInButton(viewModel = sharedViewModel, onSuccessCallback = navigateToOnboarding)
+        GoogleSignInButton(viewModel = sharedViewModel, onSuccessCallback = registerUser)
     }
-
 }
-
 
 @Preview(apiLevel = 33)
 @Composable
 private fun RegisterScreenPreview() {
     GaloreTheme {
-        RegisterScreen(navigateToLogin = {}, viewModel = hiltViewModel<RegisterScreenViewModel>(), navigateToOnboarding = {}, paddingValues = PaddingValues())
+        RegisterScreen(navigateToLogin = {}, navigateToOnboarding = {}, paddingValues = PaddingValues())
     }
 }

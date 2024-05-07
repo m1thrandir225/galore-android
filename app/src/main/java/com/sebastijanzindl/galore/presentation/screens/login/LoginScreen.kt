@@ -44,9 +44,10 @@ import com.airbnb.lottie.compose.LottieCompositionSpec
 import com.airbnb.lottie.compose.LottieConstants
 import com.airbnb.lottie.compose.rememberLottieComposition
 import com.sebastijanzindl.galore.R
-import com.sebastijanzindl.galore.presentation.component.Logo
 import com.sebastijanzindl.galore.presentation.component.GoogleSignInButton
+import com.sebastijanzindl.galore.presentation.component.Logo
 import com.sebastijanzindl.galore.presentation.viewmodels.AuthSharedViewModel
+import com.sebastijanzindl.galore.presentation.viewmodels.ProfileSharedViewModel
 import com.sebastijanzindl.galore.ui.theme.GaloreTheme
 
 @OptIn(ExperimentalLayoutApi::class)
@@ -54,6 +55,7 @@ import com.sebastijanzindl.galore.ui.theme.GaloreTheme
 fun LoginScreen(
     modifier: Modifier = Modifier,
     viewModel: LoginScreenViewModel = hiltViewModel<LoginScreenViewModel>(),
+    profileSharedViewModel: ProfileSharedViewModel = hiltViewModel<ProfileSharedViewModel>(),
     sharedViewModel: AuthSharedViewModel = hiltViewModel<AuthSharedViewModel>(),
     navigateToRegister: () -> Unit,
     navigateToMain: () -> Unit,
@@ -62,6 +64,11 @@ fun LoginScreen(
     val composition by rememberLottieComposition(spec = LottieCompositionSpec.RawRes(R.raw.login_lottie))
     val scrollState = rememberScrollState();
     val focusManager = LocalFocusManager.current;
+
+    //Login success callback
+    val loginUser = {
+        navigateToMain()
+    }
 
     Scaffold(modifier = modifier) {
             contentPadding ->
@@ -142,7 +149,7 @@ fun LoginScreen(
                     ),
                     keyboardActions = KeyboardActions(
                         onDone = {
-                            viewModel.loginUser(navigateToHome = navigateToMain)
+                            viewModel.loginUser(successCallback =  loginUser)
                         }
                     ),
                     singleLine = true,
@@ -167,7 +174,7 @@ fun LoginScreen(
             }
             Button(
                 enabled = !viewModel.hasEmailError && !viewModel.hasPasswordError,
-                onClick = { viewModel.loginUser(navigateToHome = navigateToMain) },
+                onClick = { viewModel.loginUser(successCallback = loginUser) },
                 modifier = Modifier
                     .padding(top = 50.dp, bottom = 12.dp)
                     .fillMaxWidth()
@@ -219,7 +226,7 @@ fun LoginScreen(
                     .height(3.dp)
                 )
             }
-          GoogleSignInButton(viewModel = sharedViewModel, onSuccessCallback = navigateToOnboarding)
+          GoogleSignInButton(viewModel = sharedViewModel, onSuccessCallback = loginUser)
         }
     }
 }

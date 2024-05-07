@@ -17,6 +17,7 @@ import androidx.compose.material3.SheetState
 import androidx.compose.material3.Text
 import androidx.compose.material3.rememberModalBottomSheetState
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
@@ -41,8 +42,12 @@ fun ProfileBottomSheet(
     sheetState: SheetState,
     onDismissRequest: () -> Unit,
     modifier: Modifier,
+    refetchProfile: () -> Unit,
     menuItems: @Composable () -> Unit,
 ) {
+    LaunchedEffect(key1 = sheetState) {
+        refetchProfile();
+    }
     ModalBottomSheet(
         modifier = modifier.height(500.dp),
         onDismissRequest = onDismissRequest,
@@ -50,7 +55,9 @@ fun ProfileBottomSheet(
 
     ) {
         Column(
-            modifier = Modifier.fillMaxWidth().height(1050.dp),
+            modifier = Modifier
+                .fillMaxWidth()
+                .height(1050.dp),
             horizontalAlignment = Alignment.CenterHorizontally,
             verticalArrangement = Arrangement.spacedBy(24.dp)
         ) {
@@ -134,10 +141,10 @@ private fun BottomSheetPreview() {
     var sheetOpen by remember {
         mutableStateOf(true)
     }
+
     val onDismissRequest = {
         sheetOpen = false
     }
-
     val userProfile = UserProfile("1", avatarUrl = "", email = "sebastijan.zindl@protonmail.com", fullName = "Sebastijan Zindl", updatedAt = "")
     GaloreTheme {
         ProfileBottomSheet(
@@ -145,6 +152,7 @@ private fun BottomSheetPreview() {
             userProfile = userProfile,
             sheetState = sheetState,
             onDismissRequest = onDismissRequest,
+            refetchProfile = {},
             menuItems = {
                 MenuItem(
                     buttonIcon = ButtonComposableWrapper { Icon(Icons.Default.Settings, "") },

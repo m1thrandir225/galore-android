@@ -4,19 +4,15 @@ import androidx.compose.foundation.ExperimentalFoundationApi
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
 import androidx.compose.material3.ExperimentalMaterial3Api
-import androidx.compose.material3.rememberModalBottomSheetState
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.getValue
-import androidx.compose.runtime.mutableStateOf
-import androidx.compose.runtime.remember
 import androidx.compose.runtime.rememberCoroutineScope
-import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavController
 import com.sebastijanzindl.galore.domain.models.Cocktail
 import com.sebastijanzindl.galore.presentation.component.CocktailCardType
 import com.sebastijanzindl.galore.presentation.component.CocktailTagSection
+import com.sebastijanzindl.galore.presentation.viewmodels.ProfileSharedViewModel
 import kotlinx.datetime.LocalDate
 
 data class Section(
@@ -29,23 +25,10 @@ data class Section(
 fun HomeScreen(
     modifier: Modifier = Modifier,
     viewModel: HomeScreenViewModel = hiltViewModel(),
+    userProfileSharedViewModel: ProfileSharedViewModel = hiltViewModel(),
     navController: NavController
 ) {
     val coroutineScope = rememberCoroutineScope();
-
-    val sheetState = rememberModalBottomSheetState( skipPartiallyExpanded = true )
-
-    var showBottomSheet by remember {
-        mutableStateOf(false)
-    }
-
-    val openBottomSheet = {
-        showBottomSheet = true
-    }
-
-    val dismissBottomSheet = {
-        showBottomSheet = false
-    }
 
     val cocktails = listOf(
         Cocktail(

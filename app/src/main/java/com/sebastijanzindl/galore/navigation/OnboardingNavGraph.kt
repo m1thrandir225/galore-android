@@ -1,5 +1,7 @@
 package com.sebastijanzindl.galore.navigation
 
+import androidx.compose.animation.AnimatedContentTransitionScope
+import androidx.compose.animation.core.tween
 import androidx.navigation.NavController
 import androidx.navigation.NavGraphBuilder
 import androidx.navigation.compose.composable
@@ -17,7 +19,11 @@ fun NavGraphBuilder.onboardingNavGraph(
         route = AppScreen.Onboarding.route
     ) {
         composable(
-            route = AppScreen.Onboarding.FeatureShowcase.route
+            route = AppScreen.Onboarding.FeatureShowcase.route,
+            enterTransition = { slideIntoContainer(AnimatedContentTransitionScope.SlideDirection.Start, tween(700)) },
+            exitTransition = { slideOutOfContainer(AnimatedContentTransitionScope.SlideDirection.Start, tween(700)) },
+            popEnterTransition = { slideIntoContainer(AnimatedContentTransitionScope.SlideDirection.End, tween(700)) },
+            popExitTransition = { slideOutOfContainer(AnimatedContentTransitionScope.SlideDirection.End, tween(700)) }
         ) {
             FeatureShowcaseScreen(
                 navigateToPushNotificationScreen = {
@@ -26,7 +32,11 @@ fun NavGraphBuilder.onboardingNavGraph(
             )
         }
         composable(
-            route = AppScreen.Onboarding.EnablePushNotifications.route
+            route = AppScreen.Onboarding.EnablePushNotifications.route,
+            enterTransition = { slideIntoContainer(AnimatedContentTransitionScope.SlideDirection.Start, tween(700)) },
+            exitTransition = { slideOutOfContainer(AnimatedContentTransitionScope.SlideDirection.Start, tween(700)) },
+            popEnterTransition = { slideIntoContainer(AnimatedContentTransitionScope.SlideDirection.End, tween(700)) },
+            popExitTransition = { slideOutOfContainer(AnimatedContentTransitionScope.SlideDirection.End, tween(700)) }
         ) {
             EnablePushNotificationScreen(
                 navigateToFavouriteFlavours = {
@@ -39,7 +49,11 @@ fun NavGraphBuilder.onboardingNavGraph(
             )
         }
         composable(
-            route = AppScreen.Onboarding.SetupFavouriteFlavours.route
+            route = AppScreen.Onboarding.SetupFavouriteFlavours.route,
+            enterTransition = { slideIntoContainer(AnimatedContentTransitionScope.SlideDirection.Start, tween(700)) },
+            exitTransition = { slideOutOfContainer(AnimatedContentTransitionScope.SlideDirection.Start, tween(700)) },
+            popEnterTransition = { slideIntoContainer(AnimatedContentTransitionScope.SlideDirection.End, tween(700)) },
+            popExitTransition = { slideOutOfContainer(AnimatedContentTransitionScope.SlideDirection.End, tween(700)) }
         ) {
             FavouriteFlavoursScreen(
                 navigateToAllSet = {
@@ -52,7 +66,16 @@ fun NavGraphBuilder.onboardingNavGraph(
             )
         }
         composable(
-            route = AppScreen.Onboarding.AllSet.route
+            route = AppScreen.Onboarding.AllSet.route,
+            enterTransition = { slideIntoContainer(AnimatedContentTransitionScope.SlideDirection.Start, tween(700)) },
+            popEnterTransition = { slideIntoContainer(AnimatedContentTransitionScope.SlideDirection.End, tween(700)) },
+            popExitTransition = { slideOutOfContainer(AnimatedContentTransitionScope.SlideDirection.End, tween(700)) },
+            exitTransition = {
+                return@composable slideOutOfContainer(
+                    AnimatedContentTransitionScope.SlideDirection.Up,
+                    tween(700)
+                )
+            }
         ) {
             AllSetScreen(
                 navigateToMain = {

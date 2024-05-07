@@ -40,7 +40,7 @@ private object  Routes {
     /**
      * Settings Graph Routes
      */
-
+    const val SETTINGS = "settings"
     const val SETTINGS_OVERVIEW = "settings-overview"
     const val ACCOUNT_SETTINGS = "account-settings"
     const val PASSWORD_SECURITY = "password-and-security"
@@ -99,8 +99,9 @@ sealed class AppScreen(val route: String, val navArguments: List<NamedNavArgumen
             }
         ));
     }
+    object Settings : AppScreen(Routes.SETTINGS) {
 
-    object Settings : AppScreen(Routes.SETTINGS_OVERVIEW) {
+        object SettingsOverview: AppScreen(Routes.SETTINGS_OVERVIEW)
         object AccountSettings : AppScreen(Routes.ACCOUNT_SETTINGS)
 
         object NotificationSettings: AppScreen(Routes.NOTIFICATION_SETTINGS)
