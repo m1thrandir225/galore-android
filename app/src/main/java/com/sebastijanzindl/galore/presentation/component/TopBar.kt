@@ -1,6 +1,5 @@
 package com.sebastijanzindl.galore.presentation.component
 
-import android.util.Log
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxWidth
@@ -16,6 +15,7 @@ import androidx.compose.material3.TopAppBarScrollBehavior
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.sp
 import com.sebastijanzindl.galore.navigation.AppScreen
 
@@ -27,19 +27,46 @@ fun TopAppBar(
     navigateBack: () -> Unit,
     currentRoute: String?
 ) {
-    if (currentRoute != null) {
-        Log.d("current route", currentRoute)
-    };
-    if(currentRoute == AppScreen.Settings.SettingsOverview.route) {
-        SettingsGraphContent(
-            scrollBehaviour=scrollBehaviour,
-            navigateBack = navigateBack
-        )
-    } else  {
-        MainGraphContent(
-            scrollBehaviour = scrollBehaviour,
-            openBottomSheet = openBottomSheet
-        )
+    when (currentRoute) {
+        AppScreen.Settings.SettingsOverview.route -> {
+            SettingsGraphContent(
+                scrollBehaviour = scrollBehaviour,
+                navigateBack = navigateBack,
+                title =  stringResource(AppScreen.Settings.SettingsOverview.titleResourceID)
+            )
+        }
+        AppScreen.Settings.AccountSettings.route -> {
+            SettingsGraphContent(
+                scrollBehaviour = scrollBehaviour,
+                navigateBack = navigateBack,
+                title =  stringResource(AppScreen.Settings.AccountSettings.titleResourceID)
+            )
+        }
+        AppScreen.Settings.NotificationSettings.route -> {
+            SettingsGraphContent(
+                scrollBehaviour = scrollBehaviour,
+                navigateBack = navigateBack,
+                title =  stringResource(AppScreen.Settings.NotificationSettings.titleResourceID)
+            )
+        }
+        AppScreen.Settings.PasswordAndSecurity.route -> {
+            SettingsGraphContent(
+                scrollBehaviour = scrollBehaviour,
+                navigateBack = navigateBack,
+                title = stringResource(id = AppScreen.Settings.PasswordAndSecurity.titleResourceID)
+            )
+        }
+        AppScreen.Main.Home.route,
+        AppScreen.Main.Search.route,
+        AppScreen.Main.Library.route,
+        AppScreen.Main.Generate.route,
+        AppScreen.Main.CocktailDetails.route -> {
+            MainGraphContent(
+                scrollBehaviour = scrollBehaviour,
+                openBottomSheet = openBottomSheet
+            )
+        }
+        else -> {}
     }
 }
 
@@ -49,12 +76,13 @@ fun TopAppBar(
 @OptIn(ExperimentalMaterial3Api::class)
 private fun SettingsGraphContent(
     navigateBack: () -> Unit,
-    scrollBehaviour: TopAppBarScrollBehavior
+    scrollBehaviour: TopAppBarScrollBehavior,
+    title: String,
 ) {
     TopAppBar(
         modifier =  Modifier,
         title = {
-            Text(text = "Settings")
+            Text(text = title)
         },
         navigationIcon = {
             IconButton(onClick = navigateBack) {

@@ -22,9 +22,8 @@ import com.sebastijanzindl.galore.ui.theme.GaloreTheme
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun SettingsScreen(
+fun SettingsOverviewScreen(
     modifier: Modifier = Modifier,
-    navigateBack: () -> Unit,
     navigateToAccountSettings: () -> Unit,
     navigateToPasswordsAndSecurity: () -> Unit,
     navigateToNotifications: () -> Unit,
@@ -32,7 +31,7 @@ fun SettingsScreen(
     Column (
         horizontalAlignment = Alignment.Start,
         verticalArrangement = Arrangement.SpaceBetween,
-        modifier = Modifier
+        modifier = modifier
             .fillMaxSize()
             .padding(
                 start = 10.dp,
@@ -101,8 +100,7 @@ fun SettingsScreen(
 @Composable
 private fun SettingsScreenPreview() {
     GaloreTheme {
-        SettingsScreen(
-            navigateBack = {},
+        SettingsOverviewScreen(
             navigateToAccountSettings = {},
             navigateToNotifications = {},
             navigateToPasswordsAndSecurity = {},
