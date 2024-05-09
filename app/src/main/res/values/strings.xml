@@ -1,5 +1,5 @@
 <resources>
-    <string name="app_name">galore</string>
+    <string name="app_name">Galore</string>
     <string name="account_settings_title">Account Settings</string>
     <string name="settings_overview_title">Settings</string>
     <string name="password_and_security_title"><![CDATA[Password & Security]]></string>

@@ -7,11 +7,12 @@ import com.sebastijanzindl.galore.domain.usecase.GetUserProfileUseCase
 import com.sebastijanzindl.galore.domain.usecase.SignOutUseCase
 import dagger.hilt.android.lifecycle.HiltViewModel
 import io.github.jan.supabase.gotrue.Auth
-import io.github.jan.supabase.gotrue.SessionStatus
+import io.github.jan.supabase.gotrue.user.UserSession
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.launch
 import javax.inject.Inject
+
 
 @HiltViewModel
 class ProfileSharedViewModel @Inject constructor(
@@ -20,16 +21,13 @@ class ProfileSharedViewModel @Inject constructor(
     private val auth: Auth
 ) : ViewModel() {
     private val _userProfile = MutableStateFlow<UserProfile?>(null)
-    private val sessionStatus = auth.sessionStatus;
+    private val sessionStatus = auth.currentSessionOrNull();
 
-    val isAuthenticated = when(sessionStatus.value) {
-        is SessionStatus.Authenticated -> true
+    val isAuthenticated = when(sessionStatus) {
+        is UserSession -> true
         else -> false
     }
-
-
     val userProfile = _userProfile.asStateFlow()
-
     init {
         if(isAuthenticated) {
             fetchUserProfile()

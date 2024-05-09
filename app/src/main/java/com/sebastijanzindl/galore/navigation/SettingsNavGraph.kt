@@ -12,6 +12,7 @@ import androidx.navigation.compose.composable
 import androidx.navigation.navigation
 import com.sebastijanzindl.galore.presentation.screens.accountSettings.AccountSettingScreen
 import com.sebastijanzindl.galore.presentation.screens.settings.SettingsOverviewScreen
+import com.sebastijanzindl.galore.presentation.viewmodels.ProfileSharedViewModel
 
 fun NavGraphBuilder.settingsNavGraph(
     navController: NavController,
@@ -37,6 +38,7 @@ fun NavGraphBuilder.settingsNavGraph(
             popEnterTransition = { slideIntoContainer(AnimatedContentTransitionScope.SlideDirection.End, tween(700)) },
             popExitTransition = { slideOutOfContainer(AnimatedContentTransitionScope.SlideDirection.End, tween(700)) }
         ) {
+            val profileViewModel = it.sharedViewModel<ProfileSharedViewModel>(navController = navController)
             SettingsOverviewScreen(
                 modifier = Modifier.padding(paddingValues),
                 navigateToAccountSettings = navigateToAccountSettings,
@@ -48,7 +50,7 @@ fun NavGraphBuilder.settingsNavGraph(
             route = AppScreen.Settings.AccountSettings.route
         ) {
            AccountSettingScreen(
-               modifier = Modifier.padding(paddingValues)
+               modifier = Modifier.padding(paddingValues),
            )
         }
         

@@ -15,6 +15,7 @@ class UserProfileRepositoryImpl @Inject constructor(
         auth.awaitInitialization();
 
         val userInfo = auth.retrieveUserForCurrentSession(updateSession = true);
+
         return postgrest.from("profiles")
             .select()
             {
