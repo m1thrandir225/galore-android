@@ -26,6 +26,7 @@ import androidx.compose.material3.rememberDatePickerState
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.derivedStateOf
+import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
@@ -55,7 +56,7 @@ fun AccountSettingScreen(
     val confirmEnabled = remember {
         derivedStateOf { datePickerState.selectedDateMillis != null }
     }
-    val userProfile = viewModel.userProfile.collectAsState();
+    val userProfile by viewModel.userProfile.collectAsState();
     val openDateDialog = {
         dateDialogOpen.value = true
     }
@@ -100,7 +101,7 @@ fun AccountSettingScreen(
                     modifier = Modifier
                         .size(128.dp)
                         .clip(CircleShape),
-                    model = userProfile.value!!.avatarUrl,
+                    model = userProfile!!.avatarUrl,
                     contentDescription = "Your Profile Picture",
                     contentScale = ContentScale.Crop,
                     placeholder = painterResource(id = R.drawable.profile_picture_placeholder)
@@ -113,7 +114,7 @@ fun AccountSettingScreen(
             }
             OutlinedTextField(
                 modifier = Modifier.fillMaxWidth(),
-                value = userProfile.value?.email ?: "",
+                value = viewModel.email,
                 label = {
                     Text(text = "Email")
                 },
@@ -121,7 +122,7 @@ fun AccountSettingScreen(
             )
             OutlinedTextField(
                 modifier = Modifier.fillMaxWidth(),
-                value = userProfile.value?.fullName ?: "",
+                value = viewModel.fullName,
                 label = {
                     Text(text = "Full Name")
                 },
@@ -153,13 +154,14 @@ fun AccountSettingScreen(
             )
             Button(
                 modifier = Modifier.fillMaxWidth(),
-                enabled = false,
-                onClick = { /*TODO*/ }
+                enabled = true,
+                onClick = { viewModel.updateProfile() }
             ) {
                 Text(text = "Update profile")
             }
             if(dateDialogOpen.value) {
                 DatePickerDialog(
+                    modifier = Modifier.fillMaxWidth(0.9f),
                     onDismissRequest = closeDateDialog,
                     confirmButton = {
                         Button(
@@ -170,7 +172,9 @@ fun AccountSettingScreen(
                         }
                     }
                 ) {
-                    DatePicker(state = datePickerState)
+                    DatePicker(
+                        state = datePickerState
+                    )
                 }
             }
 

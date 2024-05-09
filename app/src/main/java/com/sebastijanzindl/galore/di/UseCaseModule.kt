@@ -7,6 +7,7 @@ import com.sebastijanzindl.galore.domain.usecase.SignInGoogleUseCase
 import com.sebastijanzindl.galore.domain.usecase.SignInUseCase
 import com.sebastijanzindl.galore.domain.usecase.SignOutUseCase
 import com.sebastijanzindl.galore.domain.usecase.SignUpUseCase
+import com.sebastijanzindl.galore.domain.usecase.UpdateUserProfileUseCase
 import com.sebastijanzindl.galore.domain.usecase.impl.GetAllFlavoursUseCaseImpl
 import com.sebastijanzindl.galore.domain.usecase.impl.GetUserFlavoursUseCaseImpl
 import com.sebastijanzindl.galore.domain.usecase.impl.GetUserProfileUseCaseImpl
@@ -14,6 +15,7 @@ import com.sebastijanzindl.galore.domain.usecase.impl.SignInGoogleUseCaseImpl
 import com.sebastijanzindl.galore.domain.usecase.impl.SignInUseCaseImpl
 import com.sebastijanzindl.galore.domain.usecase.impl.SignOutUseCaseImpl
 import com.sebastijanzindl.galore.domain.usecase.impl.SignUpUseCaseImpl
+import com.sebastijanzindl.galore.domain.usecase.impl.UpdateUserProfileUseCaseImpl
 import dagger.Binds
 import dagger.Module
 import dagger.hilt.InstallIn
@@ -43,4 +45,7 @@ abstract class UseCaseModule {
 
     @Binds
     abstract  fun bindGetUserProfileUseCase(impl: GetUserProfileUseCaseImpl): GetUserProfileUseCase
+
+    @Binds
+    abstract fun bindUpdateUserProfileUseCase(impl: UpdateUserProfileUseCaseImpl): UpdateUserProfileUseCase
 }

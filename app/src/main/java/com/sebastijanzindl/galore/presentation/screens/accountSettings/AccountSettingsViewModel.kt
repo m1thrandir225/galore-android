@@ -7,6 +7,7 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.sebastijanzindl.galore.domain.models.UserProfile
 import com.sebastijanzindl.galore.domain.usecase.GetUserProfileUseCase
+import com.sebastijanzindl.galore.domain.usecase.UpdateUserProfileUseCase
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asStateFlow
@@ -20,7 +21,8 @@ import javax.inject.Inject
 
 @HiltViewModel
 class AccountSettingsViewModel @Inject constructor(
-    private val getUserProfileUseCase: GetUserProfileUseCase
+    private val getUserProfileUseCase: GetUserProfileUseCase,
+    private val updateUserProfileUseCase: UpdateUserProfileUseCase
 ) : ViewModel() {
     private val _userProfile = MutableStateFlow<UserProfile?>(null)
     val userProfile = _userProfile.asStateFlow()
@@ -29,6 +31,20 @@ class AccountSettingsViewModel @Inject constructor(
     init {
         getProfile()
     }
+
+    fun updateProfile() {
+        val updatedProfile = _userProfile.value?.copy(fullName = fullName, email =  email)
+            ?: throw Exception("error while upading profile")
+        viewModelScope.launch {
+            val response = updateUserProfileUseCase.execute(
+                UpdateUserProfileUseCase.Input(
+                    updatedProfile
+                )
+            )
+            _userProfile.value = response.result
+        }
+    }
+
     private fun getProfile() {
         viewModelScope.launch {
             try {
@@ -50,10 +66,10 @@ class AccountSettingsViewModel @Inject constructor(
     }
 
     fun updateEmail(newEmail: String) {
-        _userProfile.value = userProfile.value?.copy(email = newEmail)
+        email = newEmail
     }
     fun updateFullName(newName: String) {
-        _userProfile.value = userProfile.value?.copy(fullName = newName)
+        fullName = newName
     }
 
     var email by mutableStateOf( "")

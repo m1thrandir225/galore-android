@@ -44,7 +44,6 @@ fun NavGraphBuilder.authNavGraph(
             },
         ) {
             WelcomeScreen(
-
                 navigateToRegister = {
                     navController.navigate(AppScreen.Auth.Register.route)
                 }
