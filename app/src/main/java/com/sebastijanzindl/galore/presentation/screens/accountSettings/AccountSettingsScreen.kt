@@ -1,5 +1,6 @@
 package com.sebastijanzindl.galore.presentation.screens.accountSettings
 
+import android.widget.Toast
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.interaction.MutableInteractionSource
 import androidx.compose.foundation.layout.Arrangement
@@ -24,6 +25,7 @@ import androidx.compose.material3.OutlinedTextFieldDefaults
 import androidx.compose.material3.Text
 import androidx.compose.material3.rememberDatePickerState
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.derivedStateOf
 import androidx.compose.runtime.getValue
@@ -33,6 +35,7 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.layout.ContentScale
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
@@ -48,6 +51,7 @@ fun AccountSettingScreen(
     modifier: Modifier = Modifier,
     viewModel: AccountSettingsViewModel = hiltViewModel(),
 ) {
+    val context = LocalContext.current
     val datePickerState = rememberDatePickerState()
     val dateDialogOpen = remember {
         mutableStateOf(false)
@@ -72,6 +76,14 @@ fun AccountSettingScreen(
            viewModel.updateBirthday(datePickerState.selectedDateMillis!!)
         }
         closeDateDialog()
+    }
+
+
+    /** Show toast **/
+    LaunchedEffect(Unit) {
+        viewModel.toastMessage.collect {message ->
+            Toast.makeText(context, message, Toast.LENGTH_SHORT).show()
+        }
     }
 
 

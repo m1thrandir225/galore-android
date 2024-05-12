@@ -9,7 +9,9 @@ import com.sebastijanzindl.galore.domain.models.UserProfile
 import com.sebastijanzindl.galore.domain.usecase.GetUserProfileUseCase
 import com.sebastijanzindl.galore.domain.usecase.UpdateUserProfileUseCase
 import dagger.hilt.android.lifecycle.HiltViewModel
+import kotlinx.coroutines.flow.MutableSharedFlow
 import kotlinx.coroutines.flow.MutableStateFlow
+import kotlinx.coroutines.flow.asSharedFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.launch
 import kotlinx.datetime.Instant
@@ -27,6 +29,15 @@ class AccountSettingsViewModel @Inject constructor(
     private val _userProfile = MutableStateFlow<UserProfile?>(null)
     val userProfile = _userProfile.asStateFlow()
 
+    private val _toastMessage = MutableSharedFlow<String>()
+    val toastMessage = _toastMessage.asSharedFlow()
+
+    fun sendToastMessage(message: String) {
+            viewModelScope.launch {
+                _toastMessage.emit(message)
+            }
+    }
+
     var isLoading by mutableStateOf(false)
     init {
         getProfile()
@@ -42,6 +53,7 @@ class AccountSettingsViewModel @Inject constructor(
                 )
             )
             _userProfile.value = response.result
+            sendToastMessage("Successfully updated profile!")
         }
     }
 
