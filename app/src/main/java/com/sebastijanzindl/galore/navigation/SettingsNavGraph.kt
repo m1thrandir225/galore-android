@@ -11,6 +11,7 @@ import androidx.navigation.NavGraphBuilder
 import androidx.navigation.compose.composable
 import androidx.navigation.navigation
 import com.sebastijanzindl.galore.presentation.screens.accountSettings.AccountSettingScreen
+import com.sebastijanzindl.galore.presentation.screens.passwordAndSecurity.PasswordAndSecurityScreen
 import com.sebastijanzindl.galore.presentation.screens.settings.SettingsOverviewScreen
 import com.sebastijanzindl.galore.presentation.viewmodels.ProfileSharedViewModel
 
@@ -53,17 +54,19 @@ fun NavGraphBuilder.settingsNavGraph(
                modifier = Modifier.padding(paddingValues),
            )
         }
-        
+        composable(
+            route = AppScreen.Settings.PasswordAndSecurity.route
+        ) {
+            PasswordAndSecurityScreen(
+                modifier = Modifier.padding(paddingValues)
+            )
+        }
         composable(
             route = AppScreen.Settings.NotificationSettings.route
         ) {
             Text(text = "Notificaiton Settings")
         }
         
-        composable(
-            route = AppScreen.Settings.PasswordAndSecurity.route
-        ) {
-            Text(text = "Password & Security")
-        }
+
     }
 }

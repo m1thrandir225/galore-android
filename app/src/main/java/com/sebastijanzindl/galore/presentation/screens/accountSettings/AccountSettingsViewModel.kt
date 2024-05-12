@@ -29,16 +29,27 @@ class AccountSettingsViewModel @Inject constructor(
     private val _userProfile = MutableStateFlow<UserProfile?>(null)
     val userProfile = _userProfile.asStateFlow()
 
+    var isLoading by mutableStateOf(false)
+    var updateButtonEnabled by mutableStateOf(false)
+        private set
+
+
     private val _toastMessage = MutableSharedFlow<String>()
     val toastMessage = _toastMessage.asSharedFlow()
 
-    fun sendToastMessage(message: String) {
+    var email by mutableStateOf( "")
+        private set
+    var fullName by mutableStateOf("")
+        private set
+    var birthday by mutableStateOf<String?>(null )
+        private set
+
+    private fun sendToastMessage(message: String) {
             viewModelScope.launch {
                 _toastMessage.emit(message)
             }
     }
 
-    var isLoading by mutableStateOf(false)
     init {
         getProfile()
     }
@@ -54,6 +65,7 @@ class AccountSettingsViewModel @Inject constructor(
             )
             _userProfile.value = response.result
             sendToastMessage("Successfully updated profile!")
+            updateButtonEnabled = false
         }
     }
 
@@ -78,20 +90,17 @@ class AccountSettingsViewModel @Inject constructor(
     }
 
     fun updateEmail(newEmail: String) {
+        updateButtonEnabled = userProfile.value?.email != newEmail
         email = newEmail
+
     }
     fun updateFullName(newName: String) {
+        updateButtonEnabled = userProfile.value?.fullName != newName
         fullName = newName
     }
 
-    var email by mutableStateOf( "")
-        private set
-    var fullName by mutableStateOf("")
-        private set
-    var birthday by mutableStateOf<String?>(null )
-        private set
 
-    fun updateBirthday ( milis: Long) {
+    fun updateBirthday (milis: Long) {
         birthday = Instant.fromEpochMilliseconds(milis)
             .toLocalDateTime(TimeZone.of(ZoneId.systemDefault().toString())).date.toString()
 

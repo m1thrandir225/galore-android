@@ -166,7 +166,7 @@ fun AccountSettingScreen(
             )
             Button(
                 modifier = Modifier.fillMaxWidth(),
-                enabled = true,
+                enabled = viewModel.updateButtonEnabled,
                 onClick = { viewModel.updateProfile() }
             ) {
                 Text(text = "Update profile")
