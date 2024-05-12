@@ -14,11 +14,12 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
+import androidx.hilt.navigation.compose.hiltViewModel
 
 @Composable
 fun PasswordAndSecurityScreen (
     modifier: Modifier = Modifier,
-    //viewModel: PasswordAndSecurityScreenViewModel = hiltViewModel()
+    viewModel: PasswordAndSecurityScreenViewModel = hiltViewModel()
 ) {
     Column (
         modifier = modifier
@@ -34,28 +35,35 @@ fun PasswordAndSecurityScreen (
         ) {
             OutlinedTextField(
                 modifier = Modifier.fillMaxWidth(),
-                value = "",
+                value = viewModel.currentPassword,
                 label = {
                         Text(text = "Current Password")
                 },
-                onValueChange = { nextValue ->  println(nextValue) }
+                onValueChange = { nextValue ->  viewModel.updateCurrentPassword(nextValue) }
             )
             OutlinedTextField(
                 modifier = Modifier.fillMaxWidth(),
-                value = "",
+                value = viewModel.newPassword,
                 label = {
                         Text(text = "New Password")
                 },
-                onValueChange = { nextValue ->  println(nextValue) }
+                onValueChange = { nextValue ->  viewModel.updateNewPassword(nextValue) }
             )
             OutlinedTextField(
                 modifier = Modifier.fillMaxWidth(),
-                value = "Confirm new password",
+                value =  viewModel.currentPassword,
                 label = {
                         Text(text = "Confirm new password")
                 },
-                onValueChange = { nextValue ->  println(nextValue) }
+                onValueChange = { nextValue ->  viewModel.updateCurrentPassword(nextValue) }
             )
+            Button(
+                modifier = Modifier.fillMaxWidth(),
+                enabled = viewModel.updatePasswordButtonEnabled,
+                onClick = { /*TODO*/ }
+            ) {
+                Text(text = "Change Password")
+            }
         }
         Button(
             modifier = Modifier.fillMaxWidth(),
