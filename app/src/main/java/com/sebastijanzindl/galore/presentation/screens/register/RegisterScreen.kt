@@ -7,7 +7,6 @@ import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.ExperimentalLayoutApi
-import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
@@ -48,7 +47,6 @@ import com.sebastijanzindl.galore.R
 import com.sebastijanzindl.galore.presentation.component.GoogleSignInButton
 import com.sebastijanzindl.galore.presentation.component.Logo
 import com.sebastijanzindl.galore.presentation.viewmodels.AuthSharedViewModel
-import com.sebastijanzindl.galore.presentation.viewmodels.ProfileSharedViewModel
 import com.sebastijanzindl.galore.ui.theme.GaloreTheme
 
 @OptIn(ExperimentalLayoutApi::class)
@@ -57,10 +55,8 @@ fun RegisterScreen(
     modifier: Modifier = Modifier,
     viewModel: RegisterScreenViewModel = hiltViewModel(),
     sharedViewModel: AuthSharedViewModel = hiltViewModel(),
-    profileSharedViewModel: ProfileSharedViewModel = hiltViewModel(),
     navigateToLogin: () -> Unit,
     navigateToOnboarding: () -> Unit,
-    paddingValues: PaddingValues
 ) {
     val composition by rememberLottieComposition(spec = LottieCompositionSpec.RawRes(R.raw.register_lottie))
     val scrollState = rememberScrollState()
@@ -77,8 +73,8 @@ fun RegisterScreen(
             .fillMaxSize()
             .verticalScroll(scrollState)
             .padding(
-                top = paddingValues.calculateTopPadding(),
-                bottom = paddingValues.calculateBottomPadding(),
+                top = 10.dp,
+                bottom = 10.dp,
                 start = 24.dp,
                 end = 24.dp
             )
@@ -256,6 +252,6 @@ fun RegisterScreen(
 @Composable
 private fun RegisterScreenPreview() {
     GaloreTheme {
-        RegisterScreen(navigateToLogin = {}, navigateToOnboarding = {}, paddingValues = PaddingValues())
+        RegisterScreen(navigateToLogin = {}, navigateToOnboarding = {})
     }
 }

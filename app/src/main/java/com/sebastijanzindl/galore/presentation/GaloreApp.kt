@@ -98,29 +98,20 @@ fun GaloreApp(
     val currentRoute = navBackStackEntry?.destination?.route;
 
     when(currentRoute) {
-        AppScreen.Main.Home.route -> {
-            bottomBarState.value = true
-            topBarState.value = true
-        }
-        AppScreen.Main.Search.route -> {
-            bottomBarState.value = true
-            topBarState.value = true
-        }
-
-        AppScreen.Main.Library.route -> {
-            bottomBarState.value = true
-            topBarState.value = true
-        }
+        AppScreen.Main.Home.route,
+        AppScreen.Main.Search.route,
+        AppScreen.Main.Library.route,
         AppScreen.Main.Generate.route -> {
             bottomBarState.value = true
             topBarState.value = true
         }
-
-        AppScreen.Settings.SettingsOverview.route -> {
+        AppScreen.Settings.SettingsOverview.route,
+        AppScreen.Settings.AccountSettings.route,
+        AppScreen.Settings.PasswordAndSecurity.route,
+        AppScreen.Settings.NotificationSettings.route -> {
             topBarState.value = true
             bottomBarState.value = false
         }
-
         else -> {
             bottomBarState.value = false
             topBarState.value = false
