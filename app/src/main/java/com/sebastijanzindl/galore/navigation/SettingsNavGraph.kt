@@ -4,13 +4,13 @@ import androidx.compose.animation.AnimatedContentTransitionScope
 import androidx.compose.animation.core.tween
 import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.padding
-import androidx.compose.material3.Text
 import androidx.compose.ui.Modifier
 import androidx.navigation.NavController
 import androidx.navigation.NavGraphBuilder
 import androidx.navigation.compose.composable
 import androidx.navigation.navigation
 import com.sebastijanzindl.galore.presentation.screens.accountSettings.AccountSettingScreen
+import com.sebastijanzindl.galore.presentation.screens.notifications.NotificationSettings
 import com.sebastijanzindl.galore.presentation.screens.passwordAndSecurity.PasswordAndSecurityScreen
 import com.sebastijanzindl.galore.presentation.screens.settings.SettingsOverviewScreen
 import com.sebastijanzindl.galore.presentation.viewmodels.ProfileSharedViewModel
@@ -44,7 +44,7 @@ fun NavGraphBuilder.settingsNavGraph(
                 modifier = Modifier.padding(paddingValues),
                 navigateToAccountSettings = navigateToAccountSettings,
                 navigateToPasswordsAndSecurity =  navigateToPasswordsAndSecurity,
-                navigateToNotifications = navigateToAccountSettings
+                navigateToNotifications =  navigateToNotifications
             )
         }
         composable(
@@ -64,7 +64,10 @@ fun NavGraphBuilder.settingsNavGraph(
         composable(
             route = AppScreen.Settings.NotificationSettings.route
         ) {
-            Text(text = "Notificaiton Settings")
+            NotificationSettings(
+                modifier = Modifier.padding(paddingValues)
+            )
+
         }
         
 

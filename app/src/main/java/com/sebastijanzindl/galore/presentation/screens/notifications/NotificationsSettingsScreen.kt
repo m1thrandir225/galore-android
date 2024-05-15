@@ -9,6 +9,10 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.material3.Switch
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
+import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.tooling.preview.Preview
@@ -26,10 +30,10 @@ fun NotificationSettings(
             .padding(horizontal = 24.dp, vertical = 10.dp),
         verticalArrangement = Arrangement.spacedBy(8.dp)
     ) {
-        ToggleItem(itemText = "Push Notifications", isChecked = true) {
+        ToggleItem(itemText = "Push Notifications") {
             println("ckecked");
         }
-        ToggleItem(itemText = "Email Notifications", isChecked = true) {
+        ToggleItem(itemText = "Email Notifications") {
             println("ckecked");
         }
     }
@@ -39,16 +43,24 @@ fun NotificationSettings(
 private fun ToggleItem(
     modifier: Modifier = Modifier,
     itemText: String,
-    isChecked: Boolean,
     onCheckedChange: ((Boolean)) -> Unit
 ) {
+    var isChecked by remember {
+        mutableStateOf(false);
+    }
+
+    fun updateIsChecked(value: Boolean) {
+        isChecked = value
+    }
     Row(
         modifier = modifier.fillMaxWidth(),
         horizontalArrangement = Arrangement.SpaceBetween,
         verticalAlignment = Alignment.CenterVertically
     ) {
         Text(text = itemText)
-        Switch(checked = isChecked, onCheckedChange = onCheckedChange)
+        Switch(checked = isChecked, onCheckedChange = {
+            updateIsChecked(!isChecked)
+        })
     }
 }
 
