@@ -7,6 +7,8 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.sebastijanzindl.galore.domain.usecase.DeleteUserUseCase
 import dagger.hilt.android.lifecycle.HiltViewModel
+import kotlinx.coroutines.flow.MutableSharedFlow
+import kotlinx.coroutines.flow.asSharedFlow
 import kotlinx.coroutines.launch
 import javax.inject.Inject
 
@@ -15,6 +17,9 @@ class PasswordAndSecurityScreenViewModel @Inject constructor(
    // private val updatePasswordUseCase: UpdatePasswordUseCase,
     private val deleteUserUseCase: DeleteUserUseCase,
 ) : ViewModel() {
+
+    private val _toastMessage = MutableSharedFlow<String>()
+    val toastMessage = _toastMessage.asSharedFlow()
     var currentPassword by mutableStateOf("")
         private set
     var newPassword by mutableStateOf("")
@@ -25,8 +30,9 @@ class PasswordAndSecurityScreenViewModel @Inject constructor(
     var updatePasswordButtonEnabled by mutableStateOf(false)
         private set
 
-    var errorMessage by mutableStateOf("")
-        private set
+    fun updatePasswordButtonState(value: Boolean) {
+        updatePasswordButtonEnabled = value
+    }
 
     fun updateCurrentPassword(value: String) {
         currentPassword = value
@@ -36,8 +42,14 @@ class PasswordAndSecurityScreenViewModel @Inject constructor(
         newPassword = value
     }
 
-    fun confirmNewPassword(value: String) {
+    fun updateConfirmNewPassword(value: String) {
         confirmNewPassword = value
+    }
+
+    private fun sendToastMessage(message: String) {
+        viewModelScope.launch {
+            _toastMessage.emit(message)
+        }
     }
 
     fun deleteAccount(successCallback: () -> Unit) {
@@ -45,13 +57,12 @@ class PasswordAndSecurityScreenViewModel @Inject constructor(
            val result =  deleteUserUseCase.execute(
                 DeleteUserUseCase.Input()
             )
-
             when(result) {
                 is DeleteUserUseCase.Output.Success -> {
                     successCallback()
                 }
                 else -> {
-                    errorMessage = "There was an error deleting your account"
+                    sendToastMessage("There was an error deleting your account");
                 }
             }
         }

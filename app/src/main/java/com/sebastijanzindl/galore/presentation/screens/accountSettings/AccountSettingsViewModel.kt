@@ -1,5 +1,6 @@
 package com.sebastijanzindl.galore.presentation.screens.accountSettings
 
+import androidx.compose.material3.SnackbarDuration
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.setValue
@@ -8,11 +9,11 @@ import androidx.lifecycle.viewModelScope
 import com.sebastijanzindl.galore.domain.models.UserProfile
 import com.sebastijanzindl.galore.domain.usecase.GetUserProfileUseCase
 import com.sebastijanzindl.galore.domain.usecase.UpdateUserProfileUseCase
+import com.sebastijanzindl.galore.presentation.component.SnackbarMessage
 import dagger.hilt.android.lifecycle.HiltViewModel
-import kotlinx.coroutines.flow.MutableSharedFlow
 import kotlinx.coroutines.flow.MutableStateFlow
-import kotlinx.coroutines.flow.asSharedFlow
 import kotlinx.coroutines.flow.asStateFlow
+import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
 import kotlinx.datetime.Instant
 import kotlinx.datetime.TimeZone
@@ -33,8 +34,8 @@ class AccountSettingsViewModel @Inject constructor(
     var updateButtonEnabled by mutableStateOf(false)
         private set
 
-    private val _toastMessage = MutableSharedFlow<String>()
-    val toastMessage = _toastMessage.asSharedFlow()
+    private val _toastMessage = MutableStateFlow<SnackbarMessage?>(null)
+    val toastMessage = _toastMessage.asStateFlow()
 
     var email by mutableStateOf( "")
         private set
@@ -43,15 +44,27 @@ class AccountSettingsViewModel @Inject constructor(
     var birthday by mutableStateOf<String?>(null )
         private set
 
-    private fun sendToastMessage(message: String) {
-            viewModelScope.launch {
-                _toastMessage.emit(message)
-            }
-    }
-
     init {
         getProfile()
     }
+    private fun sendToastMessage(message: String) {
+        val snackbarMessage = SnackbarMessage.from(
+            withDismissAction = false,
+            userMessage = com.sebastijanzindl.galore.presentation.component.UserMessage.from(message),
+            actionLabelMessage = null,
+            onSnackbarResult =  {},
+            duration = SnackbarDuration.Short
+
+        );
+        _toastMessage.update {
+            snackbarMessage
+        }
+    }
+
+    fun dismissToastMessage() {
+        _toastMessage.update { null }
+    }
+
 
     fun updateProfile() {
         val updatedProfile = _userProfile.value?.copy(fullName = fullName, email =  email)

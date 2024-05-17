@@ -1,6 +1,5 @@
 package com.sebastijanzindl.galore.presentation.screens.accountSettings
 
-import android.widget.Toast
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.interaction.MutableInteractionSource
 import androidx.compose.foundation.layout.Arrangement
@@ -25,7 +24,6 @@ import androidx.compose.material3.OutlinedTextFieldDefaults
 import androidx.compose.material3.Text
 import androidx.compose.material3.rememberDatePickerState
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.derivedStateOf
 import androidx.compose.runtime.getValue
@@ -43,6 +41,9 @@ import androidx.hilt.navigation.compose.hiltViewModel
 import coil.compose.AsyncImage
 import com.sebastijanzindl.galore.R
 import com.sebastijanzindl.galore.presentation.component.LoadingSpinner
+import com.sebastijanzindl.galore.presentation.component.LocalSnackbarController
+import com.sebastijanzindl.galore.presentation.component.SnackbarController
+import com.sebastijanzindl.galore.presentation.component.SnackbarMessageHandler
 import com.sebastijanzindl.galore.ui.theme.GaloreTheme
 
 @OptIn(ExperimentalMaterial3Api::class, ExperimentalLayoutApi::class)
@@ -50,9 +51,12 @@ import com.sebastijanzindl.galore.ui.theme.GaloreTheme
 fun AccountSettingScreen(
     modifier: Modifier = Modifier,
     viewModel: AccountSettingsViewModel = hiltViewModel(),
+    snackbarController: SnackbarController = LocalSnackbarController.current
 ) {
-    val context = LocalContext.current
-    val datePickerState = rememberDatePickerState()
+    val context = LocalContext.current;
+    val datePickerState = rememberDatePickerState();
+    val userProfile by viewModel.userProfile.collectAsState();
+    val toastMessage by viewModel.toastMessage.collectAsState();
     val dateDialogOpen = remember {
         mutableStateOf(false)
     }
@@ -60,7 +64,7 @@ fun AccountSettingScreen(
     val confirmEnabled = remember {
         derivedStateOf { datePickerState.selectedDateMillis != null }
     }
-    val userProfile by viewModel.userProfile.collectAsState();
+
     val openDateDialog = {
         dateDialogOpen.value = true
     }
@@ -78,13 +82,7 @@ fun AccountSettingScreen(
         closeDateDialog()
     }
 
-
-    /** Show toast **/
-    LaunchedEffect(Unit) {
-        viewModel.toastMessage.collect {message ->
-            Toast.makeText(context, message, Toast.LENGTH_SHORT).show()
-        }
-    }
+    SnackbarMessageHandler(snackbarMessage = toastMessage, onDismissSnackbar = { viewModel.dismissToastMessage() })
 
 
     if(viewModel.isLoading) {

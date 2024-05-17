@@ -11,6 +11,7 @@ import androidx.compose.material3.Icon
 import androidx.compose.material3.OutlinedTextField
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
@@ -22,6 +23,17 @@ fun PasswordAndSecurityScreen (
     viewModel: PasswordAndSecurityScreenViewModel = hiltViewModel(),
     navigateToAuth: () -> Unit,
 ) {
+    LaunchedEffect(viewModel.newPassword, viewModel.currentPassword, viewModel.confirmNewPassword) {
+        if(viewModel.currentPassword != viewModel.newPassword) {
+            if(viewModel.newPassword == viewModel.confirmNewPassword && viewModel.newPassword.isNotEmpty() && viewModel.confirmNewPassword.isNotEmpty()) {
+                viewModel.updatePasswordButtonState(true)
+            } else {
+                viewModel.updatePasswordButtonState(false)
+            }
+        } else {
+            viewModel.updatePasswordButtonState(false)
+        }
+    }
     Column (
         modifier = modifier
             .padding(horizontal = 24.dp),
@@ -52,11 +64,11 @@ fun PasswordAndSecurityScreen (
             )
             OutlinedTextField(
                 modifier = Modifier.fillMaxWidth(),
-                value =  viewModel.currentPassword,
+                value =  viewModel.confirmNewPassword,
                 label = {
                         Text(text = "Confirm new password")
                 },
-                onValueChange = { nextValue ->  viewModel.updateCurrentPassword(nextValue) }
+                onValueChange = { nextValue ->  viewModel.updateConfirmNewPassword(nextValue) }
             )
             Button(
                 modifier = Modifier.fillMaxWidth(),

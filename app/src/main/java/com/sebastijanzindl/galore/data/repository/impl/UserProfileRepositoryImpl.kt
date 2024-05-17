@@ -28,6 +28,12 @@ class UserProfileRepositoryImpl @Inject constructor(
     }
 
     override suspend fun deleteUserProfile(): Boolean {
+        /**
+         * 1. await auth plugin intialization
+         * 2. get the response from the edge-function "delete-account"
+         * 3. if the response status code is in the range 200 -> 299 clear the session and return true
+         * 4. if the response status code is not in the range return false
+         */
         auth.awaitInitialization()
         val response =  functions.invoke("delete-account")
         if(response.status.value in  200..299) {
