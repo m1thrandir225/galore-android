@@ -19,7 +19,8 @@ import androidx.hilt.navigation.compose.hiltViewModel
 @Composable
 fun PasswordAndSecurityScreen (
     modifier: Modifier = Modifier,
-    viewModel: PasswordAndSecurityScreenViewModel = hiltViewModel()
+    viewModel: PasswordAndSecurityScreenViewModel = hiltViewModel(),
+    navigateToAuth: () -> Unit,
 ) {
     Column (
         modifier = modifier
@@ -67,7 +68,11 @@ fun PasswordAndSecurityScreen (
         }
         Button(
             modifier = Modifier.fillMaxWidth(),
-            onClick = { /*TODO*/ },
+            onClick = {
+                viewModel.deleteAccount(
+                    successCallback = navigateToAuth
+                )
+            },
         ) {
             Icon(Icons.Default.Delete, contentDescription = "Delete Icon")
             Text(text = "Delete Account")

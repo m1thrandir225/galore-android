@@ -120,6 +120,7 @@ dependencies {
     implementation ("io.github.jan-tennert.supabase:gotrue-kt:$supabaseVersion")
     implementation("io.github.jan-tennert.supabase:coil-integration:$supabaseVersion")
     implementation("io.github.jan-tennert.supabase:compose-auth:$supabaseVersion")
+    implementation("io.github.jan-tennert.supabase:functions-kt:$supabaseVersion")
     implementation ("io.ktor:ktor-client-android:$ktorVersion")
     implementation ("io.ktor:ktor-client-core:$ktorVersion")
     implementation ("io.ktor:ktor-utils:$ktorVersion")

@@ -17,6 +17,12 @@ data class UserProfile(
     @SerialName("avatar_url")
     val avatarUrl: String,
 
+    @SerialName("email_notifications")
+    val emailNotifications: Boolean,
+
+    @SerialName("push_notifications")
+    val pushNotifications: Boolean,
+
     @SerialName("updated_at")
     val updatedAt: String,
 

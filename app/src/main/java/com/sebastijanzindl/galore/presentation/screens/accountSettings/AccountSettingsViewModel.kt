@@ -33,7 +33,6 @@ class AccountSettingsViewModel @Inject constructor(
     var updateButtonEnabled by mutableStateOf(false)
         private set
 
-
     private val _toastMessage = MutableSharedFlow<String>()
     val toastMessage = _toastMessage.asSharedFlow()
 

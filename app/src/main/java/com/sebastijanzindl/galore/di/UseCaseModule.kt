@@ -1,5 +1,6 @@
 package com.sebastijanzindl.galore.di
 
+import com.sebastijanzindl.galore.domain.usecase.DeleteUserUseCase
 import com.sebastijanzindl.galore.domain.usecase.GetAllFlavoursUseCase
 import com.sebastijanzindl.galore.domain.usecase.GetUserFlavoursUseCase
 import com.sebastijanzindl.galore.domain.usecase.GetUserProfileUseCase
@@ -8,6 +9,7 @@ import com.sebastijanzindl.galore.domain.usecase.SignInUseCase
 import com.sebastijanzindl.galore.domain.usecase.SignOutUseCase
 import com.sebastijanzindl.galore.domain.usecase.SignUpUseCase
 import com.sebastijanzindl.galore.domain.usecase.UpdateUserProfileUseCase
+import com.sebastijanzindl.galore.domain.usecase.impl.DeleteUserUseCaseImpl
 import com.sebastijanzindl.galore.domain.usecase.impl.GetAllFlavoursUseCaseImpl
 import com.sebastijanzindl.galore.domain.usecase.impl.GetUserFlavoursUseCaseImpl
 import com.sebastijanzindl.galore.domain.usecase.impl.GetUserProfileUseCaseImpl
@@ -48,4 +50,7 @@ abstract class UseCaseModule {
 
     @Binds
     abstract fun bindUpdateUserProfileUseCase(impl: UpdateUserProfileUseCaseImpl): UpdateUserProfileUseCase
+
+    @Binds
+    abstract fun bindDeleteUserUseCase(impl: DeleteUserUseCaseImpl): DeleteUserUseCase
 }

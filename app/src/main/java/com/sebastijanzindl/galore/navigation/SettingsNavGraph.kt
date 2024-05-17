@@ -58,7 +58,14 @@ fun NavGraphBuilder.settingsNavGraph(
             route = AppScreen.Settings.PasswordAndSecurity.route
         ) {
             PasswordAndSecurityScreen(
-                modifier = Modifier.padding(paddingValues)
+                modifier = Modifier.padding(paddingValues),
+                navigateToAuth = {
+                    navController.navigate(AppScreen.Auth.route) {
+                        popUpTo(AppScreen.Main.route) {
+                            inclusive = true;
+                        }
+                    }
+                }
             )
         }
         composable(
