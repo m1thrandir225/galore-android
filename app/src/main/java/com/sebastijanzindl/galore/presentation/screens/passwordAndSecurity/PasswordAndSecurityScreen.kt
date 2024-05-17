@@ -12,10 +12,13 @@ import androidx.compose.material3.OutlinedTextField
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
+import androidx.compose.runtime.collectAsState
+import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
+import com.sebastijanzindl.galore.presentation.component.SnackbarMessageHandler
 
 @Composable
 fun PasswordAndSecurityScreen (
@@ -23,6 +26,10 @@ fun PasswordAndSecurityScreen (
     viewModel: PasswordAndSecurityScreenViewModel = hiltViewModel(),
     navigateToAuth: () -> Unit,
 ) {
+    val toastMessage by viewModel.toastMessage.collectAsState();
+
+    SnackbarMessageHandler(snackbarMessage = toastMessage, onDismissSnackbar = { viewModel.dismissToastMessage() })
+
     LaunchedEffect(viewModel.newPassword, viewModel.currentPassword, viewModel.confirmNewPassword) {
         if(viewModel.currentPassword != viewModel.newPassword) {
             if(viewModel.newPassword == viewModel.confirmNewPassword && viewModel.newPassword.isNotEmpty() && viewModel.confirmNewPassword.isNotEmpty()) {

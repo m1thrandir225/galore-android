@@ -41,8 +41,6 @@ import androidx.hilt.navigation.compose.hiltViewModel
 import coil.compose.AsyncImage
 import com.sebastijanzindl.galore.R
 import com.sebastijanzindl.galore.presentation.component.LoadingSpinner
-import com.sebastijanzindl.galore.presentation.component.LocalSnackbarController
-import com.sebastijanzindl.galore.presentation.component.SnackbarController
 import com.sebastijanzindl.galore.presentation.component.SnackbarMessageHandler
 import com.sebastijanzindl.galore.ui.theme.GaloreTheme
 
@@ -51,7 +49,6 @@ import com.sebastijanzindl.galore.ui.theme.GaloreTheme
 fun AccountSettingScreen(
     modifier: Modifier = Modifier,
     viewModel: AccountSettingsViewModel = hiltViewModel(),
-    snackbarController: SnackbarController = LocalSnackbarController.current
 ) {
     val context = LocalContext.current;
     val datePickerState = rememberDatePickerState();
@@ -82,8 +79,8 @@ fun AccountSettingScreen(
         closeDateDialog()
     }
 
-    SnackbarMessageHandler(snackbarMessage = toastMessage, onDismissSnackbar = { viewModel.dismissToastMessage() })
 
+    SnackbarMessageHandler(snackbarMessage = toastMessage, onDismissSnackbar = { viewModel.dismissToastMessage() })
 
     if(viewModel.isLoading) {
         LoadingSpinner(shouldShow = viewModel.isLoading)
