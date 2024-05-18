@@ -24,16 +24,17 @@ import androidx.compose.material3.OutlinedTextFieldDefaults
 import androidx.compose.material3.Text
 import androidx.compose.material3.rememberDatePickerState
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.derivedStateOf
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
+import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.layout.ContentScale
-import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
@@ -42,18 +43,27 @@ import coil.compose.AsyncImage
 import com.sebastijanzindl.galore.R
 import com.sebastijanzindl.galore.presentation.component.LoadingSpinner
 import com.sebastijanzindl.galore.presentation.component.SnackbarMessageHandler
+import com.sebastijanzindl.galore.presentation.viewmodels.ProfileSharedViewModel
 import com.sebastijanzindl.galore.ui.theme.GaloreTheme
+import kotlinx.datetime.Instant
+import kotlinx.datetime.TimeZone
+import kotlinx.datetime.toLocalDateTime
+import java.time.ZoneId
 
 @OptIn(ExperimentalMaterial3Api::class, ExperimentalLayoutApi::class)
 @Composable
 fun AccountSettingScreen(
     modifier: Modifier = Modifier,
     viewModel: AccountSettingsViewModel = hiltViewModel(),
+    profileSharedViewModel: ProfileSharedViewModel = hiltViewModel(),
 ) {
-    val context = LocalContext.current;
-    val datePickerState = rememberDatePickerState();
-    val userProfile by viewModel.userProfile.collectAsState();
-    val toastMessage by viewModel.toastMessage.collectAsState();
+    val scrollState = rememberScrollState()
+    val datePickerState = rememberDatePickerState()
+
+    val userProfile by profileSharedViewModel.userProfile.collectAsState()
+    val toastMessage by viewModel.toastMessage.collectAsState()
+    val isLoading by profileSharedViewModel.isLoading.collectAsState()
+
     val dateDialogOpen = remember {
         mutableStateOf(false)
     }
@@ -62,11 +72,21 @@ fun AccountSettingScreen(
         derivedStateOf { datePickerState.selectedDateMillis != null }
     }
 
+    var email by remember {
+        mutableStateOf("")
+    }
+
+    var fullName by remember {
+        mutableStateOf("")
+    }
+
+    var birthday by remember {
+        mutableStateOf("")
+    }
+
     val openDateDialog = {
         dateDialogOpen.value = true
     }
-
-    val scrollState = rememberScrollState();
 
     val closeDateDialog = {
         dateDialogOpen.value = false
@@ -74,16 +94,30 @@ fun AccountSettingScreen(
 
     val updateBirthday = {
         if(datePickerState.selectedDateMillis != null) {
-           viewModel.updateBirthday(datePickerState.selectedDateMillis!!)
+            birthday = Instant.fromEpochMilliseconds(datePickerState.selectedDateMillis!!)
+                .toLocalDateTime(TimeZone.of(ZoneId.systemDefault().toString())).date.toString()
         }
         closeDateDialog()
+    }
+
+    LaunchedEffect(userProfile?.email, userProfile?.fullName) {
+        userProfile?.email.let {
+            if (it != null) {
+                email = it
+            }
+        }
+        userProfile?.fullName.let {
+            if (it != null) {
+                fullName = it
+            }
+        }
     }
 
 
     SnackbarMessageHandler(snackbarMessage = toastMessage, onDismissSnackbar = { viewModel.dismissToastMessage() })
 
-    if(viewModel.isLoading) {
-        LoadingSpinner(shouldShow = viewModel.isLoading)
+    if(isLoading) {
+        LoadingSpinner(shouldShow = isLoading)
     } else {
         Column (
             modifier = modifier
@@ -121,19 +155,19 @@ fun AccountSettingScreen(
             }
             OutlinedTextField(
                 modifier = Modifier.fillMaxWidth(),
-                value = viewModel.email,
+                value = email,
                 label = {
                     Text(text = "Email")
                 },
-                onValueChange = { newValue -> viewModel.updateEmail(newValue)}
+                onValueChange = { newValue -> email = newValue }
             )
             OutlinedTextField(
                 modifier = Modifier.fillMaxWidth(),
-                value = viewModel.fullName,
+                value = fullName,
                 label = {
                     Text(text = "Full Name")
                 },
-                onValueChange = { newValue ->  viewModel.updateFullName(newValue)}
+                onValueChange = { newValue -> fullName = newValue }
             )
             OutlinedTextField(
                 modifier = Modifier
@@ -142,7 +176,7 @@ fun AccountSettingScreen(
                         openDateDialog()
                     },
                 enabled = false,
-                value = viewModel.birthday ?: "",
+                value = birthday,
                 colors = OutlinedTextFieldDefaults.colors(
                     disabledTextColor = MaterialTheme.colorScheme.onSurface,
                     disabledBorderColor = MaterialTheme.colorScheme.outline,
@@ -161,8 +195,22 @@ fun AccountSettingScreen(
             )
             Button(
                 modifier = Modifier.fillMaxWidth(),
-                enabled = viewModel.updateButtonEnabled,
-                onClick = { viewModel.updateProfile() }
+                enabled = email != userProfile?.email || fullName != userProfile?.fullName,
+                onClick = {
+                    val updatedProfile = userProfile?.copy(
+                        email = email,
+                        fullName = fullName,
+                    )
+                    if(updatedProfile != null) {
+                        profileSharedViewModel.updateProfile(
+                            updatedProfile,
+                            successCallback = {
+                                viewModel.sendToastMessage("Successfully updated your profile!")
+                            }
+                        )
+                    }
+
+                }
             ) {
                 Text(text = "Update profile")
             }

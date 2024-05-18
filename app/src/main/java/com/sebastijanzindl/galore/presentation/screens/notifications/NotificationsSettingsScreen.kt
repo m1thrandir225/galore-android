@@ -1,6 +1,8 @@
 package com.sebastijanzindl.galore.presentation.screens.notifications
 
-import android.util.Log
+import android.os.Build
+import androidx.activity.compose.rememberLauncherForActivityResult
+import androidx.activity.result.contract.ActivityResultContracts
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
@@ -11,6 +13,7 @@ import androidx.compose.material3.Switch
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.collectAsState
+import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
@@ -27,7 +30,40 @@ fun NotificationSettings(
     modifier: Modifier  = Modifier,
     profileSharedViewModel: ProfileSharedViewModel = hiltViewModel()
 ) {
-    val profile = profileSharedViewModel.userProfile.collectAsState();
+    val profile by profileSharedViewModel.userProfile.collectAsState();
+
+    fun updatePushNotifications (value: Boolean) {
+        val updatedProfile = profile?.copy(
+            pushNotifications = value
+        )
+        if(updatedProfile != null) {
+            profileSharedViewModel.updateProfile(
+                updatedProfile,
+                successCallback = {
+                }
+            )
+        }
+    }
+
+    fun updateEmailNotifications(value: Boolean) {
+        val updatedProfile = profile?.copy(
+             emailNotifications = value
+        )
+        if(updatedProfile != null) {
+            profileSharedViewModel.updateProfile(
+                updatedProfile,
+                successCallback = {
+                }
+            )
+        }
+    }
+
+    val openPermissionLauncher = rememberLauncherForActivityResult(
+        contract = ActivityResultContracts.RequestPermission(),
+        onResult = {
+            updatePushNotifications(it)
+        }
+    )
 
     Column (
         modifier = modifier
@@ -36,31 +72,15 @@ fun NotificationSettings(
         verticalArrangement = Arrangement.spacedBy(8.dp)
     ) {
         ToggleItem(itemText = "Push Notifications", onChange = {
-            val updatedProfile = profile.value?.copy(
-                pushNotifications = it
-            )
-            if(updatedProfile != null) {
-                profileSharedViewModel.updateProfile(
-                    updatedProfile,
-                    successCallback = {
-                    }
-                )
-            }
-
-        }, value = profile.value?.pushNotifications!!)
+            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) {
+                openPermissionLauncher.launch(android.Manifest.permission.POST_NOTIFICATIONS)
+            } else {
+                updatePushNotifications(it)
+            } }, value = profile?.pushNotifications!!)
 
         ToggleItem(itemText = "Email Notifications", onChange = {
-            val updatedProfile = profile.value?.copy(
-                emailNotifications = it
-            )
-            if (updatedProfile != null) {
-                Log.i("Updated Profile", updatedProfile.toString());
-                profileSharedViewModel.updateProfile(
-                    updatedProfile,
-                    successCallback = {}
-                )
-            }
-        }, value = profile.value?.emailNotifications!!)
+            updateEmailNotifications(it)
+        }, value = profile?.emailNotifications!!)
     }
 }
 @Composable
