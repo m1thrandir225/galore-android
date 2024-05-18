@@ -11,9 +11,11 @@ import androidx.compose.material3.Icon
 import androidx.compose.material3.OutlinedTextField
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
+import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
@@ -30,17 +32,18 @@ fun PasswordAndSecurityScreen (
 
     SnackbarMessageHandler(snackbarMessage = toastMessage, onDismissSnackbar = { viewModel.dismissToastMessage() })
 
-    LaunchedEffect(viewModel.newPassword, viewModel.currentPassword, viewModel.confirmNewPassword) {
-        if(viewModel.currentPassword != viewModel.newPassword) {
-            if(viewModel.newPassword == viewModel.confirmNewPassword && viewModel.newPassword.isNotEmpty() && viewModel.confirmNewPassword.isNotEmpty()) {
-                viewModel.updatePasswordButtonState(true)
-            } else {
-                viewModel.updatePasswordButtonState(false)
-            }
-        } else {
-            viewModel.updatePasswordButtonState(false)
-        }
+    var currentPassword by remember {
+        mutableStateOf("")
     }
+
+    var newPassword by remember {
+        mutableStateOf("")
+    }
+
+    var confirmNewPassword by remember {
+        mutableStateOf("")
+    }
+
     Column (
         modifier = modifier
             .padding(horizontal = 24.dp),
@@ -55,31 +58,31 @@ fun PasswordAndSecurityScreen (
         ) {
             OutlinedTextField(
                 modifier = Modifier.fillMaxWidth(),
-                value = viewModel.currentPassword,
+                value = currentPassword,
                 label = {
                         Text(text = "Current Password")
                 },
-                onValueChange = { nextValue ->  viewModel.updateCurrentPassword(nextValue) }
+                onValueChange = { newValue ->  currentPassword = newValue }
             )
             OutlinedTextField(
                 modifier = Modifier.fillMaxWidth(),
-                value = viewModel.newPassword,
+                value = newPassword,
                 label = {
                         Text(text = "New Password")
                 },
-                onValueChange = { nextValue ->  viewModel.updateNewPassword(nextValue) }
+                onValueChange = { newValue ->  newPassword = newValue }
             )
             OutlinedTextField(
                 modifier = Modifier.fillMaxWidth(),
-                value =  viewModel.confirmNewPassword,
+                value =  confirmNewPassword,
                 label = {
                         Text(text = "Confirm new password")
                 },
-                onValueChange = { nextValue ->  viewModel.updateConfirmNewPassword(nextValue) }
+                onValueChange = { newValue -> confirmNewPassword = newValue }
             )
             Button(
                 modifier = Modifier.fillMaxWidth(),
-                enabled = viewModel.updatePasswordButtonEnabled,
+                enabled = currentPassword != newPassword && newPassword == confirmNewPassword,
                 onClick = { /*TODO*/ }
             ) {
                 Text(text = "Change Password")
