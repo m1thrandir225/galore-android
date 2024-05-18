@@ -43,12 +43,14 @@ class UserProfileRepositoryImpl @Inject constructor(
             return false;
         }
     }
-
     override suspend fun updateUserProfile(updatedProfile: UserProfile): UserProfile {
         return postgrest.from("profiles")
             .update({
                 set("full_name", updatedProfile.fullName)
                 set("email", updatedProfile.email)
+                set("push_notifications", updatedProfile.pushNotifications)
+                set("email_notifications", updatedProfile.emailNotifications)
+                set("avatar_url", updatedProfile.avatarUrl)
             }) {
                 select()
                 filter {

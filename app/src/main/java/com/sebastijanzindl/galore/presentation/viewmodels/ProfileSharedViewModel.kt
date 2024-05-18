@@ -5,6 +5,7 @@ import androidx.lifecycle.viewModelScope
 import com.sebastijanzindl.galore.domain.models.UserProfile
 import com.sebastijanzindl.galore.domain.usecase.GetUserProfileUseCase
 import com.sebastijanzindl.galore.domain.usecase.SignOutUseCase
+import com.sebastijanzindl.galore.domain.usecase.UpdateUserProfileUseCase
 import dagger.hilt.android.lifecycle.HiltViewModel
 import io.github.jan.supabase.gotrue.Auth
 import io.github.jan.supabase.gotrue.user.UserSession
@@ -18,6 +19,7 @@ import javax.inject.Inject
 class ProfileSharedViewModel @Inject constructor(
     private val getUserProfileUseCase: GetUserProfileUseCase,
     private val signOutUseCase: SignOutUseCase,
+    private val updateUserProfileUseCase: UpdateUserProfileUseCase,
     private val auth: Auth
 ) : ViewModel() {
     private val _userProfile = MutableStateFlow<UserProfile?>(null)
@@ -49,6 +51,19 @@ class ProfileSharedViewModel @Inject constructor(
             }
         }
     }
+    fun updateProfile(updatedProfile: UserProfile, successCallback: (() -> Unit)?) {
+        viewModelScope.launch {
+            val response = updateUserProfileUseCase.execute(
+                UpdateUserProfileUseCase.Input(
+                    updatedProfile
+                )
+            )
+            _userProfile.value = response.result
+            if (successCallback != null) {
+                successCallback()
+            }
+        }
+    }
 
     fun logout(successCallback: () -> Unit) {
         clearUserProfile()
@@ -63,7 +78,5 @@ class ProfileSharedViewModel @Inject constructor(
                 }
             }
         }
-
-
     }
 }

@@ -50,6 +50,7 @@ fun NavGraphBuilder.settingsNavGraph(
         composable(
             route = AppScreen.Settings.AccountSettings.route
         ) {
+            val profileViewModel = it.sharedViewModel<ProfileSharedViewModel>(navController = navController)
            AccountSettingScreen(
                modifier = Modifier.padding(paddingValues),
            )
@@ -57,6 +58,7 @@ fun NavGraphBuilder.settingsNavGraph(
         composable(
             route = AppScreen.Settings.PasswordAndSecurity.route
         ) {
+            val profileViewModel = it.sharedViewModel<ProfileSharedViewModel>(navController = navController)
             PasswordAndSecurityScreen(
                 modifier = Modifier.padding(paddingValues),
                 navigateToAuth = {
@@ -71,8 +73,10 @@ fun NavGraphBuilder.settingsNavGraph(
         composable(
             route = AppScreen.Settings.NotificationSettings.route
         ) {
+            val profileViewModel = it.sharedViewModel<ProfileSharedViewModel>(navController = navController)
             NotificationSettings(
-                modifier = Modifier.padding(paddingValues)
+                modifier = Modifier.padding(paddingValues),
+                profileSharedViewModel = profileViewModel,
             )
 
         }

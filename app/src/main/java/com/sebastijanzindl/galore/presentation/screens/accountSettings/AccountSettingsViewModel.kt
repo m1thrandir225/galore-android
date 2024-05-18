@@ -67,18 +67,23 @@ class AccountSettingsViewModel @Inject constructor(
 
 
     fun updateProfile() {
-        val updatedProfile = _userProfile.value?.copy(fullName = fullName, email =  email)
-            ?: throw Exception("error while upading profile")
-        viewModelScope.launch {
-            val response = updateUserProfileUseCase.execute(
-                UpdateUserProfileUseCase.Input(
-                    updatedProfile
+        try {
+            val updatedProfile = _userProfile.value?.copy(fullName = fullName, email =  email)
+                ?: throw Exception("error while upading profile")
+            viewModelScope.launch {
+                val response = updateUserProfileUseCase.execute(
+                    UpdateUserProfileUseCase.Input(
+                        updatedProfile
+                    )
                 )
-            )
-            _userProfile.value = response.result
-            sendToastMessage("Successfully updated profile!")
-            updateButtonEnabled = false
+                _userProfile.value = response.result
+                sendToastMessage("Successfully updated profile!")
+                updateButtonEnabled = false
+            }
+        } catch (e: Exception) {
+            sendToastMessage(e.message ?: "A problem occurred")
         }
+
     }
 
     private fun getProfile() {
