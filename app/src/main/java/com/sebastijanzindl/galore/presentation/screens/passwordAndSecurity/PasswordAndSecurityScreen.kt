@@ -21,16 +21,18 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import com.sebastijanzindl.galore.presentation.component.SnackbarMessageHandler
+import com.sebastijanzindl.galore.presentation.viewmodels.ProfileSharedViewModel
 
 @Composable
 fun PasswordAndSecurityScreen (
     modifier: Modifier = Modifier,
+    profileSharedViewModel: ProfileSharedViewModel = hiltViewModel(),
     viewModel: PasswordAndSecurityScreenViewModel = hiltViewModel(),
     navigateToAuth: () -> Unit,
 ) {
-    val toastMessage by viewModel.toastMessage.collectAsState();
 
-    SnackbarMessageHandler(snackbarMessage = toastMessage, onDismissSnackbar = { viewModel.dismissToastMessage() })
+    val toastMessage by viewModel.toastMessage.collectAsState();
+    val profile by profileSharedViewModel.userProfile.collectAsState();
 
     var currentPassword by remember {
         mutableStateOf("")
@@ -43,6 +45,12 @@ fun PasswordAndSecurityScreen (
     var confirmNewPassword by remember {
         mutableStateOf("")
     }
+
+    SnackbarMessageHandler(
+        snackbarMessage = toastMessage,
+        onDismissSnackbar = { viewModel.dismissToastMessage() }
+    )
+
 
     Column (
         modifier = modifier
@@ -82,8 +90,12 @@ fun PasswordAndSecurityScreen (
             )
             Button(
                 modifier = Modifier.fillMaxWidth(),
-                enabled = currentPassword != newPassword && newPassword == confirmNewPassword,
-                onClick = { /*TODO*/ }
+                enabled = currentPassword != newPassword
+                        && confirmNewPassword.isNotEmpty()
+                        && currentPassword.isNotEmpty()
+                        && newPassword.isNotEmpty()
+                        && newPassword == confirmNewPassword ,
+                onClick = { viewModel.sendPasswordResetRequest(email = profile?.email!!) }
             ) {
                 Text(text = "Change Password")
             }

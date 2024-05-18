@@ -1,14 +1,12 @@
 package com.sebastijanzindl.galore.presentation.screens.passwordAndSecurity
 
 import androidx.compose.material3.SnackbarDuration
-import androidx.compose.runtime.getValue
-import androidx.compose.runtime.mutableStateOf
-import androidx.compose.runtime.setValue
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.sebastijanzindl.galore.domain.usecase.DeleteUserUseCase
 import com.sebastijanzindl.galore.presentation.component.SnackbarMessage
 import dagger.hilt.android.lifecycle.HiltViewModel
+import io.github.jan.supabase.gotrue.Auth
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.update
@@ -19,35 +17,10 @@ import javax.inject.Inject
 class PasswordAndSecurityScreenViewModel @Inject constructor(
    // private val updatePasswordUseCase: UpdatePasswordUseCase,
     private val deleteUserUseCase: DeleteUserUseCase,
+    private val auth: Auth,
 ) : ViewModel() {
     private val _toastMessage = MutableStateFlow<SnackbarMessage?>(null)
     val toastMessage = _toastMessage.asStateFlow()
-    var currentPassword by mutableStateOf("")
-        private set
-    var newPassword by mutableStateOf("")
-        private set
-    var confirmNewPassword by mutableStateOf("")
-        private set
-
-    var updatePasswordButtonEnabled by mutableStateOf(false)
-        private set
-
-    fun updatePasswordButtonState(value: Boolean) {
-        updatePasswordButtonEnabled = value
-    }
-
-    fun updateCurrentPassword(value: String) {
-        currentPassword = value
-    }
-
-    fun updateNewPassword(value: String) {
-        newPassword = value
-    }
-
-    fun updateConfirmNewPassword(value: String) {
-        confirmNewPassword = value
-    }
-
     private fun sendToastMessage(message: String) {
         val snackbarMessage = SnackbarMessage.from(
             withDismissAction = false,
@@ -63,6 +36,13 @@ class PasswordAndSecurityScreenViewModel @Inject constructor(
 
     fun dismissToastMessage() {
         _toastMessage.update { null }
+    }
+
+    fun sendPasswordResetRequest(email: String) {
+        viewModelScope.launch {
+            auth.resetPasswordForEmail(email = email, );
+            sendToastMessage("Password request sent!")
+        }
     }
 
     fun deleteAccount(successCallback: () -> Unit) {

@@ -61,6 +61,7 @@ fun NavGraphBuilder.settingsNavGraph(
             val profileViewModel = it.sharedViewModel<ProfileSharedViewModel>(navController = navController)
             PasswordAndSecurityScreen(
                 modifier = Modifier.padding(paddingValues),
+                profileSharedViewModel = profileViewModel,
                 navigateToAuth = {
                     navController.navigate(AppScreen.Auth.route) {
                         popUpTo(AppScreen.Main.route) {
