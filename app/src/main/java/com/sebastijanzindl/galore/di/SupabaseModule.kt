@@ -31,7 +31,10 @@ object SupabaseModule {
             supabaseKey = BuildConfig.SUPABASE_ANON_KEY
         ) {
             install(Postgrest)
-            install(Auth)
+            install(Auth) {
+                scheme = "supabase"
+                host = "galore.app"
+            }
             install(Functions)
             install(ComposeAuth) {
                 googleNativeLogin(
