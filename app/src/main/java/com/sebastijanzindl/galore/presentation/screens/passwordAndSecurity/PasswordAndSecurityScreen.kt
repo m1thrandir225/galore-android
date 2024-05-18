@@ -11,16 +11,47 @@ import androidx.compose.material3.Icon
 import androidx.compose.material3.OutlinedTextField
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.collectAsState
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
+import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
+import com.sebastijanzindl.galore.presentation.component.SnackbarMessageHandler
+import com.sebastijanzindl.galore.presentation.viewmodels.ProfileSharedViewModel
 
 @Composable
 fun PasswordAndSecurityScreen (
     modifier: Modifier = Modifier,
-    viewModel: PasswordAndSecurityScreenViewModel = hiltViewModel()
+    profileSharedViewModel: ProfileSharedViewModel = hiltViewModel(),
+    viewModel: PasswordAndSecurityScreenViewModel = hiltViewModel(),
+    navigateToAuth: () -> Unit,
 ) {
+
+    val toastMessage by viewModel.toastMessage.collectAsState();
+    val profile by profileSharedViewModel.userProfile.collectAsState();
+
+    var currentPassword by remember {
+        mutableStateOf("")
+    }
+
+    var newPassword by remember {
+        mutableStateOf("")
+    }
+
+    var confirmNewPassword by remember {
+        mutableStateOf("")
+    }
+
+    SnackbarMessageHandler(
+        snackbarMessage = toastMessage,
+        onDismissSnackbar = { viewModel.dismissToastMessage() }
+    )
+
+
     Column (
         modifier = modifier
             .padding(horizontal = 24.dp),
@@ -35,39 +66,47 @@ fun PasswordAndSecurityScreen (
         ) {
             OutlinedTextField(
                 modifier = Modifier.fillMaxWidth(),
-                value = viewModel.currentPassword,
+                value = currentPassword,
                 label = {
                         Text(text = "Current Password")
                 },
-                onValueChange = { nextValue ->  viewModel.updateCurrentPassword(nextValue) }
+                onValueChange = { newValue ->  currentPassword = newValue }
             )
             OutlinedTextField(
                 modifier = Modifier.fillMaxWidth(),
-                value = viewModel.newPassword,
+                value = newPassword,
                 label = {
                         Text(text = "New Password")
                 },
-                onValueChange = { nextValue ->  viewModel.updateNewPassword(nextValue) }
+                onValueChange = { newValue ->  newPassword = newValue }
             )
             OutlinedTextField(
                 modifier = Modifier.fillMaxWidth(),
-                value =  viewModel.currentPassword,
+                value =  confirmNewPassword,
                 label = {
                         Text(text = "Confirm new password")
                 },
-                onValueChange = { nextValue ->  viewModel.updateCurrentPassword(nextValue) }
+                onValueChange = { newValue -> confirmNewPassword = newValue }
             )
             Button(
                 modifier = Modifier.fillMaxWidth(),
-                enabled = viewModel.updatePasswordButtonEnabled,
-                onClick = { /*TODO*/ }
+                enabled = currentPassword != newPassword
+                        && confirmNewPassword.isNotEmpty()
+                        && currentPassword.isNotEmpty()
+                        && newPassword.isNotEmpty()
+                        && newPassword == confirmNewPassword ,
+                onClick = { viewModel.sendPasswordResetRequest(email = profile?.email!!) }
             ) {
                 Text(text = "Change Password")
             }
         }
         Button(
             modifier = Modifier.fillMaxWidth(),
-            onClick = { /*TODO*/ },
+            onClick = {
+                viewModel.deleteAccount(
+                    successCallback = navigateToAuth
+                )
+            },
         ) {
             Icon(Icons.Default.Delete, contentDescription = "Delete Icon")
             Text(text = "Delete Account")

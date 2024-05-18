@@ -36,6 +36,7 @@ import com.sebastijanzindl.galore.presentation.component.BottomNavigationBar
 import com.sebastijanzindl.galore.presentation.component.ButtonComposableWrapper
 import com.sebastijanzindl.galore.presentation.component.MenuItem
 import com.sebastijanzindl.galore.presentation.component.ProfileBottomSheet
+import com.sebastijanzindl.galore.presentation.component.ProvideSnackbarController
 import com.sebastijanzindl.galore.presentation.component.TopAppBar
 import com.sebastijanzindl.galore.presentation.viewmodels.MainViewModel
 import com.sebastijanzindl.galore.presentation.viewmodels.ProfileSharedViewModel
@@ -117,68 +118,70 @@ fun GaloreApp(
             topBarState.value = false
         }
     }
-    Scaffold (
-        modifier = Modifier.fillMaxSize(),
-        snackbarHost = {
-            SnackbarHost(hostState = snackBarHostState)
-        },
-        topBar = {
-            if(topBarState.value) {
-                TopAppBar(
-                    scrollBehaviour = scrollBehaviour,
-                    openBottomSheet = openBottomSheet,
-                    navigateBack = {
-                        navController.popBackStack()
-                    },
-                    currentRoute = currentRoute
-                )
-            }
-        },
-        bottomBar = {
-            if(bottomBarState.value) {
-                BottomNavigationBar(navController = navController)
-            }
-        }
-    ){paddingValues ->
-        RootNavHost(
-            navHostController = navController,
-            paddingValues
-        )
-        /**
-         * The Application top bar bottom sheet component
-         */
-        if(showBottomSheet) {
-            ProfileBottomSheet(
-                userProfile = userProfile,
-                sheetState = sheetState,
-                onDismissRequest = dismissBottomSheet,
-                refetchProfile = { userProfileViewModel.fetchUserProfile() },
-                modifier = Modifier
-            ) {
-                MenuItem(
-                    buttonIcon = ButtonComposableWrapper {  Icon(Icons.Default.Settings, "") },
-                    title = "Settings") {
-                    coroutineScope.launch {
-                        sheetState.hide()
-                        showBottomSheet = false
-                        navController.navigate(AppScreen.Settings.route)
-                    }
+    ProvideSnackbarController(snackbarHostState = snackBarHostState, coroutineScope = coroutineScope) {
+        Scaffold (
+            modifier = Modifier.fillMaxSize(),
+            snackbarHost = {
+                SnackbarHost(hostState = snackBarHostState)
+            },
+            topBar = {
+                if(topBarState.value) {
+                    TopAppBar(
+                        scrollBehaviour = scrollBehaviour,
+                        openBottomSheet = openBottomSheet,
+                        navigateBack = {
+                            navController.popBackStack()
+                        },
+                        currentRoute = currentRoute
+                    )
                 }
-                MenuItem(buttonIcon = ButtonComposableWrapper {  Icon(painterResource(id = R.drawable.question_mark_24px), "") }, title = "Help") {
-                    coroutineScope.launch {
-                        sheetState.hide()
-                        showBottomSheet = false
-                        navController.navigate(AppScreen.Settings.route)
-                    }
+            },
+            bottomBar = {
+                if(bottomBarState.value) {
+                    BottomNavigationBar(navController = navController)
                 }
-                MenuItem(buttonIcon = ButtonComposableWrapper {  Icon(painterResource(id = R.drawable.logout_24px), "") }, title = "Logout") {
-                    coroutineScope.launch {
-                        sheetState.hide()
-                        showBottomSheet = false
-                        userProfileViewModel.logout {
-                            navController.navigate(AppScreen.Auth.Welcome.route) {
-                                popUpTo(AppScreen.Main.route) {
-                                    inclusive = true
+            }
+        ){paddingValues ->
+            RootNavHost(
+                navHostController = navController,
+                paddingValues
+            )
+            /**
+             * The Application top bar bottom sheet component
+             */
+            if(showBottomSheet) {
+                ProfileBottomSheet(
+                    userProfile = userProfile,
+                    sheetState = sheetState,
+                    onDismissRequest = dismissBottomSheet,
+                    refetchProfile = { userProfileViewModel.fetchUserProfile() },
+                    modifier = Modifier
+                ) {
+                    MenuItem(
+                        buttonIcon = ButtonComposableWrapper {  Icon(Icons.Default.Settings, "") },
+                        title = "Settings") {
+                        coroutineScope.launch {
+                            sheetState.hide()
+                            showBottomSheet = false
+                            navController.navigate(AppScreen.Settings.route)
+                        }
+                    }
+                    MenuItem(buttonIcon = ButtonComposableWrapper {  Icon(painterResource(id = R.drawable.question_mark_24px), "") }, title = "Help") {
+                        coroutineScope.launch {
+                            sheetState.hide()
+                            showBottomSheet = false
+                            navController.navigate(AppScreen.Settings.route)
+                        }
+                    }
+                    MenuItem(buttonIcon = ButtonComposableWrapper {  Icon(painterResource(id = R.drawable.logout_24px), "") }, title = "Logout") {
+                        coroutineScope.launch {
+                            sheetState.hide()
+                            showBottomSheet = false
+                            userProfileViewModel.logout {
+                                navController.navigate(AppScreen.Auth.Welcome.route) {
+                                    popUpTo(AppScreen.Main.route) {
+                                        inclusive = true
+                                    }
                                 }
                             }
                         }
@@ -187,5 +190,6 @@ fun GaloreApp(
             }
         }
     }
+
 }
 

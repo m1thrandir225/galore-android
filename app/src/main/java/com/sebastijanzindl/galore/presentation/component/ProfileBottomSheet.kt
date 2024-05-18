@@ -145,7 +145,7 @@ private fun BottomSheetPreview() {
     val onDismissRequest = {
         sheetOpen = false
     }
-    val userProfile = UserProfile("1", avatarUrl = "", email = "sebastijan.zindl@protonmail.com", fullName = "Sebastijan Zindl", updatedAt = "")
+    val userProfile = UserProfile("1", avatarUrl = "", email = "sebastijan.zindl@protonmail.com", fullName = "Sebastijan Zindl", updatedAt = "", pushNotifications = false, emailNotifications = false)
     GaloreTheme {
         ProfileBottomSheet(
             modifier = Modifier,
