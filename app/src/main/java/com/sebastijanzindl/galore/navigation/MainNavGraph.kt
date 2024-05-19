@@ -3,6 +3,7 @@ package com.sebastijanzindl.galore.navigation
 import androidx.compose.animation.AnimatedContentTransitionScope
 import androidx.compose.animation.core.tween
 import androidx.compose.foundation.layout.PaddingValues
+import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.padding
 import androidx.compose.ui.Modifier
 import androidx.navigation.NavController
@@ -43,7 +44,7 @@ fun NavGraphBuilder.mainNavGraph(
             popExitTransition = { slideOutOfContainer(AnimatedContentTransitionScope.SlideDirection.End, tween(700)) }
         ) {
             SearchScreen(
-               modifier = Modifier.padding(paddingValues)
+               modifier = Modifier.padding(paddingValues).fillMaxSize()
             )
         }
 
@@ -55,7 +56,7 @@ fun NavGraphBuilder.mainNavGraph(
             popExitTransition = { slideOutOfContainer(AnimatedContentTransitionScope.SlideDirection.End, tween(700)) }
         ) {
             GenerateCocktailScreen(
-                modifier = Modifier.padding(paddingValues)
+                modifier = Modifier.padding(paddingValues).fillMaxSize()
             )
         }
         composable(
@@ -66,7 +67,7 @@ fun NavGraphBuilder.mainNavGraph(
             popExitTransition = { slideOutOfContainer(AnimatedContentTransitionScope.SlideDirection.End, tween(700)) }
         ) {
             FavouriteCocktailsScreen(
-                modifier = Modifier.padding(paddingValues)
+                modifier = Modifier.padding(paddingValues).fillMaxSize()
             )
 
         }

@@ -96,7 +96,7 @@ dependencies {
     //Retrofit
     val retrofitVer = "2.9.0"
     implementation("com.squareup.retrofit2:retrofit:$retrofitVer")
-
+    implementation ("com.squareup.retrofit2:converter-kotlinx-serialization:2.11.0")
 
     //Dagger-Hilt
     val hiltVer = "2.50"
@@ -120,6 +120,7 @@ dependencies {
     implementation ("io.github.jan-tennert.supabase:gotrue-kt:$supabaseVersion")
     implementation("io.github.jan-tennert.supabase:coil-integration:$supabaseVersion")
     implementation("io.github.jan-tennert.supabase:compose-auth:$supabaseVersion")
+    implementation("io.github.jan-tennert.supabase:functions-kt:$supabaseVersion")
     implementation ("io.ktor:ktor-client-android:$ktorVersion")
     implementation ("io.ktor:ktor-client-core:$ktorVersion")
     implementation ("io.ktor:ktor-utils:$ktorVersion")
