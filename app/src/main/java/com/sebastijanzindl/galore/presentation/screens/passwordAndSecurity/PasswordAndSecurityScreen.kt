@@ -20,6 +20,7 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
+import com.sebastijanzindl.galore.presentation.component.LoadingSpinner
 import com.sebastijanzindl.galore.presentation.component.SnackbarMessageHandler
 import com.sebastijanzindl.galore.presentation.viewmodels.ProfileSharedViewModel
 
@@ -33,10 +34,7 @@ fun PasswordAndSecurityScreen (
 
     val toastMessage by viewModel.toastMessage.collectAsState();
     val profile by profileSharedViewModel.userProfile.collectAsState();
-
-    var currentPassword by remember {
-        mutableStateOf("")
-    }
+    val isLoading by profileSharedViewModel.isLoading.collectAsState();
 
     var newPassword by remember {
         mutableStateOf("")
@@ -51,65 +49,66 @@ fun PasswordAndSecurityScreen (
         onDismissSnackbar = { viewModel.dismissToastMessage() }
     )
 
-
-    Column (
-        modifier = modifier
-            .padding(horizontal = 24.dp),
-        verticalArrangement = Arrangement.spacedBy(48.dp),
-        horizontalAlignment = Alignment.CenterHorizontally
-    ) {
-        Column (
-            modifier = Modifier,
-            verticalArrangement = Arrangement.spacedBy(32.dp),
+    if(isLoading) {
+        LoadingSpinner(shouldShow = isLoading)
+    } else {
+        Column(
+            modifier = modifier
+                .padding(horizontal = 24.dp),
+            verticalArrangement = Arrangement.spacedBy(48.dp),
             horizontalAlignment = Alignment.CenterHorizontally
-
         ) {
-            OutlinedTextField(
-                modifier = Modifier.fillMaxWidth(),
-                value = currentPassword,
-                label = {
-                        Text(text = "Current Password")
-                },
-                onValueChange = { newValue ->  currentPassword = newValue }
-            )
-            OutlinedTextField(
-                modifier = Modifier.fillMaxWidth(),
-                value = newPassword,
-                label = {
+            Column(
+                modifier = Modifier,
+                verticalArrangement = Arrangement.spacedBy(32.dp),
+                horizontalAlignment = Alignment.CenterHorizontally
+
+            ) {
+                OutlinedTextField(
+                    modifier = Modifier.fillMaxWidth(),
+                    value = newPassword,
+                    label = {
                         Text(text = "New Password")
-                },
-                onValueChange = { newValue ->  newPassword = newValue }
-            )
-            OutlinedTextField(
-                modifier = Modifier.fillMaxWidth(),
-                value =  confirmNewPassword,
-                label = {
+                    },
+                    onValueChange = { newValue -> newPassword = newValue }
+                )
+                OutlinedTextField(
+                    modifier = Modifier.fillMaxWidth(),
+                    value = confirmNewPassword,
+                    label = {
                         Text(text = "Confirm new password")
-                },
-                onValueChange = { newValue -> confirmNewPassword = newValue }
-            )
+                    },
+                    onValueChange = { newValue -> confirmNewPassword = newValue }
+                )
+                Button(
+                    modifier = Modifier.fillMaxWidth(),
+                    enabled = confirmNewPassword.isNotEmpty()
+                            && newPassword.isNotEmpty()
+                            && newPassword == confirmNewPassword,
+                    onClick = {
+                        viewModel.resetPassword(
+                            newPassword = confirmNewPassword,
+                            successCallback = {
+                                profileSharedViewModel.logout(
+                                    successCallback = navigateToAuth
+                                )
+                            })
+                    }
+                ) {
+                    Text(text = "Change Password")
+                }
+            }
             Button(
                 modifier = Modifier.fillMaxWidth(),
-                enabled = currentPassword != newPassword
-                        && confirmNewPassword.isNotEmpty()
-                        && currentPassword.isNotEmpty()
-                        && newPassword.isNotEmpty()
-                        && newPassword == confirmNewPassword ,
-                onClick = { viewModel.sendPasswordResetRequest(email = profile?.email!!) }
+                onClick = {
+                    viewModel.deleteAccount(
+                        successCallback = navigateToAuth
+                    )
+                },
             ) {
-                Text(text = "Change Password")
+                Icon(Icons.Default.Delete, contentDescription = "Delete Icon")
+                Text(text = "Delete Account")
             }
-        }
-        Button(
-            modifier = Modifier.fillMaxWidth(),
-            onClick = {
-                viewModel.deleteAccount(
-                    successCallback = navigateToAuth
-                )
-            },
-        ) {
-            Icon(Icons.Default.Delete, contentDescription = "Delete Icon")
-            Text(text = "Delete Account")
         }
     }
 }

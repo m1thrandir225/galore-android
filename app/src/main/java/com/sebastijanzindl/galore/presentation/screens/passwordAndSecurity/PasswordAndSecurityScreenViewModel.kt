@@ -38,10 +38,13 @@ class PasswordAndSecurityScreenViewModel @Inject constructor(
         _toastMessage.update { null }
     }
 
-    fun sendPasswordResetRequest(email: String) {
+    fun resetPassword(newPassword: String, successCallback: () -> Unit) {
         viewModelScope.launch {
-            auth.resetPasswordForEmail(email = email, );
-            sendToastMessage("Password request sent!")
+            auth.updateUser {
+                password = newPassword
+            }
+            successCallback()
+            sendToastMessage("Your password was reset, please login again!")
         }
     }
 
