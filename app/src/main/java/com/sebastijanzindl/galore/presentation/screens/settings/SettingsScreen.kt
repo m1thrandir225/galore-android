@@ -27,6 +27,8 @@ fun SettingsOverviewScreen(
     navigateToAccountSettings: () -> Unit,
     navigateToPasswordsAndSecurity: () -> Unit,
     navigateToNotifications: () -> Unit,
+    navigateToPrivacyPolicy: () -> Unit,
+    navigateToTermsAndConditions: () -> Unit,
 ) {
     Column (
         horizontalAlignment = Alignment.Start,
@@ -72,12 +74,8 @@ fun SettingsOverviewScreen(
                 horizontalAlignment = Alignment.CenterHorizontally,
                 verticalArrangement = Arrangement.spacedBy(16.dp)
             ) {
-                MenuItem(buttonIcon = null, title = "Terms & Conditions") {
-                    println("hello world")
-                }
-                MenuItem(buttonIcon = null, title = "Privacy Policy") {
-                    println("hello world")
-                }
+                MenuItem(buttonIcon = null, title = "Terms & Conditions", action = navigateToTermsAndConditions)
+                MenuItem(buttonIcon = null, title = "Privacy Policy", action = navigateToPrivacyPolicy)
             }
         }
 
@@ -104,6 +102,8 @@ private fun SettingsScreenPreview() {
             navigateToAccountSettings = {},
             navigateToNotifications = {},
             navigateToPasswordsAndSecurity = {},
+            navigateToPrivacyPolicy = {},
+            navigateToTermsAndConditions = {}
         )
     }
 }

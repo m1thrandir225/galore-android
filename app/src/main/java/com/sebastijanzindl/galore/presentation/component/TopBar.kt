@@ -56,6 +56,20 @@ fun TopAppBar(
                 title = stringResource(id = AppScreen.Settings.PasswordAndSecurity.titleResourceID)
             )
         }
+        AppScreen.Settings.PrivacyPolicy.route -> {
+            SettingsGraphContent(
+                scrollBehaviour = scrollBehaviour,
+                navigateBack = navigateBack,
+                title = stringResource(id = AppScreen.Settings.PrivacyPolicy.titleResourceID)
+            )
+        }
+        AppScreen.Settings.TermsAndConditions.route -> {
+            SettingsGraphContent(
+                scrollBehaviour = scrollBehaviour,
+                navigateBack = navigateBack,
+                title = stringResource(id = AppScreen.Settings.TermsAndConditions.titleResourceID)
+            )
+        }
         AppScreen.Main.Home.route,
         AppScreen.Main.Search.route,
         AppScreen.Main.Library.route,
