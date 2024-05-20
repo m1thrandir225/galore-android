@@ -10,6 +10,8 @@ import io.github.jan.supabase.compose.auth.ComposeAuth
 import io.github.jan.supabase.compose.auth.composeAuth
 import io.github.jan.supabase.compose.auth.googleNativeLogin
 import io.github.jan.supabase.createSupabaseClient
+import io.github.jan.supabase.functions.Functions
+import io.github.jan.supabase.functions.functions
 import io.github.jan.supabase.gotrue.Auth
 import io.github.jan.supabase.gotrue.auth
 import io.github.jan.supabase.postgrest.Postgrest
@@ -29,7 +31,11 @@ object SupabaseModule {
             supabaseKey = BuildConfig.SUPABASE_ANON_KEY
         ) {
             install(Postgrest)
-            install(Auth)
+            install(Auth) {
+                scheme = "supabase"
+                host = "galore.app"
+            }
+            install(Functions)
             install(ComposeAuth) {
                 googleNativeLogin(
                     serverClientId = "243120785119-dq5o2t3v582v57raap8k3od9p8r8lbob.apps.googleusercontent.com"
@@ -53,6 +59,12 @@ object SupabaseModule {
     @Singleton
     fun provideSupabaseStorage(client: SupabaseClient): Storage {
         return client.storage
+    }
+
+    @Provides
+    @Singleton
+    fun provideSupabaseEdgeFunctions(client: SupabaseClient): Functions {
+        return client.functions
     }
 
     @Provides

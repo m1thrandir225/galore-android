@@ -35,6 +35,10 @@ fun RootNavHost(
             navController = navHostController,
             paddingValues = paddingValues
         )
+        settingsNavGraph(
+            navController =  navHostController,
+            paddingValues = paddingValues
+        )
         composable(route = AppScreen.SplashScreen.route) {
             SplashScreen(
                 navigateToMain = {
@@ -55,3 +59,4 @@ fun RootNavHost(
         }
     }
 }
+

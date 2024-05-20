@@ -34,17 +34,20 @@ import com.sebastijanzindl.galore.navigation.AppScreen
 import com.sebastijanzindl.galore.navigation.RootNavHost
 import com.sebastijanzindl.galore.presentation.component.BottomNavigationBar
 import com.sebastijanzindl.galore.presentation.component.ButtonComposableWrapper
-import com.sebastijanzindl.galore.presentation.component.HomeTopAppBar
 import com.sebastijanzindl.galore.presentation.component.MenuItem
 import com.sebastijanzindl.galore.presentation.component.ProfileBottomSheet
+import com.sebastijanzindl.galore.presentation.component.ProvideSnackbarController
+import com.sebastijanzindl.galore.presentation.component.TopAppBar
 import com.sebastijanzindl.galore.presentation.viewmodels.MainViewModel
+import com.sebastijanzindl.galore.presentation.viewmodels.ProfileSharedViewModel
 import kotlinx.coroutines.launch
 
 @OptIn(ExperimentalMaterial3Api::class)
 @RequiresApi(Build.VERSION_CODES.TIRAMISU)
 @Composable
 fun GaloreApp(
-    viewModel: MainViewModel = hiltViewModel()
+    viewModel: MainViewModel = hiltViewModel(),
+    userProfileViewModel: ProfileSharedViewModel = hiltViewModel()
 ) {
     val navController = rememberNavController()
 
@@ -75,17 +78,16 @@ fun GaloreApp(
     val topBarState = rememberSaveable {
         mutableStateOf(true)
     }
-
     var showBottomSheet by remember {
-        mutableStateOf(false);
+        mutableStateOf(false)
     }
 
-    val sheetState = rememberModalBottomSheetState(skipPartiallyExpanded = true);
+    val sheetState = rememberModalBottomSheetState(skipPartiallyExpanded = true)
 
-    val userProfile by viewModel.userProfile.collectAsState()
+    val userProfile by userProfileViewModel.userProfile.collectAsState()
 
     val openBottomSheet = {
-        showBottomSheet= true;
+        showBottomSheet= true
     }
 
     val dismissBottomSheet = {
@@ -94,86 +96,102 @@ fun GaloreApp(
 
     val scrollBehaviour = TopAppBarDefaults.enterAlwaysScrollBehavior()
 
+    val currentRoute = navBackStackEntry?.destination?.route;
 
-    when(navBackStackEntry?.destination?.route) {
-        AppScreen.Main.Home.route -> {
-            bottomBarState.value = true
-            topBarState.value = true
-        }
-        AppScreen.Main.Search.route -> {
-            bottomBarState.value = true
-            topBarState.value = true
-        }
-
-        AppScreen.Main.Library.route -> {
-            bottomBarState.value = true
-            topBarState.value = true
-        }
+    when(currentRoute) {
+        AppScreen.Main.Home.route,
+        AppScreen.Main.Search.route,
+        AppScreen.Main.Library.route,
         AppScreen.Main.Generate.route -> {
             bottomBarState.value = true
             topBarState.value = true
         }
-
+        AppScreen.Settings.SettingsOverview.route,
+        AppScreen.Settings.AccountSettings.route,
+        AppScreen.Settings.PasswordAndSecurity.route,
+        AppScreen.Settings.NotificationSettings.route,
+        AppScreen.Settings.PrivacyPolicy.route,
+        AppScreen.Settings.TermsAndConditions.route -> {
+            topBarState.value = true
+            bottomBarState.value = false
+        }
         else -> {
             bottomBarState.value = false
             topBarState.value = false
         }
     }
-
-    Scaffold (
-        modifier = Modifier.fillMaxSize(),
-        snackbarHost = {
-                       SnackbarHost(hostState = snackBarHostState)
-        },
-        topBar = {
-            if(topBarState.value) {
-                HomeTopAppBar(scrollBehaviour = scrollBehaviour, openBottomSheet = openBottomSheet)
-            }
-        },
-        bottomBar = {
-            if(bottomBarState.value) {
-                BottomNavigationBar(navController = navController)
-            }
-        }
-    ){paddingValues ->
-        RootNavHost(
-            navHostController = navController,
-            paddingValues
-        )
-        if(showBottomSheet) {
-            ProfileBottomSheet(
-                userProfile = userProfile,
-                sheetState = sheetState,
-                onDismissRequest = dismissBottomSheet,
-                modifier = Modifier
-            ) {
-                MenuItem(
-                    buttonIcon = ButtonComposableWrapper {  Icon(Icons.Default.Settings, "") },
-                    title = "Settings") {
-                    coroutineScope.launch {
-                        sheetState.hide()
-                    }
+    ProvideSnackbarController(snackbarHostState = snackBarHostState, coroutineScope = coroutineScope) {
+        Scaffold (
+            modifier = Modifier.fillMaxSize(),
+            snackbarHost = {
+                SnackbarHost(hostState = snackBarHostState)
+            },
+            topBar = {
+                if(topBarState.value) {
+                    TopAppBar(
+                        scrollBehaviour = scrollBehaviour,
+                        openBottomSheet = openBottomSheet,
+                        navigateBack = {
+                            navController.popBackStack()
+                        },
+                        currentRoute = currentRoute
+                    )
                 }
-                MenuItem(buttonIcon = ButtonComposableWrapper {  Icon(painterResource(id = R.drawable.question_mark_24px), "") }, title = "Help") {
-                    coroutineScope.launch {
-                        sheetState.hide()
-                    }
-
+            },
+            bottomBar = {
+                if(bottomBarState.value) {
+                    BottomNavigationBar(navController = navController)
                 }
-                MenuItem(buttonIcon = ButtonComposableWrapper {  Icon(painterResource(id = R.drawable.logout_24px), "") }, title = "Logout") {
-                    coroutineScope.launch {
-                        sheetState.hide();
+            }
+        ){paddingValues ->
+            RootNavHost(
+                navHostController = navController,
+                paddingValues
+            )
+            /**
+             * The Application top bar bottom sheet component
+             */
+            if(showBottomSheet) {
+                ProfileBottomSheet(
+                    userProfile = userProfile,
+                    sheetState = sheetState,
+                    onDismissRequest = dismissBottomSheet,
+                    refetchProfile = { userProfileViewModel.fetchUserProfile() },
+                    modifier = Modifier
+                ) {
+                    MenuItem(
+                        buttonIcon = ButtonComposableWrapper {  Icon(Icons.Default.Settings, "") },
+                        title = "Settings") {
+                        coroutineScope.launch {
+                            sheetState.hide()
+                            showBottomSheet = false
+                            navController.navigate(AppScreen.Settings.route)
+                        }
                     }
-                    viewModel.logout {
-                        navController.navigate(AppScreen.Auth.Welcome.route) {
-                            popUpTo(AppScreen.Main.route) {
-                                inclusive = true;
+                    MenuItem(buttonIcon = ButtonComposableWrapper {  Icon(painterResource(id = R.drawable.question_mark_24px), "") }, title = "Help") {
+                        coroutineScope.launch {
+                            sheetState.hide()
+                            showBottomSheet = false
+                            navController.navigate(AppScreen.Settings.route)
+                        }
+                    }
+                    MenuItem(buttonIcon = ButtonComposableWrapper {  Icon(painterResource(id = R.drawable.logout_24px), "") }, title = "Logout") {
+                        coroutineScope.launch {
+                            sheetState.hide()
+                            showBottomSheet = false
+                            userProfileViewModel.logout {
+                                navController.navigate(AppScreen.Auth.Welcome.route) {
+                                    popUpTo(AppScreen.Main.route) {
+                                        inclusive = true
+                                    }
+                                }
                             }
                         }
-                    };
+                    }
                 }
             }
         }
     }
+
 }
 

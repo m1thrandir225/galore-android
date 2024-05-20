@@ -7,7 +7,6 @@ import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.ExperimentalLayoutApi
-import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
@@ -55,14 +54,17 @@ import com.sebastijanzindl.galore.ui.theme.GaloreTheme
 fun RegisterScreen(
     modifier: Modifier = Modifier,
     viewModel: RegisterScreenViewModel = hiltViewModel(),
-    sharedViewModel: AuthSharedViewModel = hiltViewModel<AuthSharedViewModel>(),
+    sharedViewModel: AuthSharedViewModel = hiltViewModel(),
     navigateToLogin: () -> Unit,
     navigateToOnboarding: () -> Unit,
-    paddingValues: PaddingValues
 ) {
     val composition by rememberLottieComposition(spec = LottieCompositionSpec.RawRes(R.raw.register_lottie))
     val scrollState = rememberScrollState()
     val focusManager = LocalFocusManager.current
+
+    val registerUser = {
+        navigateToOnboarding()
+    }
 
     Column(
         verticalArrangement = Arrangement.SpaceAround,
@@ -71,8 +73,8 @@ fun RegisterScreen(
             .fillMaxSize()
             .verticalScroll(scrollState)
             .padding(
-                top = paddingValues.calculateTopPadding(),
-                bottom = paddingValues.calculateBottomPadding(),
+                top = 10.dp,
+                bottom = 10.dp,
                 start = 24.dp,
                 end = 24.dp
             )
@@ -165,10 +167,13 @@ fun RegisterScreen(
                     Text("Password")
                 },
                 visualTransformation = PasswordVisualTransformation(),
-                keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Password, imeAction = ImeAction.Done),
+                keyboardOptions = KeyboardOptions(
+                    keyboardType = KeyboardType.Password,
+                    imeAction = ImeAction.Done
+                ),
                 keyboardActions = KeyboardActions(
                     onDone = {
-                        viewModel.registerUser(navigateToOnboarding)
+                        viewModel.registerUser(successCallback = registerUser)
                     }
                 ),
                 trailingIcon = {
@@ -184,9 +189,8 @@ fun RegisterScreen(
                 isError = viewModel.hasPasswordError
             )
         }
-
         Button(
-            onClick = { viewModel.registerUser(navigateToOnboarding) },
+            onClick = { viewModel.registerUser(successCallback = registerUser) },
             modifier = Modifier
                 .padding(vertical = 12.dp)
                 .fillMaxWidth()
@@ -240,16 +244,14 @@ fun RegisterScreen(
             )
         }
 
-        GoogleSignInButton(viewModel = sharedViewModel, onSuccessCallback = navigateToOnboarding)
+        GoogleSignInButton(viewModel = sharedViewModel, onSuccessCallback = registerUser)
     }
-
 }
-
 
 @Preview(apiLevel = 33)
 @Composable
 private fun RegisterScreenPreview() {
     GaloreTheme {
-        RegisterScreen(navigateToLogin = {}, viewModel = hiltViewModel<RegisterScreenViewModel>(), navigateToOnboarding = {}, paddingValues = PaddingValues())
+        RegisterScreen(navigateToLogin = {}, navigateToOnboarding = {})
     }
 }

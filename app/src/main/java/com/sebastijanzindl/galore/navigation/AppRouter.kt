@@ -40,11 +40,14 @@ private object  Routes {
     /**
      * Settings Graph Routes
      */
-
+    const val SETTINGS = "settings"
     const val SETTINGS_OVERVIEW = "settings-overview"
     const val ACCOUNT_SETTINGS = "account-settings"
     const val PASSWORD_SECURITY = "password-and-security"
     const val NOTIFICATION_SETTINGS = "notification-settings"
+
+    const val PRIVACY_POLICY = "privacy-policy"
+    const val TERMS_AND_CONDITIONS = "terms-and-conditions"
 }
 
 private object ArgParams {
@@ -52,11 +55,17 @@ private object ArgParams {
     fun toPath(param: String) = "{${param}}"
 }
 
-sealed class TopLevelDestination (
+sealed class BottomBarDesination (
     val route: String,
     val title:  String,
     @DrawableRes val selectedIconResource: Int,
     @DrawableRes val unselectedIconResource: Int,
+    val navArguments: List<NamedNavArgument> = emptyList()
+)
+
+sealed class StackDestination (
+    val route: String,
+    val titleResourceID: Int,
     val navArguments: List<NamedNavArgument> = emptyList()
 )
 
@@ -69,25 +78,25 @@ sealed class AppScreen(val route: String, val navArguments: List<NamedNavArgumen
         object Register : AppScreen(Routes.REGISTER)
     }
     object Main: AppScreen(Routes.MAIN) {
-        object Home : TopLevelDestination(
+        object Home : BottomBarDesination(
             route = Routes.HOME,
             title = "Home",
             selectedIconResource = R.drawable.home_24,
             unselectedIconResource = R.drawable.home_filled
         )
-        object Search : TopLevelDestination(
+        object Search : BottomBarDesination(
             route = Routes.SEARCH,
             title = "Search",
             selectedIconResource = R.drawable.search_24,
             unselectedIconResource = R.drawable.search_24,
         )
-        object Generate : TopLevelDestination(
+        object Generate : BottomBarDesination(
             route = Routes.GENERATE,
             title = "Generate",
             selectedIconResource = R.drawable.sparkles_filled,
             unselectedIconResource = R.drawable.sparkles,
         )
-        object Library : TopLevelDestination(
+        object Library : BottomBarDesination(
             route = Routes.LIBRARY,
             title = "Library",
             selectedIconResource = R.drawable.book_filled,
@@ -99,13 +108,35 @@ sealed class AppScreen(val route: String, val navArguments: List<NamedNavArgumen
             }
         ));
     }
+    object Settings : AppScreen(Routes.SETTINGS) {
 
-    object Settings : AppScreen(Routes.SETTINGS_OVERVIEW) {
-        object AccountSettings : AppScreen(Routes.ACCOUNT_SETTINGS)
+        object SettingsOverview: StackDestination(
+            route = Routes.SETTINGS_OVERVIEW,
+            titleResourceID = R.string.settings_overview_title
+        )
+        object AccountSettings : StackDestination(
+            route = Routes.ACCOUNT_SETTINGS,
+            titleResourceID = R.string.account_settings_title
+        )
 
-        object NotificationSettings: AppScreen(Routes.NOTIFICATION_SETTINGS)
+        object NotificationSettings: StackDestination(
+            route = Routes.NOTIFICATION_SETTINGS,
+            titleResourceID = R.string.notification_settings_title
+        )
 
-        object PasswordAndSecurity: AppScreen(Routes.PASSWORD_SECURITY)
+        object PasswordAndSecurity: StackDestination(
+            route = Routes.PASSWORD_SECURITY,
+            titleResourceID = R.string.password_and_security_title
+        )
+        object PrivacyPolicy: StackDestination(
+            route = Routes.PRIVACY_POLICY,
+            titleResourceID = R.string.privacy_policy_title
+        )
+        object TermsAndConditions: StackDestination(
+            route = Routes.TERMS_AND_CONDITIONS,
+            titleResourceID = R.string.terms_and_conditions_title
+        )
+
     }
 
     object Onboarding : AppScreen(Routes.ONBOARDING) {

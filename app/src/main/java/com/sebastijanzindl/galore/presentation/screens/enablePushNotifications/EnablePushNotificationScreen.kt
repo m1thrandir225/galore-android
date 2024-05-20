@@ -31,8 +31,8 @@ import com.airbnb.lottie.compose.LottieConstants
 import com.airbnb.lottie.compose.rememberLottieComposition
 import com.sebastijanzindl.galore.R
 import com.sebastijanzindl.galore.presentation.component.Logo
-import com.sebastijanzindl.galore.ui.theme.GaloreTheme
 import com.sebastijanzindl.galore.presentation.viewmodels.MainViewModel
+import com.sebastijanzindl.galore.ui.theme.GaloreTheme
 
 @Composable
 fun EnablePushNotificationScreen(
@@ -47,7 +47,7 @@ fun EnablePushNotificationScreen(
         navigateToFavouriteFlavours();
     }
 
-    val openPremissionLauncher = rememberLauncherForActivityResult(
+    val openPermissionLauncher = rememberLauncherForActivityResult(
         contract = ActivityResultContracts.RequestPermission(),
         onResult = {
             appViewModel.setHasEnabledNotifications(it)
@@ -97,7 +97,7 @@ fun EnablePushNotificationScreen(
             ) {
                 Button(onClick = {
                     if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) {
-                        openPremissionLauncher.launch(Manifest.permission.POST_NOTIFICATIONS)
+                        openPermissionLauncher.launch(Manifest.permission.POST_NOTIFICATIONS)
                     }
                 }) {
                     Text(

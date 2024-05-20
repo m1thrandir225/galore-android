@@ -25,7 +25,6 @@ import androidx.compose.material3.Button
 import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.OutlinedTextField
-import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
@@ -44,8 +43,8 @@ import com.airbnb.lottie.compose.LottieCompositionSpec
 import com.airbnb.lottie.compose.LottieConstants
 import com.airbnb.lottie.compose.rememberLottieComposition
 import com.sebastijanzindl.galore.R
-import com.sebastijanzindl.galore.presentation.component.Logo
 import com.sebastijanzindl.galore.presentation.component.GoogleSignInButton
+import com.sebastijanzindl.galore.presentation.component.Logo
 import com.sebastijanzindl.galore.presentation.viewmodels.AuthSharedViewModel
 import com.sebastijanzindl.galore.ui.theme.GaloreTheme
 
@@ -57,177 +56,176 @@ fun LoginScreen(
     sharedViewModel: AuthSharedViewModel = hiltViewModel<AuthSharedViewModel>(),
     navigateToRegister: () -> Unit,
     navigateToMain: () -> Unit,
-    navigateToOnboarding: () -> Unit,
 ) {
     val composition by rememberLottieComposition(spec = LottieCompositionSpec.RawRes(R.raw.login_lottie))
     val scrollState = rememberScrollState();
     val focusManager = LocalFocusManager.current;
 
-    Scaffold(modifier = modifier) {
-            contentPadding ->
+    //Login success callback
+    val loginUser = {
+        navigateToMain()
+    }
+   Column(
+    verticalArrangement = Arrangement.SpaceAround,
+    horizontalAlignment = Alignment.CenterHorizontally,
+    modifier = modifier
+        .fillMaxSize()
+        .padding(
+            top = 10.dp,
+            bottom = 10.dp,
+            start = 24.dp,
+            end = 24.dp
+        )
+        .verticalScroll(scrollState)
+        .imePadding()
+        .imeNestedScroll()
+    ) {
+        Box(
+            modifier = Modifier.fillMaxWidth()
+        ){
+            Logo(modifier = Modifier.align(Alignment.TopCenter))
+            LottieAnimation(modifier = Modifier
+                .fillMaxWidth()
+                .height(200.dp), composition = composition, iterations = LottieConstants.IterateForever)
+        }
         Column(
-            verticalArrangement = Arrangement.SpaceAround,
-            horizontalAlignment = Alignment.CenterHorizontally,
+            verticalArrangement = Arrangement.spacedBy(12.dp),
+            horizontalAlignment = Alignment.Start,
+            modifier = Modifier.fillMaxWidth()
+        ) {
+            Text(
+                text ="Login",
+                modifier = Modifier.padding(bottom = 12.dp),
+                style = MaterialTheme.typography.headlineMedium,
+                color = MaterialTheme.colorScheme.onBackground
+            )
+            OutlinedTextField(
+                modifier = Modifier.fillMaxWidth(),
+                value = viewModel.email,
+                onValueChange = { newValue -> viewModel.updateEmail(newValue) },
+                label = {
+                    Text(text = "Email")
+                },
+                keyboardOptions = KeyboardOptions(
+                    imeAction = ImeAction.Next
+                ),
+                keyboardActions = KeyboardActions(
+                    onNext = {
+                        focusManager.moveFocus(FocusDirection.Down)
+                    },
+                ),
+                trailingIcon = {
+                               if(viewModel.hasEmailError)
+                                   Icon(Icons.Filled.Info, "Error", tint = MaterialTheme.colorScheme.error)
+                },
+                supportingText = {
+                                 if(viewModel.hasEmailError) {
+                                    Text("Email is invalid")
+                                 }
+                },
+                singleLine = true,
+                isError = viewModel.hasEmailError
+            )
+            OutlinedTextField(
+                modifier = Modifier.fillMaxWidth(),
+                value = viewModel.password,
+                onValueChange = { newValue -> viewModel.updatePassword(newValue) },
+                label = {
+                    Text("Password")
+                },
+                visualTransformation = PasswordVisualTransformation(),
+                keyboardOptions = KeyboardOptions(
+                    keyboardType = KeyboardType.Password,
+                    imeAction = ImeAction.Done
+                ),
+                keyboardActions = KeyboardActions(
+                    onDone = {
+                        viewModel.loginUser(successCallback =  loginUser)
+                    }
+                ),
+                singleLine = true,
+                trailingIcon = {
+                               if(viewModel.hasPasswordError) {
+                                   Icon(Icons.Filled.Info, "Error", tint = MaterialTheme.colorScheme.error)
+                               }
+                },
+                supportingText = {
+                                 if(viewModel.hasPasswordError) {
+                                    Text(text = "Password must be at least 8 characters long.")
+                                 }
+                },
+                isError = viewModel.hasPasswordError
+
+            )
+            Text(
+                text = "Forgot your password ?",
+                style = MaterialTheme.typography.labelSmall,
+                color = MaterialTheme.colorScheme.onTertiaryContainer
+            )
+        }
+        Button(
+            enabled = !viewModel.hasEmailError && !viewModel.hasPasswordError,
+            onClick = { viewModel.loginUser(successCallback = loginUser) },
             modifier = Modifier
-                .fillMaxSize()
-                .padding(
-                    top = contentPadding.calculateTopPadding(),
-                    bottom = contentPadding.calculateBottomPadding(),
-                    start = 24.dp,
-                    end = 24.dp
-                )
-                .verticalScroll(scrollState)
-                .imePadding()
-                .imeNestedScroll()
+                .padding(top = 50.dp, bottom = 12.dp)
+                .fillMaxWidth()
 
         ) {
-            Box(
-                modifier = Modifier.fillMaxWidth()
-            ){
-                Logo(modifier = Modifier.align(Alignment.TopCenter))
-                LottieAnimation(modifier = Modifier
-                    .fillMaxWidth()
-                    .height(250.dp), composition = composition, iterations = LottieConstants.IterateForever)
-            }
-
-            Column(
-                verticalArrangement = Arrangement.spacedBy(12.dp),
-                horizontalAlignment = Alignment.Start,
-                modifier = Modifier.fillMaxWidth()
-            ) {
-                Text(
-                    text ="Login",
-                    modifier = Modifier.padding(bottom = 12.dp),
-                    style = MaterialTheme.typography.headlineMedium,
-                    color = MaterialTheme.colorScheme.onBackground
-                )
-                OutlinedTextField(
-                    modifier = Modifier.fillMaxWidth(),
-                    value = viewModel.email,
-                    onValueChange = { newValue -> viewModel.updateEmail(newValue) },
-                    label = {
-                        Text(text = "Email")
-                    },
-                    keyboardOptions = KeyboardOptions(
-                        imeAction = ImeAction.Next
-                    ),
-                    keyboardActions = KeyboardActions(
-                        onNext = {
-                            focusManager.moveFocus(FocusDirection.Down)
-                        },
-                    ),
-                    trailingIcon = {
-                                   if(viewModel.hasEmailError)
-                                       Icon(Icons.Filled.Info, "Error", tint = MaterialTheme.colorScheme.error)
-                    },
-                    supportingText = {
-                                     if(viewModel.hasEmailError) {
-                                        Text("Email is invalid")
-                                     }
-                    },
-                    singleLine = true,
-                    isError = viewModel.hasEmailError
-                )
-                OutlinedTextField(
-                    modifier = Modifier.fillMaxWidth(),
-                    value = viewModel.password,
-                    onValueChange = { newValue -> viewModel.updatePassword(newValue) },
-                    label = {
-                        Text("Password")
-                    },
-                    visualTransformation = PasswordVisualTransformation(),
-                    keyboardOptions = KeyboardOptions(
-                        keyboardType = KeyboardType.Password,
-                        imeAction = ImeAction.Done
-                    ),
-                    keyboardActions = KeyboardActions(
-                        onDone = {
-                            viewModel.loginUser(navigateToHome = navigateToMain)
-                        }
-                    ),
-                    singleLine = true,
-                    trailingIcon = {
-                                   if(viewModel.hasPasswordError) {
-                                       Icon(Icons.Filled.Info, "Error", tint = MaterialTheme.colorScheme.error)
-                                   }
-                    },
-                    supportingText = {
-                                     if(viewModel.hasPasswordError) {
-                                        Text(text = "Password must be at least 8 characters long.")
-                                     }
-                    },
-                    isError = viewModel.hasPasswordError
-
-                )
-                Text(
-                    text = "Forgot your password ?",
-                    style = MaterialTheme.typography.labelSmall,
-                    color = MaterialTheme.colorScheme.onTertiaryContainer
-                )
-            }
-            Button(
-                enabled = !viewModel.hasEmailError && !viewModel.hasPasswordError,
-                onClick = { viewModel.loginUser(navigateToHome = navigateToMain) },
-                modifier = Modifier
-                    .padding(top = 50.dp, bottom = 12.dp)
-                    .fillMaxWidth()
-
-            ) {
-                Text(text = "Continue")
-            }
-            Row(
-                horizontalArrangement = Arrangement.spacedBy(8.dp)
-            ){
-                Text(
-                    text = "Don't have an account ?",
-                    style = MaterialTheme.typography.labelSmall,
-                    color = MaterialTheme.colorScheme.onBackground
-                )
-                Text(
-                    modifier = Modifier.clickable(
-                        onClick = navigateToRegister
-                    ),
-                    text = "Register",
-                    style = MaterialTheme.typography.labelSmall,
-                    color = MaterialTheme.colorScheme.primary,
-                )
-            }
-            Row(
-                horizontalArrangement = Arrangement.spacedBy(8.dp),
-                verticalAlignment = Alignment.CenterVertically,
-                modifier = Modifier.padding(vertical = 24.dp)
-            ) {
-                Box(modifier = Modifier
-                    .background(
-                        MaterialTheme.colorScheme.primary,
-                        shape = RoundedCornerShape(size = 31.dp)
-                    )
-                    .width(138.dp)
-                    .height(3.dp)
-                )
-                Text(
-                    text = "or",
-                    style = MaterialTheme.typography.labelSmall,
-                    color = MaterialTheme.colorScheme.onBackground
-                )
-                Box(modifier = Modifier
-                    .background(
-                        MaterialTheme.colorScheme.primary,
-                        shape = RoundedCornerShape(size = 31.dp)
-                    )
-                    .width(138.dp)
-                    .height(3.dp)
-                )
-            }
-          GoogleSignInButton(viewModel = sharedViewModel, onSuccessCallback = navigateToOnboarding)
+            Text(text = "Continue")
         }
+        Row(
+            horizontalArrangement = Arrangement.spacedBy(8.dp)
+        ){
+            Text(
+                text = "Don't have an account ?",
+                style = MaterialTheme.typography.labelSmall,
+                color = MaterialTheme.colorScheme.onBackground
+            )
+            Text(
+                modifier = Modifier.clickable(
+                    onClick = navigateToRegister
+                ),
+                text = "Register",
+                style = MaterialTheme.typography.labelSmall,
+                color = MaterialTheme.colorScheme.primary,
+            )
+        }
+        Row(
+            horizontalArrangement = Arrangement.spacedBy(8.dp),
+            verticalAlignment = Alignment.CenterVertically,
+            modifier = Modifier.padding(vertical = 24.dp)
+        ) {
+            Box(modifier = Modifier
+                .background(
+                    MaterialTheme.colorScheme.primary,
+                    shape = RoundedCornerShape(size = 31.dp)
+                )
+                .width(138.dp)
+                .height(3.dp)
+            )
+            Text(
+                text = "or",
+                style = MaterialTheme.typography.labelSmall,
+                color = MaterialTheme.colorScheme.onBackground
+            )
+            Box(modifier = Modifier
+                .background(
+                    MaterialTheme.colorScheme.primary,
+                    shape = RoundedCornerShape(size = 31.dp)
+                )
+                .width(138.dp)
+                .height(3.dp)
+            )
+        }
+      GoogleSignInButton(viewModel = sharedViewModel, onSuccessCallback = loginUser)
     }
+
 }
 
 @Preview(apiLevel = 33)
 @Composable
 private fun LoginScreenPreview() {
     GaloreTheme {
-        LoginScreen(navigateToRegister = {}, navigateToMain = {}, navigateToOnboarding = {})
+        LoginScreen(navigateToRegister = {}, navigateToMain = {})
     }
 }
