@@ -45,6 +45,9 @@ private object  Routes {
     const val ACCOUNT_SETTINGS = "account-settings"
     const val PASSWORD_SECURITY = "password-and-security"
     const val NOTIFICATION_SETTINGS = "notification-settings"
+
+    const val PRIVACY_POLICY = "privacy-policy"
+    const val TERMS_AND_CONDITIONS = "terms-and-conditions"
 }
 
 private object ArgParams {
@@ -125,6 +128,15 @@ sealed class AppScreen(val route: String, val navArguments: List<NamedNavArgumen
             route = Routes.PASSWORD_SECURITY,
             titleResourceID = R.string.password_and_security_title
         )
+        object PrivacyPolicy: StackDestination(
+            route = Routes.PRIVACY_POLICY,
+            titleResourceID = R.string.privacy_policy_title
+        )
+        object TermsAndConditions: StackDestination(
+            route = Routes.TERMS_AND_CONDITIONS,
+            titleResourceID = R.string.terms_and_conditions_title
+        )
+
     }
 
     object Onboarding : AppScreen(Routes.ONBOARDING) {

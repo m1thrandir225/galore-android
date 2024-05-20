@@ -109,7 +109,9 @@ fun GaloreApp(
         AppScreen.Settings.SettingsOverview.route,
         AppScreen.Settings.AccountSettings.route,
         AppScreen.Settings.PasswordAndSecurity.route,
-        AppScreen.Settings.NotificationSettings.route -> {
+        AppScreen.Settings.NotificationSettings.route,
+        AppScreen.Settings.PrivacyPolicy.route,
+        AppScreen.Settings.TermsAndConditions.route -> {
             topBarState.value = true
             bottomBarState.value = false
         }
