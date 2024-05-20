@@ -4,7 +4,6 @@ import androidx.compose.animation.AnimatedContentTransitionScope
 import androidx.compose.animation.core.tween
 import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.padding
-import androidx.compose.material3.Text
 import androidx.compose.ui.Modifier
 import androidx.navigation.NavController
 import androidx.navigation.NavGraphBuilder
@@ -15,6 +14,7 @@ import com.sebastijanzindl.galore.presentation.screens.notifications.Notificatio
 import com.sebastijanzindl.galore.presentation.screens.passwordAndSecurity.PasswordAndSecurityScreen
 import com.sebastijanzindl.galore.presentation.screens.privacyPolicy.PrivacyPolicyScreen
 import com.sebastijanzindl.galore.presentation.screens.settings.SettingsOverviewScreen
+import com.sebastijanzindl.galore.presentation.screens.termsAndConditions.TermsAndConditionsScreen
 import com.sebastijanzindl.galore.presentation.viewmodels.ProfileSharedViewModel
 
 fun NavGraphBuilder.settingsNavGraph(
@@ -125,7 +125,9 @@ fun NavGraphBuilder.settingsNavGraph(
             popEnterTransition = { slideIntoContainer(AnimatedContentTransitionScope.SlideDirection.End, tween(700)) },
             popExitTransition = { slideOutOfContainer(AnimatedContentTransitionScope.SlideDirection.End, tween(700)) }
         ) {
-            Text(text = "Terms and Conditions")
+            TermsAndConditionsScreen(
+                modifier = Modifier.padding(paddingValues)
+            )
         }
 
     }
