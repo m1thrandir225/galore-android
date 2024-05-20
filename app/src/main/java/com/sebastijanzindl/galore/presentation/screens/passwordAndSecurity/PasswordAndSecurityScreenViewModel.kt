@@ -19,6 +19,7 @@ class PasswordAndSecurityScreenViewModel @Inject constructor(
     private val deleteUserUseCase: DeleteUserUseCase,
     private val auth: Auth,
 ) : ViewModel() {
+
     private val _toastMessage = MutableStateFlow<SnackbarMessage?>(null)
     val toastMessage = _toastMessage.asStateFlow()
     private fun sendToastMessage(message: String) {
