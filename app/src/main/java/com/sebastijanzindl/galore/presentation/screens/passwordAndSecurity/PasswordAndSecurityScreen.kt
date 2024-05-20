@@ -20,6 +20,7 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
+import com.sebastijanzindl.galore.presentation.component.Dialog
 import com.sebastijanzindl.galore.presentation.component.LoadingSpinner
 import com.sebastijanzindl.galore.presentation.component.SnackbarMessageHandler
 import com.sebastijanzindl.galore.presentation.viewmodels.ProfileSharedViewModel
@@ -32,9 +33,12 @@ fun PasswordAndSecurityScreen (
     navigateToAuth: () -> Unit,
 ) {
 
-    val toastMessage by viewModel.toastMessage.collectAsState();
-    val profile by profileSharedViewModel.userProfile.collectAsState();
-    val isLoading by profileSharedViewModel.isLoading.collectAsState();
+    val toastMessage by viewModel.toastMessage.collectAsState()
+    val isLoading by profileSharedViewModel.isLoading.collectAsState()
+
+    var showDeleteAccountDialog by remember {
+        mutableStateOf(false)
+    }
 
     var newPassword by remember {
         mutableStateOf("")
@@ -101,14 +105,26 @@ fun PasswordAndSecurityScreen (
             Button(
                 modifier = Modifier.fillMaxWidth(),
                 onClick = {
-                    viewModel.deleteAccount(
-                        successCallback = navigateToAuth
-                    )
+                   showDeleteAccountDialog = true
                 },
             ) {
                 Icon(Icons.Default.Delete, contentDescription = "Delete Icon")
                 Text(text = "Delete Account")
             }
+            if(showDeleteAccountDialog) {
+                Dialog(
+                    onDismissRequest = { showDeleteAccountDialog = false },
+                    onConfirmation = {
+                        viewModel.deleteAccount(
+                            successCallback = navigateToAuth
+                        )
+                    },
+                    dialogTitle = "Are you sure?",
+                    dialogText = "There is no going back, are you sure you want to delete your account?",
+                    icon =  Icons.Default.Delete
+                )
+            }
         }
     }
 }
+
