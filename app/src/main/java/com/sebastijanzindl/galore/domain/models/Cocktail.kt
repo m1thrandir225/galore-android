@@ -15,15 +15,20 @@ data class Cocktail(
     val image: String,
 
     @SerialName("steps")
-    val steps: String,
+    val instructions: List<String>,
 
     @SerialName("ingredients")
-    val ingredients: String,
-
+    val ingredients: List<CocktailIngredient>,
 
     @SerialName("created_at")
     val createdAt: String,
+);
 
-    @SerialName("embedding")
-    val embeddingVector: List<Double>
+@Serializable
+data class CocktailIngredient(
+    @SerialName("instruction")
+    val ingredient: String,
+
+    @SerialName("amount")
+    val amount: String
 )

@@ -10,6 +10,7 @@ import androidx.compose.ui.Modifier
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavController
 import com.sebastijanzindl.galore.domain.models.Cocktail
+import com.sebastijanzindl.galore.domain.models.CocktailIngredient
 import com.sebastijanzindl.galore.presentation.component.CocktailCardType
 import com.sebastijanzindl.galore.presentation.component.CocktailTagSection
 import com.sebastijanzindl.galore.presentation.viewmodels.ProfileSharedViewModel
@@ -32,41 +33,39 @@ fun HomeScreen(
 
     val cocktails = listOf(
         Cocktail(
-            id = "1",
-            image = "https://images.unsplash.com/photo-1609951651556-5334e2706168?q=80&w=3087&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D",
-            createdAt = LocalDate.parse("2024-02-24").toString(),
-            embeddingVector = listOf(0.10, 1.22, 1.55),
-            ingredients = "Gin, Tonic",
-            name = "Gin & Tonic",
-            steps = ""
-        ),
-        Cocktail(
             id = "2",
-            image = "https://plus.unsplash.com/premium_photo-1687354207716-b74e8c056def?q=80&w=3088&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D",
+            image = "https://images.unsplash.com/photo-1712928247899-2932f4c7dea3?q=80&w=2071&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D",
             createdAt = LocalDate.parse("2024-02-24").toString(),
-            embeddingVector = listOf(0.10, 1.22, 1.55),
-            ingredients = "Rum & Coke",
-            name = "Rum & Coke",
-            steps = ""
+            ingredients = listOf(
+                CocktailIngredient(
+                    ingredient = "Glass",
+                    amount = "1",
+                ),
+                CocktailIngredient(
+                    ingredient = "Gin",
+                    amount = "1"
+                )
+            ),
+            name = "Gin & Tonic",
+            instructions = listOf("Put gin into the glass", "Drink it")
         ),
         Cocktail(
-            id = "3",
-            image = "https://images.unsplash.com/photo-1551538827-9c037cb4f32a?q=80&w=2761&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D",
+            id = "1",
+            image = "https://images.unsplash.com/photo-1712928247899-2932f4c7dea3?q=80&w=2071&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D",
             createdAt = LocalDate.parse("2024-02-24").toString(),
-            embeddingVector = listOf(0.10, 1.22, 1.55),
-            ingredients = "Mojito",
-            name = "Mojito",
-            steps = ""
+            ingredients = listOf(
+                CocktailIngredient(
+                    ingredient = "Glass",
+                    amount = "1",
+                ),
+                CocktailIngredient(
+                    ingredient = "Gin",
+                    amount = "1"
+                )
+            ),
+            name = "Gin & Tonic",
+            instructions = listOf("Put gin into the glass", "Drink it")
         ),
-        Cocktail(
-            id = "4",
-            image = "https://images.unsplash.com/photo-1587223962930-cb7f31384c19?q=80&w=3087&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D",
-            createdAt = LocalDate.parse("2024-02-24").toString(),
-            embeddingVector = listOf(0.10, 1.22, 1.55),
-            ingredients = "Martini",
-            name = "Martini",
-            steps = ""
-        )
     )
 
 

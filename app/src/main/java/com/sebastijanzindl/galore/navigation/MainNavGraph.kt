@@ -10,9 +10,9 @@ import androidx.navigation.NavController
 import androidx.navigation.NavGraphBuilder
 import androidx.navigation.compose.composable
 import androidx.navigation.navigation
-import com.sebastijanzindl.galore.presentation.screens.favouriteCocktails.FavouriteCocktailsScreen
 import com.sebastijanzindl.galore.presentation.screens.generateCocktail.GenerateCocktailScreen
 import com.sebastijanzindl.galore.presentation.screens.home.HomeScreen
+import com.sebastijanzindl.galore.presentation.screens.library.LibraryScreen
 import com.sebastijanzindl.galore.presentation.screens.search.SearchScreen
 
 fun NavGraphBuilder.mainNavGraph(
@@ -66,8 +66,8 @@ fun NavGraphBuilder.mainNavGraph(
             popEnterTransition = { slideIntoContainer(AnimatedContentTransitionScope.SlideDirection.End, tween(700)) },
             popExitTransition = { slideOutOfContainer(AnimatedContentTransitionScope.SlideDirection.End, tween(700)) }
         ) {
-            FavouriteCocktailsScreen(
-                modifier = Modifier.padding(paddingValues).fillMaxSize()
+            LibraryScreen(
+                modifier = Modifier.padding(paddingValues)
             )
 
         }

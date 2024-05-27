@@ -3,7 +3,7 @@ package com.sebastijanzindl.galore.data.repository.impl
 import com.sebastijanzindl.galore.data.repository.FlavourRepository
 import com.sebastijanzindl.galore.domain.models.Flavour
 import io.github.jan.supabase.postgrest.Postgrest
-import java.util.UUID
+import io.github.jan.supabase.postgrest.query.Columns
 
 class FlavourRepositoryImpl(
     private val postgrest: Postgrest
@@ -13,6 +13,15 @@ class FlavourRepositoryImpl(
     }
 
     override suspend fun getUserFlavours(userId: String): List<Flavour> {
-        TODO("Not yet implemented")
+        val columns = Columns.raw("""
+            flavours (
+                id,
+                name,
+                created_at
+            )
+        """.trimIndent())
+        return postgrest.from("user_liked_flavours")
+            .select(columns = columns)
+            .decodeList<Flavour>()
     }
 }
