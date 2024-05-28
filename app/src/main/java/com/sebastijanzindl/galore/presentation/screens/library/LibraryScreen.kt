@@ -11,10 +11,10 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import com.sebastijanzindl.galore.domain.models.CocktailCardInfo
+import com.sebastijanzindl.galore.domain.models.Section
 import com.sebastijanzindl.galore.presentation.component.CocktailCardType
 import com.sebastijanzindl.galore.presentation.component.CocktailTagSection
 import com.sebastijanzindl.galore.presentation.component.LoadingSpinner
-import com.sebastijanzindl.galore.domain.models.Section
 
 @Composable
 fun LibraryScreen(
@@ -23,6 +23,7 @@ fun LibraryScreen(
 ) {
     val isLoading by viewModel.isLoading.collectAsState();
     val cocktails by viewModel.userMadeCocktails.collectAsState();
+    val likedCocktails by viewModel.userLikedCocktails.collectAsState();
 
     val customizedCocktails: List<CocktailCardInfo> = cocktails.map {
         CocktailCardInfo(
@@ -30,10 +31,18 @@ fun LibraryScreen(
             name = it.name
         )
     }
+    val customizedLikedCocktails: List<CocktailCardInfo> = likedCocktails.map {
+        CocktailCardInfo(
+            image = it.image,
+            name = it.name
+        )
+    }
+
+    println(likedCocktails)
 
     val sections: List<Section> = listOf(
         Section(
-            cocktails = emptyList(),
+            cocktails = customizedLikedCocktails,
             tagName = "Your Favourites"
         ),
         Section(

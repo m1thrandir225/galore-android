@@ -15,6 +15,7 @@ fun FlavourButton(
     onClick: () -> Unit,
     buttonText: String,
     isInList: Boolean,
+    isDisabled: Boolean = false,
 ) {
 
     val buttonColor: Color =  if(isInList) {
@@ -27,7 +28,8 @@ fun FlavourButton(
         onClick = onClick,
         colors = ButtonDefaults.outlinedButtonColors(
             containerColor = buttonColor
-        )
+        ),
+        enabled = !isDisabled
 
     ) {
         if(!isInList) {

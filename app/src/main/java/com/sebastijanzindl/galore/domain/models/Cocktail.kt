@@ -14,21 +14,29 @@ data class Cocktail(
     @SerialName("image")
     val image: String,
 
-    @SerialName("steps")
+    @SerialName("instructions")
     val instructions: List<String>,
 
     @SerialName("ingredients")
     val ingredients: List<CocktailIngredient>,
 
-    @SerialName("created_at")
-    val createdAt: String,
+    @SerialName("glass")
+    val glass: String = ""
+
 );
 
 @Serializable
 data class CocktailIngredient(
-    @SerialName("instruction")
+    @SerialName("ingredient")
     val ingredient: String,
 
     @SerialName("amount")
     val amount: String
+)
+
+
+@Serializable
+data class UserLikedCocktailsResponse(
+    @SerialName("cocktails")
+    val cocktails: List<Cocktail>
 )

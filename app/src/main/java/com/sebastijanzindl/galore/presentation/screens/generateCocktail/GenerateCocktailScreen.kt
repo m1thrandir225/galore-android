@@ -1,5 +1,12 @@
 package com.sebastijanzindl.galore.presentation.screens.generateCocktail
 
+import androidx.compose.animation.AnimatedVisibility
+import androidx.compose.animation.animateContentSize
+import androidx.compose.animation.core.Spring
+import androidx.compose.animation.core.VisibilityThreshold
+import androidx.compose.animation.core.spring
+import androidx.compose.animation.expandIn
+import androidx.compose.animation.fadeOut
 import androidx.compose.foundation.ExperimentalFoundationApi
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
@@ -22,6 +29,7 @@ import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.tooling.preview.Preview
+import androidx.compose.ui.unit.IntSize
 import androidx.compose.ui.unit.dp
 import com.sebastijanzindl.galore.presentation.component.FlavourButton
 import com.sebastijanzindl.galore.ui.theme.GaloreTheme
@@ -69,7 +77,6 @@ fun GenerateCocktailScreen(
     }
 
 
-
     fun onCocktailTap (cocktailId: String) {
         if(selectedCocktailIds.contains(cocktailId)) {
             selectedCocktailIds.remove(cocktailId)
@@ -99,21 +106,34 @@ fun GenerateCocktailScreen(
            }
        }
         Row(
-            modifier = Modifier.fillMaxWidth(),
-            horizontalArrangement = if(pagerState.currentPage > 0)  Arrangement.SpaceBetween else Arrangement.End,
+            modifier = Modifier.fillMaxWidth().animateContentSize(),
+            horizontalArrangement =  if(pagerState.currentPage > 0) Arrangement.SpaceBetween else Arrangement.End,
             verticalAlignment = Alignment.CenterVertically,
         ) {
-            if(pagerState.currentPage > 0) {
+            AnimatedVisibility(
+                visible = pagerState.currentPage > 0,
+                enter = expandIn(
+                    spring(
+                        stiffness = Spring.StiffnessLow,
+                        visibilityThreshold = IntSize.VisibilityThreshold
+                    )
+                ),
+                exit = fadeOut(),
+            ) {
                 Button(onClick = { onBackStepPress() }) {
                     Text(text = "Back")
                 }
             }
-            if(pagerState.currentPage != maxSteps -1) {
+            AnimatedVisibility(
+                visible = pagerState.currentPage != maxSteps -1,
+                enter = expandIn(),
+                exit = fadeOut(),
+
+            ) {
                 Button(onClick = { onNextStepPress() }) {
                     Text(text = "Next")
                 }
             }
-
         }
     }
 }
@@ -138,18 +158,22 @@ fun SelectFlavourForm(
             }
         }
     }
+
+
     LazyVerticalGrid(
         horizontalArrangement = Arrangement.spacedBy(12.dp),
         verticalArrangement = Arrangement.spacedBy(12.dp),
         columns = GridCells.Fixed(2)
     ) {
         items(flavours) { item ->
+            val itemIsSelected = selectedFlavourIds.contains(item)
             FlavourButton(
                 onClick = {
                           onFlavourTap(item)
                 },
                 buttonText = item,
-                isInList = selectedFlavourIds.contains(item)
+                isInList = itemIsSelected,
+                isDisabled = selectedFlavourIds.count() == 3 && !itemIsSelected
             )
         }
     }
@@ -157,6 +181,7 @@ fun SelectFlavourForm(
 
 @Composable
 fun SelectReferenceCocktailForm() {
+    //TODO: implement
     Text(text = "Select Cocktail References Form")
 }
 

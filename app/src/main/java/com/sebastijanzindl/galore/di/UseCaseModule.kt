@@ -4,6 +4,7 @@ import com.sebastijanzindl.galore.domain.usecase.DeleteUserUseCase
 import com.sebastijanzindl.galore.domain.usecase.GetAllFlavoursUseCase
 import com.sebastijanzindl.galore.domain.usecase.GetAllUserMadeCocktails
 import com.sebastijanzindl.galore.domain.usecase.GetUserFlavoursUseCase
+import com.sebastijanzindl.galore.domain.usecase.GetUserLikedCocktailsUseCase
 import com.sebastijanzindl.galore.domain.usecase.GetUserProfileUseCase
 import com.sebastijanzindl.galore.domain.usecase.LibraryScreenUseCase
 import com.sebastijanzindl.galore.domain.usecase.SignInGoogleUseCase
@@ -15,6 +16,7 @@ import com.sebastijanzindl.galore.domain.usecase.impl.DeleteUserUseCaseImpl
 import com.sebastijanzindl.galore.domain.usecase.impl.GetAllFlavoursUseCaseImpl
 import com.sebastijanzindl.galore.domain.usecase.impl.GetAllUserMadeCocktailsImpl
 import com.sebastijanzindl.galore.domain.usecase.impl.GetUserFlavoursUseCaseImpl
+import com.sebastijanzindl.galore.domain.usecase.impl.GetUserLikedCocktailsUseCaseImpl
 import com.sebastijanzindl.galore.domain.usecase.impl.GetUserProfileUseCaseImpl
 import com.sebastijanzindl.galore.domain.usecase.impl.LibraryScreenUseCaseImpl
 import com.sebastijanzindl.galore.domain.usecase.impl.SignInGoogleUseCaseImpl
@@ -63,4 +65,7 @@ abstract class UseCaseModule {
 
     @Binds
     abstract fun  bindLibraryScreenUseCase(impl: LibraryScreenUseCaseImpl): LibraryScreenUseCase
+
+    @Binds
+    abstract fun bindGetUserLikedCocktailsUseCase(impl: GetUserLikedCocktailsUseCaseImpl): GetUserLikedCocktailsUseCase
 }

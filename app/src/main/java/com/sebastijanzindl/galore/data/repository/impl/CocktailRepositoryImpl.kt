@@ -55,4 +55,10 @@ class CocktailRepositoryImpl @Inject constructor(
             }.decodeList<UserMadeCocktail>()
 
     }
+
+    override suspend fun getLikedCocktails(): HttpResponse {
+        return edgeFunctions.invoke(
+            function = "get-user-liked-cocktails"
+        )
+    }
 }

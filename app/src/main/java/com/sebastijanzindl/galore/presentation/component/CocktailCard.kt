@@ -30,7 +30,6 @@ import com.sebastijanzindl.galore.domain.models.Cocktail
 import com.sebastijanzindl.galore.domain.models.CocktailCardInfo
 import com.sebastijanzindl.galore.domain.models.CocktailIngredient
 import com.sebastijanzindl.galore.ui.theme.GaloreTheme
-import kotlinx.datetime.LocalDate
 
 enum class CocktailCardType(val value: Dp) {
     Horizontal(280.dp),
@@ -97,7 +96,6 @@ private fun VerticalCocktailCardPreview() {
         val cocktail = Cocktail(
             id = "1",
             image = "https://images.unsplash.com/photo-1712928247899-2932f4c7dea3?q=80&w=2071&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D",
-            createdAt = LocalDate.parse("2024-02-24").toString(),
             ingredients = listOf(
                 CocktailIngredient(
                     ingredient = "Glass",
@@ -133,7 +131,6 @@ private fun HorizontalCocktailCardPreview() {
         val cocktail = Cocktail(
             id = "1",
             image = "https://images.unsplash.com/photo-1712928247899-2932f4c7dea3?q=80&w=2071&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D",
-            createdAt = LocalDate.parse("2024-02-24").toString(),
             ingredients = listOf(
                 CocktailIngredient(
                     ingredient = "Glass",

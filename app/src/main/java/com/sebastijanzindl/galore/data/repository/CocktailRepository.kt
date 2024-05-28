@@ -14,4 +14,6 @@ interface CocktailRepository {
   suspend fun getGeneratedCocktail(cocktailId: String): HttpResponse
 
   suspend fun getYourGeneratedCocktails(userId: String): List<UserMadeCocktail>
+
+  suspend fun getLikedCocktails(): HttpResponse
 }
