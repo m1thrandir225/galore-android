@@ -20,7 +20,7 @@ class LibraryScreenViewModel @Inject constructor(
     private val _isLoading = MutableStateFlow<Boolean>(false);
     val isLoading = _isLoading.asStateFlow();
 
-    private val _userMadeCocktails = MutableStateFlow<List<UserMadeCocktail?>?>(null)
+    private val _userMadeCocktails = MutableStateFlow<List<UserMadeCocktail>>(emptyList())
     val userMadeCocktails = _userMadeCocktails.asStateFlow();
 
     init {
@@ -32,14 +32,13 @@ class LibraryScreenViewModel @Inject constructor(
                 _isLoading.value = true
                 authRepository.awaitInitialization();
                 val user =
-                    authRepository.currentUserOrNull() ?: throw Exception("user not logged in.");
+                    authRepository.currentUserOrNull() ?: throw Exception("User not logged in.");
 
                 val cocktails = userMadeCocktailsUseCase.execute(
                     GetAllUserMadeCocktails.Input(
                         userId =  user.id
                     )
                 )
-
                 _userMadeCocktails.value = cocktails.result
             } catch (e: Exception) {
 

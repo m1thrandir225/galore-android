@@ -6,13 +6,7 @@ import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
-import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
-import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.filled.Favorite
-import androidx.compose.material.icons.filled.FavoriteBorder
-import androidx.compose.material3.FilledIconButton
-import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.OutlinedCard
 import androidx.compose.material3.Text
@@ -33,28 +27,22 @@ import coil.compose.AsyncImage
 import coil.request.ImageRequest
 import com.sebastijanzindl.galore.R
 import com.sebastijanzindl.galore.domain.models.Cocktail
+import com.sebastijanzindl.galore.domain.models.CocktailCardInfo
 import com.sebastijanzindl.galore.domain.models.CocktailIngredient
 import com.sebastijanzindl.galore.ui.theme.GaloreTheme
 import kotlinx.datetime.LocalDate
 
 enum class CocktailCardType(val value: Dp) {
     Horizontal(280.dp),
-    Vertical(200.dp)
+    Vertical(180.dp)
 }
-
-data class  CocktailCardInfo (
-    val image: String,
-    val name: String
-)
 
 @Composable
 fun CocktailCard (
     modifier: Modifier = Modifier,
     cardType: CocktailCardType = CocktailCardType.Vertical,
-    cocktail: CocktailCardInfo ,
-    onHeartPress: () -> Unit,
+    cocktail: CocktailCardInfo,
     onCardPress: () -> Unit,
-    isFavourite: Boolean
 ) {
 
     OutlinedCard(
@@ -89,17 +77,6 @@ fun CocktailCard (
                     style = MaterialTheme.typography.bodyLarge,
                     color = MaterialTheme.colorScheme.onSurface
                 )
-            }
-            FilledIconButton(
-                modifier = Modifier.size(32.dp),
-                onClick = onHeartPress
-            ) {
-                if(isFavourite) {
-                    Icon(Icons.Default.Favorite, contentDescription = "Add to Favourite", modifier = Modifier.padding(8.dp))
-                } else {
-                    Icon(Icons.Default.FavoriteBorder, contentDescription = "Remove From Favourites", modifier = Modifier.padding(8.dp))
-                }
-
             }
         }
 
@@ -137,8 +114,6 @@ private fun VerticalCocktailCardPreview() {
         CocktailCard(
             cocktail = CocktailCardInfo(cocktail.image, cocktail.name),
             onCardPress = {},
-            onHeartPress = changeIsFavourite,
-            isFavourite = isFavourite
         )
 
     }
@@ -176,8 +151,6 @@ private fun HorizontalCocktailCardPreview() {
             cardType = CocktailCardType.Horizontal,
             cocktail = CocktailCardInfo(cocktail.image, cocktail.name),
             onCardPress = {},
-            onHeartPress = changeIsFavourite,
-            isFavourite = isFavourite
         )
 
     }

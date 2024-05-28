@@ -19,22 +19,19 @@ import androidx.compose.material3.IconButton
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
-import com.sebastijanzindl.galore.domain.models.Cocktail
-import com.sebastijanzindl.galore.domain.models.CocktailIngredient
+import com.sebastijanzindl.galore.domain.models.CocktailCardInfo
 import com.sebastijanzindl.galore.ui.theme.GaloreTheme
-import kotlinx.datetime.LocalDate
 
 
 @OptIn(ExperimentalFoundationApi::class)
 @Composable
 fun CocktailTagSection(
     modifier: Modifier = Modifier,
-    cocktails: List<Cocktail>,
+    cocktails: List<CocktailCardInfo>,
     tagName: String,
     cocktailCardType: CocktailCardType = CocktailCardType.Vertical,
     canNavigateToSection: Boolean = false,
@@ -48,11 +45,6 @@ fun CocktailTagSection(
         state = pagerState,
         pagerSnapDistance = PagerSnapDistance.atMost(10)
     )
-
-    val favourites = remember {
-        mutableListOf<Cocktail>()
-    }
-
 
     Column (
         modifier = modifier,
@@ -76,27 +68,28 @@ fun CocktailTagSection(
                 }
             }
         }
-        HorizontalPager(
-            state = pagerState,
-            pageSize = PageSize.Fixed(cocktailCardType.value),
-            pageSpacing = 24.dp,
-            flingBehavior = fling,
-            contentPadding = PaddingValues(horizontal = 24.dp)
+        if(pagerState.pageCount > 0) {
+            HorizontalPager(
+                state = pagerState,
+                pageSize = PageSize.Fixed(cocktailCardType.value),
+                pageSpacing = 24.dp,
+                flingBehavior = fling,
+                contentPadding = PaddingValues(horizontal = 24.dp)
 
-        ) { page ->
-            CocktailCard(
-                cocktail = CocktailCardInfo(cocktails[page].image, cocktails[page].name),
-                onHeartPress = {
-                               if(favourites.contains(cocktails[page])) {
-                                   favourites.remove(cocktails[page])
-                               } else {
-                                   favourites.add(cocktails[page])
-                               }
-                },
-                onCardPress = { /*TODO*/ },
-                isFavourite = favourites.contains(cocktails[page]),
-                cardType = cocktailCardType,
-            )
+            ) { page ->
+                CocktailCard(
+                    cocktail = cocktails[page],
+                    onCardPress = { /*TODO*/ },
+                    cardType = cocktailCardType,
+                )
+            }
+        } else {
+          Text(
+              modifier = Modifier.padding(horizontal = 24.dp),
+              text = "There are no cocktails in this section",
+              style = MaterialTheme.typography.bodyMedium,
+              color = MaterialTheme.colorScheme.onSurface
+          )
         }
     }
 }
@@ -107,41 +100,21 @@ fun CocktailTagSection(
 private fun CocktailTagSectionPreview() {
     GaloreTheme {
         val cocktails = listOf(
-            Cocktail(
-                id = "2",
-                image = "https://images.unsplash.com/photo-1712928247899-2932f4c7dea3?q=80&w=2071&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D",
-                createdAt = LocalDate.parse("2024-02-24").toString(),
-                ingredients = listOf(
-                    CocktailIngredient(
-                        ingredient = "Glass",
-                        amount = "1",
-                    ),
-                    CocktailIngredient(
-                        ingredient = "Gin",
-                        amount = "1"
-                    )
-                ),
+            CocktailCardInfo(
                 name = "Gin & Tonic",
-                instructions = listOf("Put gin into the glass", "Drink it")
+                image = "https://plus.unsplash.com/premium_photo-1671647122910-3fa8ab4990cb?q=80&w=1976&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D"
             ),
-            Cocktail(
-                id = "1",
-                image = "https://images.unsplash.com/photo-1712928247899-2932f4c7dea3?q=80&w=2071&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D",
-                createdAt = LocalDate.parse("2024-02-24").toString(),
-                ingredients = listOf(
-                    CocktailIngredient(
-                        ingredient = "Glass",
-                        amount = "1",
-                    ),
-                    CocktailIngredient(
-                        ingredient = "Gin",
-                        amount = "1"
-                    )
-                ),
-                name = "Gin & Tonic",
-                instructions = listOf("Put gin into the glass", "Drink it")
+            CocktailCardInfo(
+                image = "https://images.unsplash.com/photo-1609951651556-5334e2706168?q=80&w=1974&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D",
+                name = "Margarita",
+
             ),
+            CocktailCardInfo(
+                name = "Nokishta711",
+                image = "https://images.unsplash.com/photo-1514362545857-3bc16c4c7d1b?q=80&w=2070&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D"
+            )
         )
+
         CocktailTagSection(cocktails = cocktails, tagName = "Preview Section", cocktailCardType = CocktailCardType.Horizontal, navigateToSection = {})
     }
 }

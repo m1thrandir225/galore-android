@@ -9,18 +9,12 @@ import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.Modifier
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavController
-import com.sebastijanzindl.galore.domain.models.Cocktail
-import com.sebastijanzindl.galore.domain.models.CocktailIngredient
+import com.sebastijanzindl.galore.domain.models.CocktailCardInfo
+import com.sebastijanzindl.galore.domain.models.Section
 import com.sebastijanzindl.galore.presentation.component.CocktailCardType
 import com.sebastijanzindl.galore.presentation.component.CocktailTagSection
 import com.sebastijanzindl.galore.presentation.viewmodels.ProfileSharedViewModel
-import kotlinx.datetime.LocalDate
 
-data class Section(
-    val cocktails: List<Cocktail>,
-    val tagName: String,
-    val isFeatured: Boolean = false,
-)
 @OptIn(ExperimentalMaterial3Api::class, ExperimentalFoundationApi::class)
 @Composable
 fun HomeScreen(
@@ -32,43 +26,20 @@ fun HomeScreen(
     val coroutineScope = rememberCoroutineScope();
 
     val cocktails = listOf(
-        Cocktail(
-            id = "2",
-            image = "https://images.unsplash.com/photo-1712928247899-2932f4c7dea3?q=80&w=2071&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D",
-            createdAt = LocalDate.parse("2024-02-24").toString(),
-            ingredients = listOf(
-                CocktailIngredient(
-                    ingredient = "Glass",
-                    amount = "1",
-                ),
-                CocktailIngredient(
-                    ingredient = "Gin",
-                    amount = "1"
-                )
-            ),
+        CocktailCardInfo(
             name = "Gin & Tonic",
-            instructions = listOf("Put gin into the glass", "Drink it")
+            image = "https://plus.unsplash.com/premium_photo-1671647122910-3fa8ab4990cb?q=80&w=1976&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D"
         ),
-        Cocktail(
-            id = "1",
-            image = "https://images.unsplash.com/photo-1712928247899-2932f4c7dea3?q=80&w=2071&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D",
-            createdAt = LocalDate.parse("2024-02-24").toString(),
-            ingredients = listOf(
-                CocktailIngredient(
-                    ingredient = "Glass",
-                    amount = "1",
-                ),
-                CocktailIngredient(
-                    ingredient = "Gin",
-                    amount = "1"
-                )
+        CocktailCardInfo(
+            image = "https://images.unsplash.com/photo-1609951651556-5334e2706168?q=80&w=1974&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D",
+            name = "Margarita",
+
             ),
-            name = "Gin & Tonic",
-            instructions = listOf("Put gin into the glass", "Drink it")
-        ),
+        CocktailCardInfo(
+            name = "Nokishta711",
+            image = "https://images.unsplash.com/photo-1514362545857-3bc16c4c7d1b?q=80&w=2070&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D"
+        )
     )
-
-
     val sections = listOf(
         Section(
             cocktails = cocktails,

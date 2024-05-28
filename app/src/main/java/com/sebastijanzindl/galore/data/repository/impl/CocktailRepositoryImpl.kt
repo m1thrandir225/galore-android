@@ -45,7 +45,7 @@ class CocktailRepositoryImpl @Inject constructor(
         )
     }
 
-    override suspend fun getYourGeneratedCocktails(userId: String): List<UserMadeCocktail?> {
+    override suspend fun getYourGeneratedCocktails(userId: String): List<UserMadeCocktail> {
         return postgrest.from("user_created_cocktails")
             .select()
             {
