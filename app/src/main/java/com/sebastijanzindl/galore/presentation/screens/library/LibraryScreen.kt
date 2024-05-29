@@ -22,6 +22,7 @@ fun LibraryScreen(
     modifier: Modifier = Modifier,
     viewModel: LibraryScreenViewModel = hiltViewModel(),
     sharedSectionViewModel: SectionSharedViewModel = hiltViewModel(),
+    navigateToCocktailSection: () -> Unit,
 ) {
     val isLoading by viewModel.isLoading.collectAsState();
     val cocktails by viewModel.userMadeCocktails.collectAsState();
@@ -63,7 +64,10 @@ fun LibraryScreen(
                     cocktails = it.cocktails,
                     tagName = it.tagName,
                     cocktailCardType = CocktailCardType.Vertical,
-                    navigateToSection = {})
+                    navigateToSection = {
+                        sharedSectionViewModel.addSectionData(it.tagName, it.cocktails)
+                        navigateToCocktailSection()
+                    })
             }
         }
     }

@@ -10,6 +10,7 @@ import androidx.navigation.NavController
 import androidx.navigation.NavGraphBuilder
 import androidx.navigation.compose.composable
 import androidx.navigation.navigation
+import com.sebastijanzindl.galore.presentation.screens.cocktailSection.CocktailSectionScreen
 import com.sebastijanzindl.galore.presentation.screens.generateCocktail.GenerateCocktailScreen
 import com.sebastijanzindl.galore.presentation.screens.home.HomeScreen
 import com.sebastijanzindl.galore.presentation.screens.library.LibraryScreen
@@ -24,6 +25,9 @@ fun NavGraphBuilder.mainNavGraph(
         startDestination = AppScreen.Main.Home.route,
         route = AppScreen.Main.route
     ) {
+        fun navigateToCocktailSection() {
+            navController.navigate(AppScreen.Main.CocktailSection.route);
+        }
         composable(
             route = AppScreen.Main.Home.route,
             enterTransition = { slideIntoContainer(AnimatedContentTransitionScope.SlideDirection.Start, tween(700)) },
@@ -77,9 +81,25 @@ fun NavGraphBuilder.mainNavGraph(
             val sharedSectionViewModel: SectionSharedViewModel = it.sharedViewModel<SectionSharedViewModel>(navController = navController);
             LibraryScreen(
                 modifier = Modifier.padding(paddingValues),
-                sharedSectionViewModel = sharedSectionViewModel
+                sharedSectionViewModel = sharedSectionViewModel,
+                navigateToCocktailSection = { navigateToCocktailSection() }
             )
 
         }
+
+        composable(
+            route = AppScreen.Main.CocktailSection.route,
+            enterTransition = { slideIntoContainer(AnimatedContentTransitionScope.SlideDirection.Start, tween(700)) },
+            exitTransition = { slideOutOfContainer(AnimatedContentTransitionScope.SlideDirection.Start, tween(700)) },
+            popEnterTransition = { slideIntoContainer(AnimatedContentTransitionScope.SlideDirection.End, tween(700)) },
+            popExitTransition = { slideOutOfContainer(AnimatedContentTransitionScope.SlideDirection.End, tween(700)) }
+        ) {
+            val sharedSectionViewModel: SectionSharedViewModel = it.sharedViewModel<SectionSharedViewModel>(navController = navController);
+            CocktailSectionScreen(
+                modifier = Modifier.padding(paddingValues),
+                sharedSectionViewModel = sharedSectionViewModel
+            )
+        }
+
     }
 }
