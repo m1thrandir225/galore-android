@@ -80,11 +80,40 @@ fun TopAppBar(
                 openBottomSheet = openBottomSheet
             )
         }
+        AppScreen.Main.CocktailSection.route -> {
+            CocktailSectionGraphContent(
+                navigateBack = navigateBack,
+                scrollBehaviour = scrollBehaviour
+            )
+
+        }
         else -> {}
     }
 }
 
 
+@OptIn(ExperimentalMaterial3Api::class)
+@Composable
+private fun CocktailSectionGraphContent(
+    navigateBack: () -> Unit,
+    scrollBehaviour: TopAppBarScrollBehavior,
+) {
+    TopAppBar(
+        modifier = Modifier.fillMaxWidth(),
+        title = {
+                Text(text = "Cocktail's Overview")
+        },
+        navigationIcon = {
+            IconButton(onClick = navigateBack) {
+                Icon(
+                    imageVector = Icons.AutoMirrored.Filled.ArrowBack ,
+                    contentDescription = "Go Back Icon"
+                )
+            }
+        },
+        scrollBehavior = scrollBehaviour
+    )
+}
 
 @Composable
 @OptIn(ExperimentalMaterial3Api::class)
