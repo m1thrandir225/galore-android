@@ -34,7 +34,7 @@ fun CocktailSectionScreen (
             CocktailCard(
                 cocktail = cocktail,
                 onCardPress = {
-                    singleCocktailCardPress(cocktail.name)
+                    singleCocktailCardPress(cocktail.id)
                 },
                 cardType = CocktailCardType.Vertical
             )

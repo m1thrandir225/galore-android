@@ -111,7 +111,11 @@ private fun VerticalCocktailCardPreview() {
             instructions = listOf("Put gin into the glass", "Drink it")
         )
         CocktailCard(
-            cocktail = CocktailCardInfo(cocktail.image, cocktail.name),
+            cocktail = CocktailCardInfo(
+                id = cocktail.id,
+                image = cocktail.image,
+                name = cocktail.name
+            ),
             onCardPress = {},
         )
 
@@ -147,7 +151,11 @@ private fun HorizontalCocktailCardPreview() {
         )
         CocktailCard(
             cardType = CocktailCardType.Horizontal,
-            cocktail = CocktailCardInfo(cocktail.image, cocktail.name),
+            cocktail = CocktailCardInfo(
+                id = cocktail.id,
+                image = cocktail.image,
+                name = cocktail.name
+            ),
             onCardPress = {},
         )
 

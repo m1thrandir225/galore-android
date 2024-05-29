@@ -1,7 +1,7 @@
 package com.sebastijanzindl.galore.domain.usecase.impl
 
 import com.sebastijanzindl.galore.data.repository.CocktailRepository
-import com.sebastijanzindl.galore.domain.models.Cocktail
+import com.sebastijanzindl.galore.domain.models.GetSingleCocktailResponse
 import com.sebastijanzindl.galore.domain.usecase.GetSingleCocktailUseCase
 import io.ktor.client.call.body
 import kotlinx.coroutines.Dispatchers
@@ -16,9 +16,10 @@ class GetSingleCocktailUseCaseImpl @Inject constructor(
             val response = cocktailRepository.getSingleCocktailFromCocktailDb(input.id);
 
             if(response.status.value in 200..299) {
-                val body = response.body<Cocktail>()
-                GetSingleCocktailUseCase.Output(body)
+                val body = response.body<GetSingleCocktailResponse>()
+                GetSingleCocktailUseCase.Output(body.cocktail)
+            } else {
+                GetSingleCocktailUseCase.Output(null)
             }
-            GetSingleCocktailUseCase.Output(null)
         }
 }

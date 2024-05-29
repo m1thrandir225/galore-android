@@ -40,3 +40,9 @@ data class UserLikedCocktailsResponse(
     @SerialName("cocktails")
     val cocktails: List<Cocktail>
 )
+
+@Serializable
+data class GetSingleCocktailResponse(
+    @SerialName("cocktail")
+    val cocktail: Cocktail
+)

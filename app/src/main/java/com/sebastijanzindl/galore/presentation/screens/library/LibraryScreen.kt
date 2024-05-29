@@ -30,12 +30,14 @@ fun LibraryScreen(
 
     val customizedCocktails: List<CocktailCardInfo> = cocktails.map {
         CocktailCardInfo(
+            id = it.id,
             image = "https://radscxhkzslbyeslnepm.supabase.co/storage/v1/object/public/generated_cocktail_images/${it.image}",
             name = it.name
         )
     }
     val customizedLikedCocktails: List<CocktailCardInfo> = likedCocktails.map {
         CocktailCardInfo(
+            id = it.id,
             image = it.image,
             name = it.name
         )

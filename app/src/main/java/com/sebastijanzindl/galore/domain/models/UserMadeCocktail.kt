@@ -5,6 +5,8 @@ import kotlinx.serialization.Serializable
 
 @Serializable
 data class UserMadeCocktail(
+    @SerialName("id")
+    val id: String,
 
     @SerialName("name")
     val name: String,

@@ -1,23 +1,51 @@
 package com.sebastijanzindl.galore.presentation.screens.cocktailDetails
 
 import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.foundation.layout.padding
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
+import androidx.compose.runtime.collectAsState
+import androidx.compose.runtime.getValue
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.unit.dp
+import androidx.hilt.navigation.compose.hiltViewModel
+import com.sebastijanzindl.galore.presentation.component.LoadingSpinner
 
 @Composable
 fun CocktailDetailsScreen(
     modifier: Modifier = Modifier,
-    cocktailId: String?
+    cocktailId: String?,
+    viewModel: CocktailDetailsScreenViewModel = hiltViewModel()
 ) {
-    Column(
-        modifier = modifier
-    ) {
+    val isLoading by viewModel.isLoading.collectAsState();
+    val cocktail by viewModel.cocktail.collectAsState();
+
+    LaunchedEffect(cocktailId) {
         if(cocktailId != null) {
-            Text(text = "Cocktail Details")
-            Text(text = cocktailId)   
-        } else {
-            Text(text = "There was a problem")
+            viewModel.getCocktail(cocktailId)
         }
+    }
+
+
+    if(cocktailId == null) {
+        NotFound()
+    } else {
+        if(isLoading) {
+            LoadingSpinner(shouldShow = isLoading)
+        } else {
+            Column(modifier = modifier.fillMaxSize().padding(80.dp)) {
+             Text(text = cocktail?.name ?: "")
+            }
+        }
+    }
+
+}
+
+@Composable
+fun NotFound() {
+    Column (modifier = Modifier.fillMaxSize()) {
+        Text(text = "Cocktail not found")
     }
 }
