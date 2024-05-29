@@ -1,5 +1,6 @@
 package com.sebastijanzindl.galore.presentation.component
 
+import android.os.Bundle
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxWidth
@@ -25,7 +26,8 @@ fun TopAppBar(
     scrollBehaviour: TopAppBarScrollBehavior,
     openBottomSheet: () -> Unit,
     navigateBack: () -> Unit,
-    currentRoute: String?
+    currentRoute: String?,
+    arguments: Bundle?
 ) {
     when (currentRoute) {
         AppScreen.Settings.SettingsOverview.route -> {
@@ -81,11 +83,12 @@ fun TopAppBar(
             )
         }
         AppScreen.Main.CocktailSection.route -> {
+            val title = arguments?.getString("section-title")!!;
             CocktailSectionGraphContent(
                 navigateBack = navigateBack,
-                scrollBehaviour = scrollBehaviour
+                scrollBehaviour = scrollBehaviour,
+                title = title
             )
-
         }
         else -> {}
     }
@@ -97,11 +100,12 @@ fun TopAppBar(
 private fun CocktailSectionGraphContent(
     navigateBack: () -> Unit,
     scrollBehaviour: TopAppBarScrollBehavior,
+    title: String?,
 ) {
     TopAppBar(
         modifier = Modifier.fillMaxWidth(),
         title = {
-                Text(text = "Cocktail's Overview")
+                Text(text = title ?: "")
         },
         navigationIcon = {
             IconButton(onClick = navigateBack) {

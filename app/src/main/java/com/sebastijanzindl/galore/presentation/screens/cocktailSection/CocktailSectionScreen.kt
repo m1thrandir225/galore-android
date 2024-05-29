@@ -19,7 +19,8 @@ import com.sebastijanzindl.galore.presentation.viewmodels.SectionSharedViewModel
 @Composable
 fun CocktailSectionScreen (
     modifier: Modifier = Modifier,
-    sharedSectionViewModel: SectionSharedViewModel = hiltViewModel()
+    sharedSectionViewModel: SectionSharedViewModel = hiltViewModel(),
+    singleCocktailCardPress: (cocktailId: String) -> Unit
 ) {
     val sectionName by sharedSectionViewModel.sectionName.collectAsState();
     val cocktails by sharedSectionViewModel.cocktails.collectAsState();
@@ -27,13 +28,15 @@ fun CocktailSectionScreen (
     LazyVerticalGrid(
         columns = GridCells.Fixed(2),
         modifier = modifier.fillMaxSize().padding(horizontal = 24.dp, vertical = 10.dp),
-        horizontalArrangement = Arrangement.spacedBy(8.dp),
-        verticalArrangement = Arrangement.spacedBy(12.dp)
+        horizontalArrangement = Arrangement.spacedBy(16.dp),
+        verticalArrangement = Arrangement.spacedBy(16.dp)
     ) {
         items(cocktails) { cocktail ->
             CocktailCard(
                 cocktail = cocktail,
-                onCardPress = {},
+                onCardPress = {
+                    singleCocktailCardPress(cocktail.name)
+                },
                 cardType = CocktailCardType.Vertical
             )
         }

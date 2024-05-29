@@ -10,6 +10,7 @@ import androidx.navigation.NavController
 import androidx.navigation.NavGraphBuilder
 import androidx.navigation.compose.composable
 import androidx.navigation.navigation
+import com.sebastijanzindl.galore.presentation.screens.cocktailDetails.CocktailDetailsScreen
 import com.sebastijanzindl.galore.presentation.screens.cocktailSection.CocktailSectionScreen
 import com.sebastijanzindl.galore.presentation.screens.generateCocktail.GenerateCocktailScreen
 import com.sebastijanzindl.galore.presentation.screens.home.HomeScreen
@@ -25,8 +26,19 @@ fun NavGraphBuilder.mainNavGraph(
         startDestination = AppScreen.Main.Home.route,
         route = AppScreen.Main.route
     ) {
-        fun navigateToCocktailSection() {
-            navController.navigate(AppScreen.Main.CocktailSection.route);
+        fun navigateToCocktailSection(sectionTitle: String) {
+            navController.navigate(AppScreen.Main.CocktailSection.route.replace(
+                oldValue = "{section-title}",
+                newValue = sectionTitle
+                )
+            );
+
+        }
+        fun navigateToCocktailDetailed(cocktailId: String) {
+            navController.navigate(AppScreen.Main.CocktailDetails.route.replace(
+                oldValue = "{cocktail-id}",
+                newValue = cocktailId
+            ))
         }
         composable(
             route = AppScreen.Main.Home.route,
@@ -82,7 +94,7 @@ fun NavGraphBuilder.mainNavGraph(
             LibraryScreen(
                 modifier = Modifier.padding(paddingValues),
                 sharedSectionViewModel = sharedSectionViewModel,
-                navigateToCocktailSection = { navigateToCocktailSection() }
+                navigateToCocktailSection = { title -> navigateToCocktailSection(title) }
             )
 
         }
@@ -97,7 +109,22 @@ fun NavGraphBuilder.mainNavGraph(
             val sharedSectionViewModel: SectionSharedViewModel = it.sharedViewModel<SectionSharedViewModel>(navController = navController);
             CocktailSectionScreen(
                 modifier = Modifier.padding(paddingValues),
-                sharedSectionViewModel = sharedSectionViewModel
+                sharedSectionViewModel = sharedSectionViewModel,
+                singleCocktailCardPress = { id ->  navigateToCocktailDetailed(id)}
+            )
+        }
+
+        composable(
+            route = AppScreen.Main.CocktailDetails.route,
+            enterTransition = { slideIntoContainer(AnimatedContentTransitionScope.SlideDirection.Start, tween(700)) },
+            exitTransition = { slideOutOfContainer(AnimatedContentTransitionScope.SlideDirection.Start, tween(700)) },
+            popEnterTransition = { slideIntoContainer(AnimatedContentTransitionScope.SlideDirection.End, tween(700)) },
+            popExitTransition = { slideOutOfContainer(AnimatedContentTransitionScope.SlideDirection.End, tween(700)) }
+        ) {
+            val cocktailId = it.arguments?.getString("cocktail-id");
+            CocktailDetailsScreen(
+                modifier = Modifier.padding(paddingValues),
+                cocktailId = cocktailId
             )
         }
 

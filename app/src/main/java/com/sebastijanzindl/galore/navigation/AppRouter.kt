@@ -35,9 +35,9 @@ private object  Routes {
     const val GENERATE = "generate"
     const val LIBRARY = "library"
 
-    const val COCKTAIL_SECTION ="cocktail-section"
+    const val COCKTAIL_SECTION ="cocktail-section/{section-title}"
 
-    const val  COCKTAIL_DETAILS= "cocktailDetail/${ArgParams.COCKTAIL_ID}"
+    const val  COCKTAIL_DETAILS= "cocktailDetail/{cocktail-id}"
 
     /**
      * Settings Graph Routes
@@ -52,10 +52,6 @@ private object  Routes {
     const val TERMS_AND_CONDITIONS = "terms-and-conditions"
 }
 
-private object ArgParams {
-    const val COCKTAIL_ID ="cocktail_id"
-    fun toPath(param: String) = "{${param}}"
-}
 
 sealed class BottomBarDesination (
     val route: String,
@@ -105,13 +101,18 @@ sealed class AppScreen(val route: String, val navArguments: List<NamedNavArgumen
             unselectedIconResource = R.drawable.book_24px
         )
         object CocktailDetails : AppScreen(Routes.COCKTAIL_DETAILS, navArguments = listOf(
-            navArgument(ArgParams.COCKTAIL_ID) {
+            navArgument("cocktail-id") {
                 type = NavType.Companion.StringType
             }
         ));
 
         object CocktailSection: AppScreen(
             route = Routes.COCKTAIL_SECTION,
+            navArguments = listOf(
+                navArgument("section-title") {
+                    type = NavType.Companion.StringType
+                }
+            )
         )
     }
     object Settings : AppScreen(Routes.SETTINGS) {

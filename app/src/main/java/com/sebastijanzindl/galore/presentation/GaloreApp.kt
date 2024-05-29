@@ -98,6 +98,8 @@ fun GaloreApp(
 
     val currentRoute = navBackStackEntry?.destination?.route;
 
+    val routeArguments = navBackStackEntry?.arguments
+
     when(currentRoute) {
         AppScreen.Main.Home.route,
         AppScreen.Main.Search.route,
@@ -136,7 +138,8 @@ fun GaloreApp(
                         navigateBack = {
                             navController.popBackStack()
                         },
-                        currentRoute = currentRoute
+                        currentRoute = currentRoute,
+                        arguments = routeArguments
                     )
                 }
             },
