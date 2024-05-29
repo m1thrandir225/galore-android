@@ -35,6 +35,8 @@ private object  Routes {
     const val GENERATE = "generate"
     const val LIBRARY = "library"
 
+    const val COCKTAIL_SECTION ="cocktail-section"
+
     const val  COCKTAIL_DETAILS= "cocktailDetail/${ArgParams.COCKTAIL_ID}"
 
     /**
@@ -107,6 +109,10 @@ sealed class AppScreen(val route: String, val navArguments: List<NamedNavArgumen
                 type = NavType.Companion.StringType
             }
         ));
+
+        object CocktailSection: AppScreen(
+            route = Routes.COCKTAIL_SECTION,
+        )
     }
     object Settings : AppScreen(Routes.SETTINGS) {
 

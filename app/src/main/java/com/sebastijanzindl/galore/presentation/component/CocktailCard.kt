@@ -3,6 +3,7 @@ package com.sebastijanzindl.galore.presentation.component
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
+import androidx.compose.foundation.layout.fillMaxHeight
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
@@ -46,7 +47,7 @@ fun CocktailCard (
 
     OutlinedCard(
         onClick = onCardPress,
-        modifier = modifier.width(cardType.value)
+        modifier = modifier.width(cardType.value).fillMaxHeight()
     ) {
         AsyncImage(
             modifier = Modifier.fillMaxWidth()
@@ -73,7 +74,7 @@ fun CocktailCard (
             ) {
                 Text(
                     text = cocktail.name,
-                    style = MaterialTheme.typography.bodyLarge,
+                    style = MaterialTheme.typography.bodyMedium,
                     color = MaterialTheme.colorScheme.onSurface
                 )
             }

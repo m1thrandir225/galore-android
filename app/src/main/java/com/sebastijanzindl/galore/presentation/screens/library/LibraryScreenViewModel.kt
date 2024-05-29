@@ -20,7 +20,7 @@ class LibraryScreenViewModel @Inject constructor(
     private val userLikedCocktailsUseCase: GetUserLikedCocktailsUseCase
 ) : ViewModel() {
 
-    private val _isLoading = MutableStateFlow<Boolean>(false);
+private val _isLoading = MutableStateFlow<Boolean>(false);
     val isLoading = _isLoading.asStateFlow();
 
     private val _userMadeCocktails = MutableStateFlow<List<UserMadeCocktail>>(emptyList())

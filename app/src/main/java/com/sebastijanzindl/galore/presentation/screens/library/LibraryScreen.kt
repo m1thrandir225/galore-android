@@ -15,11 +15,13 @@ import com.sebastijanzindl.galore.domain.models.Section
 import com.sebastijanzindl.galore.presentation.component.CocktailCardType
 import com.sebastijanzindl.galore.presentation.component.CocktailTagSection
 import com.sebastijanzindl.galore.presentation.component.LoadingSpinner
+import com.sebastijanzindl.galore.presentation.viewmodels.SectionSharedViewModel
 
 @Composable
 fun LibraryScreen(
     modifier: Modifier = Modifier,
-    viewModel: LibraryScreenViewModel = hiltViewModel()
+    viewModel: LibraryScreenViewModel = hiltViewModel(),
+    sharedSectionViewModel: SectionSharedViewModel = hiltViewModel(),
 ) {
     val isLoading by viewModel.isLoading.collectAsState();
     val cocktails by viewModel.userMadeCocktails.collectAsState();
@@ -37,8 +39,6 @@ fun LibraryScreen(
             name = it.name
         )
     }
-
-    println(likedCocktails)
 
     val sections: List<Section> = listOf(
         Section(

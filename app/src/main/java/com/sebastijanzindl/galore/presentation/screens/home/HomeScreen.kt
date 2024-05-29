@@ -14,6 +14,7 @@ import com.sebastijanzindl.galore.domain.models.Section
 import com.sebastijanzindl.galore.presentation.component.CocktailCardType
 import com.sebastijanzindl.galore.presentation.component.CocktailTagSection
 import com.sebastijanzindl.galore.presentation.viewmodels.ProfileSharedViewModel
+import com.sebastijanzindl.galore.presentation.viewmodels.SectionSharedViewModel
 
 @OptIn(ExperimentalMaterial3Api::class, ExperimentalFoundationApi::class)
 @Composable
@@ -21,6 +22,7 @@ fun HomeScreen(
     modifier: Modifier = Modifier,
     viewModel: HomeScreenViewModel = hiltViewModel(),
     userProfileSharedViewModel: ProfileSharedViewModel = hiltViewModel(),
+    sharedSectionViewModel: SectionSharedViewModel = hiltViewModel(),
     navController: NavController
 ) {
     val coroutineScope = rememberCoroutineScope();

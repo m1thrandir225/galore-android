@@ -14,6 +14,7 @@ import com.sebastijanzindl.galore.presentation.screens.generateCocktail.Generate
 import com.sebastijanzindl.galore.presentation.screens.home.HomeScreen
 import com.sebastijanzindl.galore.presentation.screens.library.LibraryScreen
 import com.sebastijanzindl.galore.presentation.screens.search.SearchScreen
+import com.sebastijanzindl.galore.presentation.viewmodels.SectionSharedViewModel
 
 fun NavGraphBuilder.mainNavGraph(
     navController: NavController,
@@ -30,9 +31,11 @@ fun NavGraphBuilder.mainNavGraph(
             popEnterTransition = { slideIntoContainer(AnimatedContentTransitionScope.SlideDirection.End, tween(700)) },
             popExitTransition = { slideOutOfContainer(AnimatedContentTransitionScope.SlideDirection.End, tween(700)) }
         ) {
+            val sharedSectionViewModel: SectionSharedViewModel = it.sharedViewModel<SectionSharedViewModel>(navController = navController);
             HomeScreen(
                 modifier = Modifier.padding(paddingValues),
-                navController = navController
+                navController = navController,
+                sharedSectionViewModel = sharedSectionViewModel
             )
         }
 
@@ -43,8 +46,11 @@ fun NavGraphBuilder.mainNavGraph(
             popEnterTransition = { slideIntoContainer(AnimatedContentTransitionScope.SlideDirection.End, tween(700)) },
             popExitTransition = { slideOutOfContainer(AnimatedContentTransitionScope.SlideDirection.End, tween(700)) }
         ) {
+            val sharedSectionViewModel: SectionSharedViewModel = it.sharedViewModel<SectionSharedViewModel>(navController = navController);
             SearchScreen(
-               modifier = Modifier.padding(paddingValues).fillMaxSize()
+               modifier = Modifier
+                   .padding(paddingValues)
+                   .fillMaxSize()
             )
         }
 
@@ -56,7 +62,9 @@ fun NavGraphBuilder.mainNavGraph(
             popExitTransition = { slideOutOfContainer(AnimatedContentTransitionScope.SlideDirection.End, tween(700)) }
         ) {
             GenerateCocktailScreen(
-                modifier = Modifier.padding(paddingValues).fillMaxSize()
+                modifier = Modifier
+                    .padding(paddingValues)
+                    .fillMaxSize()
             )
         }
         composable(
@@ -66,8 +74,10 @@ fun NavGraphBuilder.mainNavGraph(
             popEnterTransition = { slideIntoContainer(AnimatedContentTransitionScope.SlideDirection.End, tween(700)) },
             popExitTransition = { slideOutOfContainer(AnimatedContentTransitionScope.SlideDirection.End, tween(700)) }
         ) {
+            val sharedSectionViewModel: SectionSharedViewModel = it.sharedViewModel<SectionSharedViewModel>(navController = navController);
             LibraryScreen(
-                modifier = Modifier.padding(paddingValues)
+                modifier = Modifier.padding(paddingValues),
+                sharedSectionViewModel = sharedSectionViewModel
             )
 
         }
