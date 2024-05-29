@@ -50,7 +50,8 @@ fun LibraryScreen(
         ),
         Section(
             cocktails = customizedCocktails,
-            tagName = "Your Generated Cocktails"
+            tagName = "Your Generated Cocktails",
+            generatedCocktailsSection = true
         )
     )
 
@@ -67,9 +68,14 @@ fun LibraryScreen(
                     tagName = it.tagName,
                     cocktailCardType = CocktailCardType.Vertical,
                     navigateToSection = {
-                        sharedSectionViewModel.addSectionData(it.tagName, it.cocktails)
+                        sharedSectionViewModel.addSectionData(
+                            it.tagName,
+                            it.cocktails,
+                            it.generatedCocktailsSection
+                        )
                         navigateToCocktailSection(it.tagName)
-                    })
+                    }
+                )
             }
         }
     }

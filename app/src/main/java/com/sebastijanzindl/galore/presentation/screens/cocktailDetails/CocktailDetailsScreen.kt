@@ -16,31 +16,23 @@ import com.sebastijanzindl.galore.presentation.component.LoadingSpinner
 @Composable
 fun CocktailDetailsScreen(
     modifier: Modifier = Modifier,
-    cocktailId: String?,
+    cocktailId: String,
     viewModel: CocktailDetailsScreenViewModel = hiltViewModel()
 ) {
     val isLoading by viewModel.isLoading.collectAsState();
     val cocktail by viewModel.cocktail.collectAsState();
 
     LaunchedEffect(cocktailId) {
-        if(cocktailId != null) {
             viewModel.getCocktail(cocktailId)
-        }
     }
 
-
-    if(cocktailId == null) {
-        NotFound()
+    if(isLoading) {
+        LoadingSpinner(shouldShow = isLoading)
     } else {
-        if(isLoading) {
-            LoadingSpinner(shouldShow = isLoading)
-        } else {
-            Column(modifier = modifier.fillMaxSize().padding(80.dp)) {
-             Text(text = cocktail?.name ?: "")
-            }
+        Column(modifier = modifier.fillMaxSize().padding(80.dp)) {
+         Text(text = cocktail?.name ?: "")
         }
     }
-
 }
 
 @Composable

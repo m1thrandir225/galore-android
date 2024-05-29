@@ -43,6 +43,8 @@ fun CocktailCard (
     cardType: CocktailCardType = CocktailCardType.Vertical,
     cocktail: CocktailCardInfo,
     onCardPress: () -> Unit,
+    cocktailIsGenerated: Boolean = false
+
 ) {
 
     OutlinedCard(

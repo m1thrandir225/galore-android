@@ -37,7 +37,8 @@ private object  Routes {
 
     const val COCKTAIL_SECTION ="cocktail-section/{section-title}"
 
-    const val  COCKTAIL_DETAILS= "cocktailDetail/{cocktail-id}"
+    const val COCKTAIL_DETAILS= "cocktail/{cocktail-id}"
+    const val GENERATED_COCKTAIL_DETAILS ="generated-cocktail/{cocktail-id}"
 
     /**
      * Settings Graph Routes
@@ -105,6 +106,15 @@ sealed class AppScreen(val route: String, val navArguments: List<NamedNavArgumen
                 type = NavType.Companion.StringType
             }
         ));
+
+        object GeneratedCocktailDetails : AppScreen(
+            Routes.GENERATED_COCKTAIL_DETAILS,
+            navArguments = listOf(
+                navArgument("cocktail-id") {
+                    type = NavType.Companion.StringType
+                }
+            )
+        )
 
         object CocktailSection: AppScreen(
             route = Routes.COCKTAIL_SECTION,

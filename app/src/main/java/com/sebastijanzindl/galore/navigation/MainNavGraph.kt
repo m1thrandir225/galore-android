@@ -13,6 +13,7 @@ import androidx.navigation.navigation
 import com.sebastijanzindl.galore.presentation.screens.cocktailDetails.CocktailDetailsScreen
 import com.sebastijanzindl.galore.presentation.screens.cocktailSection.CocktailSectionScreen
 import com.sebastijanzindl.galore.presentation.screens.generateCocktail.GenerateCocktailScreen
+import com.sebastijanzindl.galore.presentation.screens.generatedCocktailDetails.GeneratedCocktailDetailsScreen
 import com.sebastijanzindl.galore.presentation.screens.home.HomeScreen
 import com.sebastijanzindl.galore.presentation.screens.library.LibraryScreen
 import com.sebastijanzindl.galore.presentation.screens.search.SearchScreen
@@ -32,14 +33,21 @@ fun NavGraphBuilder.mainNavGraph(
                 newValue = sectionTitle
                 )
             );
-
         }
-        fun navigateToCocktailDetailed(cocktailId: String) {
+        fun navigateToCocktailDetails(cocktailId: String) {
             navController.navigate(AppScreen.Main.CocktailDetails.route.replace(
                 oldValue = "{cocktail-id}",
                 newValue = cocktailId
             ))
         }
+
+        fun navigateToGeneratedCocktailDetails(cocktailId: String) {
+            navController.navigate(AppScreen.Main.GeneratedCocktailDetails.route.replace(
+                oldValue = "{cocktail-id}",
+                newValue = cocktailId
+            ))
+        }
+
         composable(
             route = AppScreen.Main.Home.route,
             enterTransition = { slideIntoContainer(AnimatedContentTransitionScope.SlideDirection.Start, tween(700)) },
@@ -54,7 +62,6 @@ fun NavGraphBuilder.mainNavGraph(
                 sharedSectionViewModel = sharedSectionViewModel
             )
         }
-
         composable(
             route = AppScreen.Main.Search.route,
             enterTransition = { slideIntoContainer(AnimatedContentTransitionScope.SlideDirection.Start, tween(700)) },
@@ -69,7 +76,6 @@ fun NavGraphBuilder.mainNavGraph(
                    .fillMaxSize()
             )
         }
-
         composable(
             route = AppScreen.Main.Generate.route,
             enterTransition = { slideIntoContainer(AnimatedContentTransitionScope.SlideDirection.Start, tween(700)) },
@@ -96,9 +102,7 @@ fun NavGraphBuilder.mainNavGraph(
                 sharedSectionViewModel = sharedSectionViewModel,
                 navigateToCocktailSection = { title -> navigateToCocktailSection(title) }
             )
-
         }
-
         composable(
             route = AppScreen.Main.CocktailSection.route,
             enterTransition = { slideIntoContainer(AnimatedContentTransitionScope.SlideDirection.Start, tween(700)) },
@@ -110,10 +114,10 @@ fun NavGraphBuilder.mainNavGraph(
             CocktailSectionScreen(
                 modifier = Modifier.padding(paddingValues),
                 sharedSectionViewModel = sharedSectionViewModel,
-                singleCocktailCardPress = { id ->  navigateToCocktailDetailed(id)}
+                singleCocktailCardPress = { id ->  navigateToCocktailDetails(id)},
+                generatedCocktailCardPress = { id -> navigateToGeneratedCocktailDetails(id)}
             )
         }
-
         composable(
             route = AppScreen.Main.CocktailDetails.route,
             enterTransition = { slideIntoContainer(AnimatedContentTransitionScope.SlideDirection.Start, tween(700)) },
@@ -121,12 +125,24 @@ fun NavGraphBuilder.mainNavGraph(
             popEnterTransition = { slideIntoContainer(AnimatedContentTransitionScope.SlideDirection.End, tween(700)) },
             popExitTransition = { slideOutOfContainer(AnimatedContentTransitionScope.SlideDirection.End, tween(700)) }
         ) {
-            val cocktailId = it.arguments?.getString("cocktail-id");
+            val cocktailId = it.arguments?.getString("cocktail-id")!!;
             CocktailDetailsScreen(
                 modifier = Modifier.padding(paddingValues),
                 cocktailId = cocktailId
             )
         }
-
+        composable (
+            route = AppScreen.Main.GeneratedCocktailDetails.route,
+            enterTransition = { slideIntoContainer(AnimatedContentTransitionScope.SlideDirection.Start, tween(700)) },
+            exitTransition = { slideOutOfContainer(AnimatedContentTransitionScope.SlideDirection.Start, tween(700)) },
+            popEnterTransition = { slideIntoContainer(AnimatedContentTransitionScope.SlideDirection.End, tween(700)) },
+            popExitTransition = { slideOutOfContainer(AnimatedContentTransitionScope.SlideDirection.End, tween(700)) }
+        ) {
+            val cocktailId = it.arguments?.getString("cocktail-id")!!;
+            GeneratedCocktailDetailsScreen(
+                modifier = Modifier.padding(paddingValues),
+                cocktailId = cocktailId
+            )
+        }
     }
 }
