@@ -52,3 +52,9 @@ data class UserMadeCocktailInstruction(
     val instructionImage: String
 )
 
+
+@Serializable
+data class GetSingleGeneratedCocktailResponse(
+    @SerialName("cocktail")
+    val cocktail: UserMadeCocktail
+)

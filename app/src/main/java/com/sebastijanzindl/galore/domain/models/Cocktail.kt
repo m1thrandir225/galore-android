@@ -46,3 +46,4 @@ data class GetSingleCocktailResponse(
     @SerialName("cocktail")
     val cocktail: Cocktail
 )
+
