@@ -24,7 +24,6 @@ fun CocktailSectionScreen (
 ) {
     val sectionName by sharedSectionViewModel.sectionName.collectAsState();
     val cocktails by sharedSectionViewModel.cocktails.collectAsState();
-
     LazyVerticalGrid(
         columns = GridCells.Fixed(2),
         modifier = modifier.fillMaxSize().padding(horizontal = 24.dp, vertical = 10.dp),

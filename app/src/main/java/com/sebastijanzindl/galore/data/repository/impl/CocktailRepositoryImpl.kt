@@ -20,14 +20,6 @@ class CocktailRepositoryImpl @Inject constructor(
     override suspend fun getAllCocktails(): List<Cocktail?> {
         return postgrest.from("cocktails").select().decodeList<Cocktail>()
     }
-    override suspend fun getSingleCocktail(cocktailName: String): Cocktail? {
-        return postgrest.from("cocktails")
-            .select() {
-                filter {
-                    eq("name", cocktailName)
-                }
-            }.decodeSingleOrNull<Cocktail>()
-    }
 
     override suspend fun generateCocktail(prompt: String, authorizationToken: String): GenerateCocktailResponse? {
         return honoService.generateCocktail(
@@ -59,6 +51,15 @@ class CocktailRepositoryImpl @Inject constructor(
     override suspend fun getLikedCocktails(): HttpResponse {
         return edgeFunctions.invoke(
             function = "get-user-liked-cocktails"
+        )
+    }
+
+    override suspend fun getSingleCocktailFromCocktailDb(id: String): HttpResponse {
+        return edgeFunctions.invoke(
+            function = "get-api-cocktail",
+            body = buildJsonObject {
+                put("cocktailId", id)
+            }
         )
     }
 }

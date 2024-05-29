@@ -7,7 +7,6 @@ import io.ktor.client.statement.HttpResponse
 
 interface CocktailRepository {
   suspend fun getAllCocktails(): List<Cocktail?>
-  suspend fun getSingleCocktail(cocktailName: String): Cocktail?
 
   suspend fun generateCocktail(prompt: String, authorizationToken: String): GenerateCocktailResponse?
 
@@ -16,4 +15,6 @@ interface CocktailRepository {
   suspend fun getYourGeneratedCocktails(userId: String): List<UserMadeCocktail>
 
   suspend fun getLikedCocktails(): HttpResponse
+
+  suspend fun getSingleCocktailFromCocktailDb(id: String): HttpResponse
 }
