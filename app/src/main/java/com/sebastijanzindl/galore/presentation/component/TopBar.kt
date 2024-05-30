@@ -76,7 +76,8 @@ fun TopAppBar(
         AppScreen.Main.Search.route,
         AppScreen.Main.Library.route,
         AppScreen.Main.Generate.route,
-        AppScreen.Main.CocktailDetails.route -> {
+        AppScreen.Main.CocktailDetails.route,
+        AppScreen.Main.GeneratedCocktailDetails.route -> {
             MainGraphContent(
                 scrollBehaviour = scrollBehaviour,
                 openBottomSheet = openBottomSheet

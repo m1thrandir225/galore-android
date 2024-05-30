@@ -44,7 +44,6 @@ fun LibraryScreen(
             name = it.name
         )
     }
-
     val sections: List<Section> = listOf(
         Section(
             cocktails = customizedLikedCocktails,

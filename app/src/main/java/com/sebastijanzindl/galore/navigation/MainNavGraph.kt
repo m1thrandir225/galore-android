@@ -13,10 +13,14 @@ import androidx.navigation.navigation
 import com.sebastijanzindl.galore.presentation.screens.cocktailDetails.CocktailDetailsScreen
 import com.sebastijanzindl.galore.presentation.screens.cocktailSection.CocktailSectionScreen
 import com.sebastijanzindl.galore.presentation.screens.generateCocktail.GenerateCocktailScreen
+import com.sebastijanzindl.galore.presentation.screens.generateCocktailLoading.GenerateLoadingScreen
+import com.sebastijanzindl.galore.presentation.screens.generateCocktailSelectCocktails.GenerateSelectCocktailsScreen
+import com.sebastijanzindl.galore.presentation.screens.generateCocktailSelectFlavours.GenerateSelectFlavoursScreen
 import com.sebastijanzindl.galore.presentation.screens.generatedCocktailDetails.GeneratedCocktailDetailsScreen
 import com.sebastijanzindl.galore.presentation.screens.home.HomeScreen
 import com.sebastijanzindl.galore.presentation.screens.library.LibraryScreen
 import com.sebastijanzindl.galore.presentation.screens.search.SearchScreen
+import com.sebastijanzindl.galore.presentation.viewmodels.GenerateCocktailViewModel
 import com.sebastijanzindl.galore.presentation.viewmodels.SectionSharedViewModel
 
 fun NavGraphBuilder.mainNavGraph(
@@ -47,6 +51,23 @@ fun NavGraphBuilder.mainNavGraph(
                 newValue = cocktailId
             ))
         }
+
+        fun navigateToSelectFlavourScreen() {
+            navController.navigate(AppScreen.Main.GenerateSelectFlavours.route);
+        }
+        fun navigateToGenerateSelectCocktailsScreen() {
+            navController.navigate(AppScreen.Main.GenerateSelectCocktails.route)
+        }
+
+        fun navigateToGenerateLoadingScreen() {
+            navController.navigate(AppScreen.Main.GenerateLoading.route);
+        }
+
+        fun navigateBack() {
+            navController.popBackStack()
+        }
+
+
 
         composable(
             route = AppScreen.Main.Home.route,
@@ -86,7 +107,55 @@ fun NavGraphBuilder.mainNavGraph(
             GenerateCocktailScreen(
                 modifier = Modifier
                     .padding(paddingValues)
-                    .fillMaxSize()
+                    .fillMaxSize(),
+                navigateToSelectFlavourScreen = { navigateToSelectFlavourScreen() }
+            )
+        }
+        /**
+         * Generate Cocktail Form
+         */
+        composable(
+            route = AppScreen.Main.GenerateSelectFlavours.route,
+            enterTransition = { slideIntoContainer(AnimatedContentTransitionScope.SlideDirection.Start, tween(700)) },
+            exitTransition = { slideOutOfContainer(AnimatedContentTransitionScope.SlideDirection.Start, tween(700)) },
+            popEnterTransition = { slideIntoContainer(AnimatedContentTransitionScope.SlideDirection.End, tween(700)) },
+            popExitTransition = { slideOutOfContainer(AnimatedContentTransitionScope.SlideDirection.End, tween(700)) }
+        ) {
+            val sharedGenerateCocktailViewModel: GenerateCocktailViewModel = it.sharedViewModel<GenerateCocktailViewModel>(navController = navController)
+            GenerateSelectFlavoursScreen(
+                modifier =  Modifier.padding(paddingValues),
+                sharedGenerateCocktailViewModel = sharedGenerateCocktailViewModel,
+                navigateToSelectCocktailsScreen = { navigateToGenerateSelectCocktailsScreen() },
+                goBack = { navigateBack() }
+            )
+        }
+        composable(
+            route = AppScreen.Main.GenerateSelectCocktails.route,
+            enterTransition = { slideIntoContainer(AnimatedContentTransitionScope.SlideDirection.Start, tween(700)) },
+            exitTransition = { slideOutOfContainer(AnimatedContentTransitionScope.SlideDirection.Start, tween(700)) },
+            popEnterTransition = { slideIntoContainer(AnimatedContentTransitionScope.SlideDirection.End, tween(700)) },
+            popExitTransition = { slideOutOfContainer(AnimatedContentTransitionScope.SlideDirection.End, tween(700)) }
+        ) {
+            val sharedGenerateCocktailViewModel: GenerateCocktailViewModel = it.sharedViewModel<GenerateCocktailViewModel>(navController = navController)
+            GenerateSelectCocktailsScreen(
+                modifier = Modifier.padding(paddingValues),
+                sharedGenerateCocktailViewModel = sharedGenerateCocktailViewModel,
+                navigateToGenerateLoadingScreen = { navigateToGenerateLoadingScreen() },
+                goBack = { navigateBack() }
+            )
+        }
+        composable(
+            route = AppScreen.Main.GenerateLoading.route,
+            enterTransition = { slideIntoContainer(AnimatedContentTransitionScope.SlideDirection.Start, tween(700)) },
+            exitTransition = { slideOutOfContainer(AnimatedContentTransitionScope.SlideDirection.Start, tween(700)) },
+            popEnterTransition = { slideIntoContainer(AnimatedContentTransitionScope.SlideDirection.End, tween(700)) },
+            popExitTransition = { slideOutOfContainer(AnimatedContentTransitionScope.SlideDirection.End, tween(700)) }
+        ) {
+            val sharedGenerateCocktailViewModel: GenerateCocktailViewModel = it.sharedViewModel<GenerateCocktailViewModel>(navController = navController)
+            GenerateLoadingScreen(
+                modifier = Modifier.padding(paddingValues),
+                sharedGenerateCocktailViewModel = sharedGenerateCocktailViewModel,
+                navigateToGenerateCocktailDetailsScreen = { id -> navigateToGeneratedCocktailDetails(id) }
             )
         }
         composable(

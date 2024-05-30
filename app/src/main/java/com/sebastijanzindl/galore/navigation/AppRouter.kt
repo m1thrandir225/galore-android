@@ -40,6 +40,10 @@ private object  Routes {
     const val COCKTAIL_DETAILS= "cocktail/{cocktail-id}"
     const val GENERATED_COCKTAIL_DETAILS ="generated-cocktail/{cocktail-id}"
 
+    const val GENERATE_SELECT_FLAVOURS = "generate/flavours"
+    const val GENERATE_SELECT_COCKTAILS = "generate/cocktails"
+    const val GENERATE_WAITING = "generate/waiting"
+
     /**
      * Settings Graph Routes
      */
@@ -95,6 +99,19 @@ sealed class AppScreen(val route: String, val navArguments: List<NamedNavArgumen
             selectedIconResource = R.drawable.sparkles_filled,
             unselectedIconResource = R.drawable.sparkles,
         )
+
+        object GenerateSelectFlavours : AppScreen(
+            Routes.GENERATE_SELECT_FLAVOURS
+        )
+
+        object GenerateSelectCocktails : AppScreen (
+            Routes.GENERATE_SELECT_COCKTAILS
+        )
+
+        object GenerateLoading : AppScreen (
+            Routes.GENERATE_WAITING
+        )
+
         object Library : BottomBarDesination(
             route = Routes.LIBRARY,
             title = "Library",

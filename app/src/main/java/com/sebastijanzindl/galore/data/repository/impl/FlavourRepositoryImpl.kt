@@ -4,8 +4,9 @@ import com.sebastijanzindl.galore.data.repository.FlavourRepository
 import com.sebastijanzindl.galore.domain.models.Flavour
 import io.github.jan.supabase.postgrest.Postgrest
 import io.github.jan.supabase.postgrest.query.Columns
+import javax.inject.Inject
 
-class FlavourRepositoryImpl(
+class FlavourRepositoryImpl @Inject constructor(
     private val postgrest: Postgrest
 ): FlavourRepository {
     override suspend fun getAllFlavours(): List<Flavour> {

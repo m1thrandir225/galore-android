@@ -12,10 +12,11 @@ class GetAllFlavoursUseCaseImpl @Inject constructor(
     override suspend fun execute(input: GetAllFlavoursUseCase.Input): GetAllFlavoursUseCase.Output =
         withContext(Dispatchers.IO) {
             val result = flavourRepository.getAllFlavours();
+
             if(result.isNotEmpty()) {
-                GetAllFlavoursUseCase.Output.Success
+                GetAllFlavoursUseCase.Output(result)
             } else {
-                GetAllFlavoursUseCase.Output.Failure
+                GetAllFlavoursUseCase.Output(null)
             }
         }
 }
