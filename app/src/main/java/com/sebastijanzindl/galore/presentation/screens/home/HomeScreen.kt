@@ -73,7 +73,7 @@ fun HomeScreen(
             } else {
                 CocktailCardType.Vertical
             }
-            CocktailTagSection(cocktails = section.cocktails, tagName = section.tagName, canNavigateToSection = section.isFeatured, cocktailCardType = cocktailCardType , navigateToSection = {})
+            CocktailTagSection(cocktails = section.cocktails, tagName = section.tagName, canNavigateToSection = section.isFeatured, cocktailCardType = cocktailCardType , navigateToSection = {}, cardPress = {})
         }
     }
 }

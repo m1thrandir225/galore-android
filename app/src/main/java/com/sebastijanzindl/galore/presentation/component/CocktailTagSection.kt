@@ -36,6 +36,7 @@ fun CocktailTagSection(
     cocktailCardType: CocktailCardType = CocktailCardType.Vertical,
     canNavigateToSection: Boolean = false,
     navigateToSection: () -> Unit,
+    cardPress: (cocktailId: String) -> Unit,
     ) {
     val pagerState = rememberPagerState(pageCount = {
         cocktails.count()
@@ -79,7 +80,9 @@ fun CocktailTagSection(
             ) { page ->
                 CocktailCard(
                     cocktail = cocktails[page],
-                    onCardPress = { /*TODO*/ },
+                    onCardPress = {
+                        cardPress(cocktails[page].id)
+                    },
                     cardType = cocktailCardType,
                 )
             }
@@ -118,6 +121,6 @@ private fun CocktailTagSectionPreview() {
             )
         )
 
-        CocktailTagSection(cocktails = cocktails, tagName = "Preview Section", cocktailCardType = CocktailCardType.Horizontal, navigateToSection = {})
+        CocktailTagSection(cocktails = cocktails, tagName = "Preview Section", cocktailCardType = CocktailCardType.Horizontal, navigateToSection = {}, cardPress = {})
     }
 }

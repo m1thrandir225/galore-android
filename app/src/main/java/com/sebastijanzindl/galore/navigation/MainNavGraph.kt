@@ -100,7 +100,9 @@ fun NavGraphBuilder.mainNavGraph(
             LibraryScreen(
                 modifier = Modifier.padding(paddingValues),
                 sharedSectionViewModel = sharedSectionViewModel,
-                navigateToCocktailSection = { title -> navigateToCocktailSection(title) }
+                navigateToCocktailSection = { title -> navigateToCocktailSection(title) },
+                singleCocktailCardPress = { id -> navigateToCocktailDetails(id)},
+                generatedCocktailCardPress = { id -> navigateToGeneratedCocktailDetails(id)},
             )
         }
         composable(

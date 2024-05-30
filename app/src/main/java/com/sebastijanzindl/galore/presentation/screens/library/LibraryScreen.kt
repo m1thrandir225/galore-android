@@ -23,6 +23,8 @@ fun LibraryScreen(
     viewModel: LibraryScreenViewModel = hiltViewModel(),
     sharedSectionViewModel: SectionSharedViewModel = hiltViewModel(),
     navigateToCocktailSection: (title: String) -> Unit,
+    singleCocktailCardPress: (cocktailId: String) -> Unit,
+    generatedCocktailCardPress: (cocktailId: String) -> Unit,
 ) {
     val isLoading by viewModel.isLoading.collectAsState();
     val cocktails by viewModel.userMadeCocktails.collectAsState();
@@ -54,7 +56,6 @@ fun LibraryScreen(
             generatedCocktailsSection = true
         )
     )
-
     if(isLoading) {
         LoadingSpinner(shouldShow = isLoading)
     } else {
@@ -74,6 +75,13 @@ fun LibraryScreen(
                             it.generatedCocktailsSection
                         )
                         navigateToCocktailSection(it.tagName)
+                    },
+                    cardPress = { cocktailId ->
+                        if(it.generatedCocktailsSection) {
+                            generatedCocktailCardPress(cocktailId)
+                        } else {
+                            singleCocktailCardPress(cocktailId)
+                        }
                     }
                 )
             }
