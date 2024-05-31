@@ -55,9 +55,8 @@ fun GenerateSelectCocktailsScreen(
     navigateToGenerateLoadingScreen: () -> Unit,
     goBack: () -> Unit,
 ) {
-    val userSelectedCocktails = remember {
-        mutableStateListOf<String>()
-    }
+
+    val userLikedCocktails by sharedGenerateCocktailViewModel.userFavouriteCocktails.collectAsState();
     val isLoading by viewModel.isLoading.collectAsState();
     val cocktails by viewModel.cocktails.collectAsState();
     val toastMessage by viewModel.toastMessage.collectAsState();
@@ -65,13 +64,30 @@ fun GenerateSelectCocktailsScreen(
 
     SnackbarMessageHandler(snackbarMessage = toastMessage, onDismissSnackbar = { viewModel.dismissToast() })
     
-    fun submitResults() {
-        
-    }
+
 
     val searchString = remember {
         mutableStateOf("")
     }
+
+    val selectedCocktails = remember {
+        mutableStateListOf<String>()
+    }
+    fun submitResults() {
+        sharedGenerateCocktailViewModel.addLikedCocktails(selectedCocktails);
+        navigateToGenerateLoadingScreen();
+    }
+
+    fun onCocktailCardPress(item: String) {
+        if(selectedCocktails.contains(item)) {
+            selectedCocktails.remove(item)
+        } else {
+            if(selectedCocktails.count() < 3) {
+                selectedCocktails.add(item)
+            }
+        }
+    }
+
     val outlineTextFieldWidth: Float by animateFloatAsState(targetValue = if(searchString.value.isNotEmpty()) 0.85f else 1.0f, label = "Outline Text Field Width" )
 
     Column (
@@ -95,6 +111,7 @@ fun GenerateSelectCocktailsScreen(
                 AnimatedVisibility(visible = hasSearchResults) {
                     Button(onClick = {
                         searchString.value = ""
+                        selectedCocktails.clear()
                         viewModel.getInitialCocktails();
                     }) {
                         Text(text = "Clear Search")
@@ -127,6 +144,7 @@ fun GenerateSelectCocktailsScreen(
                 ),
                 keyboardActions = KeyboardActions(
                     onSearch = {
+                        selectedCocktails.clear()
                         viewModel.getSearchCocktails(searchString.value)
                     }
                 )
@@ -148,6 +166,7 @@ fun GenerateSelectCocktailsScreen(
             ) {
                 FilledIconButton(
                     onClick = {
+                        selectedCocktails.clear()
                         viewModel.getSearchCocktails(searchString = searchString.value)
                     }) {
                     Icon(Icons.Default.Search, contentDescription = "")
@@ -168,12 +187,19 @@ fun GenerateSelectCocktailsScreen(
                     horizontalArrangement = Arrangement.spacedBy(12.dp),
                     verticalArrangement = Arrangement.spacedBy(12.dp)
                 ) {
-                    items(cocktails) {cocktail ->
-                        CocktailCard(cocktail = CocktailCardInfo(
-                            id = cocktail.id,
-                            name = cocktail.name,
-                            image = cocktail.image
-                        ), onCardPress = { /*TODO*/ })
+                    items(cocktails) {cocktailValue ->
+                        val isInList = selectedCocktails.contains(cocktailValue.name);
+                        val isDisabled = selectedCocktails.count() == 3 && !isInList;
+                        CocktailCard(
+                            cocktail = CocktailCardInfo(
+                                id = cocktailValue.id,
+                                name = cocktailValue.name,
+                                image = cocktailValue.image,
+                            ),
+                            onCardPress = { onCocktailCardPress(cocktailValue.name) },
+                            isInList = isInList,
+                            isDisabled = isDisabled
+                        )
                     }
                 }
             } else {
@@ -199,7 +225,7 @@ fun GenerateSelectCocktailsScreen(
                 enter = fadeIn()
             ) {
                 Button(
-                    enabled = userSelectedCocktails.count() == 3,
+                    enabled = selectedCocktails.isNotEmpty(),
                     onClick = { submitResults() }
 
                 ) {

@@ -1,7 +1,6 @@
 package com.sebastijanzindl.galore.data.repository.impl
 
 import com.sebastijanzindl.galore.data.network.ApiService
-import com.sebastijanzindl.galore.data.network.GenerateCocktailResponse
 import com.sebastijanzindl.galore.data.repository.CocktailRepository
 import com.sebastijanzindl.galore.domain.models.Cocktail
 import com.sebastijanzindl.galore.domain.models.UserMadeCocktail
@@ -21,11 +20,12 @@ class CocktailRepositoryImpl @Inject constructor(
         return postgrest.from("cocktails").select().decodeList<Cocktail>()
     }
 
-    override suspend fun generateCocktail(prompt: String, authorizationToken: String): GenerateCocktailResponse? {
-        return honoService.generateCocktail(
+    override suspend fun generateCocktail(prompt: String, authorizationToken: String): HttpResponse {
+
+         return honoService.generateCocktail(
             prompt = prompt,
-            authorization = authorizationToken,
-        ).body();
+             token = authorizationToken,
+        )
     }
 
     override suspend fun getGeneratedCocktail(cocktailId: String): HttpResponse {

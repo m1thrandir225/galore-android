@@ -45,11 +45,24 @@ fun NavGraphBuilder.mainNavGraph(
             ))
         }
 
-        fun navigateToGeneratedCocktailDetails(cocktailId: String) {
-            navController.navigate(AppScreen.Main.GeneratedCocktailDetails.route.replace(
-                oldValue = "{cocktail-id}",
-                newValue = cocktailId
-            ))
+        fun navigateToGeneratedCocktailDetails(cocktailId: String, shouldPopBackstack: Boolean = false) {
+            if(shouldPopBackstack) {
+                navController.navigate(AppScreen.Main.GeneratedCocktailDetails.route.replace(
+                    oldValue = "{cocktail-id}",
+                    newValue = cocktailId
+                    ),
+                ) {
+                    popUpTo(AppScreen.Main.Generate.route) {
+                        inclusive = true
+                    }
+                }
+            } else {
+                navController.navigate(AppScreen.Main.GeneratedCocktailDetails.route.replace(
+                    oldValue = "{cocktail-id}",
+                    newValue = cocktailId
+                ))
+            }
+
         }
 
         fun navigateToSelectFlavourScreen() {
@@ -155,7 +168,7 @@ fun NavGraphBuilder.mainNavGraph(
             GenerateLoadingScreen(
                 modifier = Modifier.padding(paddingValues),
                 sharedGenerateCocktailViewModel = sharedGenerateCocktailViewModel,
-                navigateToGenerateCocktailDetailsScreen = { id -> navigateToGeneratedCocktailDetails(id) }
+                navigateToGenerateCocktailDetailsScreen = { id -> navigateToGeneratedCocktailDetails(id, true) },
             )
         }
         composable(

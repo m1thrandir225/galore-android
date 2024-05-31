@@ -126,9 +126,9 @@ fun GenerateSelectFlavoursScreen(
                     verticalArrangement = Arrangement.spacedBy(12.dp)
                 ) {
                     items(flavours) { flavour ->
-                        val itemInList = userSelectedFlavours.contains(flavour.id)
+                        val itemInList = userSelectedFlavours.contains(flavour.name)
                         FlavourButton(
-                            onClick = { onFlavourPress(flavour.id) },
+                            onClick = { onFlavourPress(flavour.name) },
                             buttonText = flavour.name,
                             isInList = itemInList,
                             isDisabled = userSelectedFlavours.count() == 3 && !itemInList
@@ -146,7 +146,7 @@ fun GenerateSelectFlavoursScreen(
                     enter = fadeIn()
                 ) {
                     Button(
-                        enabled = userSelectedFlavours.count() == 3,
+                        enabled = userSelectedFlavours.isNotEmpty(),
                         onClick = { continueToCocktailSelection() }
 
                     ) {

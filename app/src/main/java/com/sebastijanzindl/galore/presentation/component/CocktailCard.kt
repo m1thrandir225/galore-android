@@ -46,22 +46,24 @@ fun CocktailCard (
     cocktail: CocktailCardInfo,
     onCardPress: () -> Unit,
     isDisabled: Boolean = false,
-    isSelected: Boolean = false,
+    isInList: Boolean = false,
 ) {
-    val backgroundColor = animateColorAsState(
-        targetValue =  if(isSelected) {MaterialTheme.colorScheme.primary} else { MaterialTheme.colorScheme.surface},
+    val backgroundColor by animateColorAsState(
+        targetValue =  if(isInList) {MaterialTheme.colorScheme.primary} else { MaterialTheme.colorScheme.surface},
         label = "")
 
-    val disabledBackgroundColor = animateColorAsState(targetValue = if(isDisabled) MaterialTheme.colorScheme.surfaceVariant else backgroundColor.value,
+    val disabledBackgroundColor by animateColorAsState(targetValue = if(isDisabled) MaterialTheme.colorScheme.surfaceVariant else backgroundColor,
         label = ""
     )
 
-    val textColor = animateColorAsState(targetValue = if(isSelected) MaterialTheme.colorScheme.onPrimary else { MaterialTheme.colorScheme.onSurface})
+    val textColor by animateColorAsState(targetValue = if(isInList) MaterialTheme.colorScheme.onPrimary else { MaterialTheme.colorScheme.onSurface})
+
+
     OutlinedCard(
         onClick = onCardPress,
         colors = CardDefaults.outlinedCardColors(
-            containerColor = backgroundColor.value,
-            disabledContainerColor = disabledBackgroundColor.value,
+            containerColor = backgroundColor,
+            disabledContainerColor = disabledBackgroundColor,
             disabledContentColor = MaterialTheme.colorScheme.onSurfaceVariant
         ),
         enabled = !isDisabled,
@@ -96,7 +98,7 @@ fun CocktailCard (
                 Text(
                     text = cocktail.name,
                     style = MaterialTheme.typography.bodyMedium,
-                    color = textColor.value
+                    color = textColor
                 )
             }
         }

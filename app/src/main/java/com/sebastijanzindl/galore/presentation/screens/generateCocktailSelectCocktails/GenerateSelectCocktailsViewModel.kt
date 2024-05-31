@@ -19,7 +19,7 @@ import javax.inject.Inject
 @HiltViewModel
 class GenerateSelectCocktailsViewModel @Inject constructor(
     private val getPopularCocktailsUseCase: GetPopularCocktailsUseCase,
-    private val getCocktailsBySearchUseCase: GetCocktailsBySearchUseCase
+    private val getCocktailsBySearchUseCase: GetCocktailsBySearchUseCase,
 ) : ViewModel() {
     private val _isLoading = MutableStateFlow<Boolean>(false);
     val isLoading = _isLoading.asStateFlow();
