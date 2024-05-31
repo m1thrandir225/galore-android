@@ -1,5 +1,7 @@
 package com.sebastijanzindl.galore.presentation.screens.generateCocktailSelectFlavours
 
+import androidx.compose.animation.AnimatedVisibility
+import androidx.compose.animation.fadeIn
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
@@ -26,7 +28,9 @@ import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import com.sebastijanzindl.galore.presentation.component.FlavourButton
+import com.sebastijanzindl.galore.presentation.component.LoadingSpinner
 import com.sebastijanzindl.galore.presentation.viewmodels.GenerateCocktailViewModel
+
 
 
 @Composable
@@ -37,8 +41,11 @@ fun GenerateSelectFlavoursScreen(
     navigateToSelectCocktailsScreen: () -> Unit,
     goBack: () -> Unit,
 ) {
+
+
     val userLikedFlavours by sharedGenerateCocktailViewModel.userFavouriteFlavours.collectAsState()
     val flavours by viewModel.allFlavours.collectAsState()
+    val isLoading by viewModel.isLoading.collectAsState();
 
     val userSelectedFlavours = remember {
         mutableStateListOf<String>()
@@ -69,73 +76,84 @@ fun GenerateSelectFlavoursScreen(
         navigateToSelectCocktailsScreen();
     }
 
-
-    Column (
-        modifier = modifier
-            .fillMaxSize()
-            .padding(24.dp),
-        verticalArrangement = Arrangement.SpaceEvenly,
-        horizontalAlignment = Alignment.CenterHorizontally
-    ) {
-        Box(modifier = Modifier
-            .align(Alignment.Start)
-            .fillMaxWidth()) {
-            Text(text = "Step 1/3")
-        }
+    if(isLoading) {
+        LoadingSpinner(shouldShow = isLoading)
+    } else {
         Column (
-            modifier = Modifier.fillMaxWidth(),
-            verticalArrangement = Arrangement.spacedBy(12.dp),
+            modifier = modifier
+                .fillMaxSize()
+                .padding(24.dp),
+            verticalArrangement = Arrangement.SpaceEvenly,
             horizontalAlignment = Alignment.CenterHorizontally
-
         ) {
-            Text(
-                text = "Select 3 flavours",
-                textAlign = TextAlign.Center,
-                style = MaterialTheme.typography.headlineMedium,
-                color = MaterialTheme.colorScheme.onSurface,
-            )
-            Text(
-                text = "Choose three flavors you’d like your cocktail to taste like.",
-                textAlign = TextAlign.Center,
-                style = MaterialTheme.typography.bodyLarge,
-                color = MaterialTheme.colorScheme.primary
-            )
-        }
-        Column(
-            modifier = Modifier,
-            horizontalAlignment = Alignment.CenterHorizontally,
-            verticalArrangement = Arrangement.Center
-        ) {
+            Box(modifier = Modifier
+                .align(Alignment.Start)
+                .fillMaxWidth()) {
+                Text(text = "Step 1/3")
+            }
+            Column (
+                modifier = Modifier.fillMaxWidth(),
+                verticalArrangement = Arrangement.spacedBy(12.dp),
+                horizontalAlignment = Alignment.CenterHorizontally
 
-            LazyVerticalGrid(
-                modifier = Modifier,
-                columns = GridCells.Fixed(2),
-                horizontalArrangement = Arrangement.spacedBy(12.dp),
-                verticalArrangement = Arrangement.spacedBy(12.dp)
             ) {
-                items(flavours) { flavour ->
-                    val itemInList = userSelectedFlavours.contains(flavour.id)
-                    FlavourButton(
-                        onClick = { onFlavourPress(flavour.id) },
-                        buttonText = flavour.name,
-                        isInList = itemInList,
-                        isDisabled = userSelectedFlavours.count() == 3 && !itemInList
-                    )
+                Text(
+                    text = "Select 3 flavours",
+                    textAlign = TextAlign.Center,
+                    style = MaterialTheme.typography.headlineMedium,
+                    color = MaterialTheme.colorScheme.onSurface,
+                )
+                Text(
+                    text = "Choose three flavors you’d like your cocktail to taste like.",
+                    textAlign = TextAlign.Center,
+                    style = MaterialTheme.typography.bodyLarge,
+                    color = MaterialTheme.colorScheme.primary
+                )
+            }
+            Column(
+                modifier = Modifier,
+                horizontalAlignment = Alignment.CenterHorizontally,
+                verticalArrangement = Arrangement.Center
+            ) {
+
+                LazyVerticalGrid(
+                    modifier = Modifier,
+                    columns = GridCells.Fixed(2),
+                    horizontalArrangement = Arrangement.spacedBy(12.dp),
+                    verticalArrangement = Arrangement.spacedBy(12.dp)
+                ) {
+                    items(flavours) { flavour ->
+                        val itemInList = userSelectedFlavours.contains(flavour.id)
+                        FlavourButton(
+                            onClick = { onFlavourPress(flavour.id) },
+                            buttonText = flavour.name,
+                            isInList = itemInList,
+                            isDisabled = userSelectedFlavours.count() == 3 && !itemInList
+                        )
+                    }
                 }
             }
-        }
-        Row (
-            modifier = Modifier.fillMaxWidth(),
-            horizontalArrangement = Arrangement.End,
-            verticalAlignment = Alignment.CenterVertically
-        ){
-            Button(
-                enabled = userSelectedFlavours.count() == 3,
-                onClick = { continueToCocktailSelection() }
+            Row (
+                modifier = Modifier.fillMaxWidth(),
+                horizontalArrangement = Arrangement.End,
+                verticalAlignment = Alignment.CenterVertically
+            ){
+                AnimatedVisibility(
+                    visible = !isLoading,
+                    enter = fadeIn()
+                ) {
+                    Button(
+                        enabled = userSelectedFlavours.count() == 3,
+                        onClick = { continueToCocktailSelection() }
 
-            ) {
-                Text(text = "Next")
+                    ) {
+                        Text(text = "Next")
+                    }
+                }
+
             }
         }
     }
+
+
 }

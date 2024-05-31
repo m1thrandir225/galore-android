@@ -1,14 +1,20 @@
 package com.sebastijanzindl.galore.presentation.component
 
+import androidx.compose.animation.AnimatedVisibility
+import androidx.compose.animation.animateColorAsState
+import androidx.compose.animation.animateContentSize
+import androidx.compose.animation.core.Spring
+import androidx.compose.animation.core.spring
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Add
+import androidx.compose.material3.Button
 import androidx.compose.material3.ButtonDefaults
 import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
-import androidx.compose.material3.OutlinedButton
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
-import androidx.compose.ui.graphics.Color
+import androidx.compose.runtime.getValue
+import androidx.compose.ui.Modifier
 
 @Composable
 fun FlavourButton(
@@ -17,27 +23,41 @@ fun FlavourButton(
     isInList: Boolean,
     isDisabled: Boolean = false,
 ) {
-
-    val buttonColor: Color =  if(isInList) {
-        MaterialTheme.colorScheme.inverseOnSurface
-    } else {
-        Color.Transparent
-    }
-
-    OutlinedButton(
-        onClick = onClick,
-        colors = ButtonDefaults.outlinedButtonColors(
-            containerColor = buttonColor
+    
+    val animatedColor by animateColorAsState(
+        if(isDisabled) MaterialTheme.colorScheme.onSurface else MaterialTheme.colorScheme.onPrimary,
+        animationSpec = spring(
+            dampingRatio = Spring.DampingRatioNoBouncy,
+            stiffness = Spring.StiffnessLow,
         ),
-        enabled = !isDisabled
+        label = "color of text"
+    )
 
+    val animatedBackground = animateColorAsState(
+        if(isDisabled)  MaterialTheme.colorScheme.inverseOnSurface else MaterialTheme.colorScheme.primary,
+        animationSpec = spring(
+            dampingRatio = Spring.DampingRatioNoBouncy,
+            stiffness = Spring.StiffnessMedium,
+        ),
+        label = "background of button"
+    )
+
+    Button(
+        onClick = onClick,
+        enabled = !isDisabled,
+        colors = ButtonDefaults.buttonColors(
+            containerColor = animatedBackground.value,
+            disabledContainerColor = animatedBackground.value
+        ),
+        modifier = Modifier.animateContentSize()
     ) {
-        if(!isInList) {
-            Icon(Icons.Default.Add, contentDescription = "", tint = MaterialTheme.colorScheme.primary)
+        AnimatedVisibility(visible = !isInList) {
+            Icon(Icons.Default.Add, contentDescription = "", tint = animatedColor)
+
         }
         Text(
             text = buttonText,
-            color = MaterialTheme.colorScheme.primary,
+            color = animatedColor
         )
     }
 }
