@@ -68,4 +68,13 @@ class CocktailRepositoryImpl @Inject constructor(
             function = "get-popular-cocktails"
         )
     }
+
+    override suspend fun getCocktailsBySearch(query: String): HttpResponse {
+        return edgeFunctions.invoke(
+            function = "get-cocktails-search",
+            body = buildJsonObject {
+                put("query", query)
+            }
+        )
+    }
 }
