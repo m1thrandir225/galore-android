@@ -32,8 +32,8 @@ class CocktailRepositoryImpl @Inject constructor(
         return edgeFunctions.invoke(
             function = "get-generated-cocktail",
             body = buildJsonObject {
-                put("cocktail_id", cocktailId)
-            },
+                put("cocktailId", cocktailId)
+            }
         )
     }
 
