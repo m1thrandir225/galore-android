@@ -1,18 +1,15 @@
 package com.sebastijanzindl.galore.presentation.component
 
+import androidx.compose.animation.animateColorAsState
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
+import androidx.compose.foundation.layout.fillMaxHeight
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
-import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
-import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.filled.Favorite
-import androidx.compose.material.icons.filled.FavoriteBorder
-import androidx.compose.material3.FilledIconButton
-import androidx.compose.material3.Icon
+import androidx.compose.material3.CardDefaults
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.OutlinedCard
 import androidx.compose.material3.Text
@@ -33,30 +30,50 @@ import coil.compose.AsyncImage
 import coil.request.ImageRequest
 import com.sebastijanzindl.galore.R
 import com.sebastijanzindl.galore.domain.models.Cocktail
+import com.sebastijanzindl.galore.domain.models.CocktailCardInfo
+import com.sebastijanzindl.galore.domain.models.CocktailIngredient
 import com.sebastijanzindl.galore.ui.theme.GaloreTheme
-import kotlinx.datetime.LocalDate
 
 enum class CocktailCardType(val value: Dp) {
     Horizontal(280.dp),
-    Vertical(200.dp)
+    Vertical(180.dp)
 }
 
 @Composable
 fun CocktailCard (
     modifier: Modifier = Modifier,
     cardType: CocktailCardType = CocktailCardType.Vertical,
-    cocktail: Cocktail,
-    onHeartPress: () -> Unit,
+    cocktail: CocktailCardInfo,
     onCardPress: () -> Unit,
-    isFavourite: Boolean
+    isDisabled: Boolean = false,
+    isInList: Boolean = false,
 ) {
+    val backgroundColor by animateColorAsState(
+        targetValue =  if(isInList) {MaterialTheme.colorScheme.primary} else { MaterialTheme.colorScheme.surface},
+        label = "")
+
+    val disabledBackgroundColor by animateColorAsState(targetValue = if(isDisabled) MaterialTheme.colorScheme.surfaceVariant else backgroundColor,
+        label = ""
+    )
+
+    val textColor by animateColorAsState(targetValue = if(isInList) MaterialTheme.colorScheme.onPrimary else { MaterialTheme.colorScheme.onSurface})
+
 
     OutlinedCard(
         onClick = onCardPress,
-        modifier = modifier.width(cardType.value)
+        colors = CardDefaults.outlinedCardColors(
+            containerColor = backgroundColor,
+            disabledContainerColor = disabledBackgroundColor,
+            disabledContentColor = MaterialTheme.colorScheme.onSurfaceVariant
+        ),
+        enabled = !isDisabled,
+        modifier = modifier
+            .width(cardType.value)
+            .fillMaxHeight()
     ) {
         AsyncImage(
-            modifier = Modifier.fillMaxWidth()
+            modifier = Modifier
+                .fillMaxWidth()
                 .height(166.dp),
             model = ImageRequest.Builder(LocalContext.current)
                 .data(cocktail.image)
@@ -80,20 +97,9 @@ fun CocktailCard (
             ) {
                 Text(
                     text = cocktail.name,
-                    style = MaterialTheme.typography.bodyLarge,
-                    color = MaterialTheme.colorScheme.onSurface
+                    style = MaterialTheme.typography.bodyMedium,
+                    color = textColor
                 )
-            }
-            FilledIconButton(
-                modifier = Modifier.size(32.dp),
-                onClick = onHeartPress
-            ) {
-                if(isFavourite) {
-                    Icon(Icons.Default.Favorite, contentDescription = "Add to Favourite", modifier = Modifier.padding(8.dp))
-                } else {
-                    Icon(Icons.Default.FavoriteBorder, contentDescription = "Remove From Favourites", modifier = Modifier.padding(8.dp))
-                }
-
             }
         }
 
@@ -114,17 +120,26 @@ private fun VerticalCocktailCardPreview() {
         val cocktail = Cocktail(
             id = "1",
             image = "https://images.unsplash.com/photo-1712928247899-2932f4c7dea3?q=80&w=2071&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D",
-            createdAt = LocalDate.parse("2024-02-24").toString(),
-            embeddingVector = listOf(0.10, 1.22, 1.55),
-            ingredients = "Gin, Tonic",
+            ingredients = listOf(
+                CocktailIngredient(
+                    ingredient = "Glass",
+                    amount = "1",
+                ),
+                CocktailIngredient(
+                    ingredient = "Gin",
+                    amount = "1"
+                )
+            ),
             name = "Gin & Tonic",
-            steps = "\"{\\\"steps\\\":{\\\"1\\\":\\\"Getaglassandputgininit-about10%oftheglass\\\",\\\"2\\\":\\\"Puticeandsomelemonalongsidetheginintheglass\\\",\\\"3\\\":\\\"Finishthecocktailwiththetonic\\\"}}\""
+            instructions = listOf("Put gin into the glass", "Drink it")
         )
         CocktailCard(
-            cocktail = cocktail,
+            cocktail = CocktailCardInfo(
+                id = cocktail.id,
+                image = cocktail.image,
+                name = cocktail.name
+            ),
             onCardPress = {},
-            onHeartPress = changeIsFavourite,
-            isFavourite = isFavourite
         )
 
     }
@@ -144,18 +159,27 @@ private fun HorizontalCocktailCardPreview() {
         val cocktail = Cocktail(
             id = "1",
             image = "https://images.unsplash.com/photo-1712928247899-2932f4c7dea3?q=80&w=2071&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D",
-            createdAt = LocalDate.parse("2024-02-24").toString(),
-            embeddingVector = listOf(0.10, 1.22, 1.55),
-            ingredients = "Gin, Tonic",
+            ingredients = listOf(
+                CocktailIngredient(
+                    ingredient = "Glass",
+                    amount = "1",
+                ),
+                CocktailIngredient(
+                    ingredient = "Gin",
+                    amount = "1"
+                )
+            ),
             name = "Gin & Tonic",
-            steps = "\"{\\\"steps\\\":{\\\"1\\\":\\\"Getaglassandputgininit-about10%oftheglass\\\",\\\"2\\\":\\\"Puticeandsomelemonalongsidetheginintheglass\\\",\\\"3\\\":\\\"Finishthecocktailwiththetonic\\\"}}\""
+            instructions = listOf("Put gin into the glass", "Drink it")
         )
         CocktailCard(
             cardType = CocktailCardType.Horizontal,
-            cocktail = cocktail,
+            cocktail = CocktailCardInfo(
+                id = cocktail.id,
+                image = cocktail.image,
+                name = cocktail.name
+            ),
             onCardPress = {},
-            onHeartPress = changeIsFavourite,
-            isFavourite = isFavourite
         )
 
     }

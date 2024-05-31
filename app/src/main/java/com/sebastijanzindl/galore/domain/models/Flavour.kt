@@ -2,8 +2,6 @@ package com.sebastijanzindl.galore.domain.models
 
 import kotlinx.serialization.SerialName
 import kotlinx.serialization.Serializable
-import java.sql.Time
-import java.util.UUID
 
 @Serializable
 data class Flavour(
@@ -15,7 +13,4 @@ data class Flavour(
 
     @SerialName("created_at")
     val createdAt: String,
-
-    @SerialName("embedding")
-    val embeddingVector: List<Float>,
 )

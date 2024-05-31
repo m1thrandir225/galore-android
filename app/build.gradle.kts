@@ -94,7 +94,7 @@ dependencies {
 
 
     //Retrofit
-    val retrofitVer = "2.9.0"
+    val retrofitVer = "2.11.0"
     implementation("com.squareup.retrofit2:retrofit:$retrofitVer")
     implementation ("com.squareup.retrofit2:converter-kotlinx-serialization:2.11.0")
 
@@ -124,6 +124,9 @@ dependencies {
     implementation ("io.ktor:ktor-client-android:$ktorVersion")
     implementation ("io.ktor:ktor-client-core:$ktorVersion")
     implementation ("io.ktor:ktor-utils:$ktorVersion")
+    implementation("io.ktor:ktor-client-logging:2.3.2")
+    implementation("io.ktor:ktor-serialization-kotlinx-json:$ktorVersion")
+    implementation("io.ktor:ktor-client-content-negotiation:$ktorVersion")
 
     //Credential Manager
     implementation("androidx.credentials:credentials:1.3.0-alpha03")

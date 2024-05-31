@@ -24,4 +24,5 @@ abstract  class RepositoryModule {
     abstract fun bindCocktailRepository(impl: CocktailRepositoryImpl): CocktailRepository
     @Binds
     abstract fun bindUserProfileRepository(impl: UserProfileRepositoryImpl): UserProfileRepository
+
 }

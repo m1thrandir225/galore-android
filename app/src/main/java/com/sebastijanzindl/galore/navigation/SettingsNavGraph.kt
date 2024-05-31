@@ -115,7 +115,6 @@ fun NavGraphBuilder.settingsNavGraph(
             PrivacyPolicyScreen(
                 modifier =  Modifier.padding(paddingValues)
             )
-
         }
 
         composable(

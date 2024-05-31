@@ -35,7 +35,14 @@ private object  Routes {
     const val GENERATE = "generate"
     const val LIBRARY = "library"
 
-    const val  COCKTAIL_DETAILS= "cocktailDetail/${ArgParams.COCKTAIL_ID}"
+    const val COCKTAIL_SECTION ="cocktail-section/{section-title}"
+
+    const val COCKTAIL_DETAILS= "cocktail/{cocktail-id}"
+    const val GENERATED_COCKTAIL_DETAILS ="generated-cocktail/{cocktail-id}"
+
+    const val GENERATE_SELECT_FLAVOURS = "generate/flavours"
+    const val GENERATE_SELECT_COCKTAILS = "generate/cocktails"
+    const val GENERATE_WAITING = "generate/waiting"
 
     /**
      * Settings Graph Routes
@@ -50,10 +57,6 @@ private object  Routes {
     const val TERMS_AND_CONDITIONS = "terms-and-conditions"
 }
 
-private object ArgParams {
-    const val COCKTAIL_ID ="cocktail_id"
-    fun toPath(param: String) = "{${param}}"
-}
 
 sealed class BottomBarDesination (
     val route: String,
@@ -96,6 +99,19 @@ sealed class AppScreen(val route: String, val navArguments: List<NamedNavArgumen
             selectedIconResource = R.drawable.sparkles_filled,
             unselectedIconResource = R.drawable.sparkles,
         )
+
+        object GenerateSelectFlavours : AppScreen(
+            Routes.GENERATE_SELECT_FLAVOURS
+        )
+
+        object GenerateSelectCocktails : AppScreen (
+            Routes.GENERATE_SELECT_COCKTAILS
+        )
+
+        object GenerateLoading : AppScreen (
+            Routes.GENERATE_WAITING
+        )
+
         object Library : BottomBarDesination(
             route = Routes.LIBRARY,
             title = "Library",
@@ -103,10 +119,28 @@ sealed class AppScreen(val route: String, val navArguments: List<NamedNavArgumen
             unselectedIconResource = R.drawable.book_24px
         )
         object CocktailDetails : AppScreen(Routes.COCKTAIL_DETAILS, navArguments = listOf(
-            navArgument(ArgParams.COCKTAIL_ID) {
+            navArgument("cocktail-id") {
                 type = NavType.Companion.StringType
             }
         ));
+
+        object GeneratedCocktailDetails : AppScreen(
+            Routes.GENERATED_COCKTAIL_DETAILS,
+            navArguments = listOf(
+                navArgument("cocktail-id") {
+                    type = NavType.Companion.StringType
+                }
+            )
+        )
+
+        object CocktailSection: AppScreen(
+            route = Routes.COCKTAIL_SECTION,
+            navArguments = listOf(
+                navArgument("section-title") {
+                    type = NavType.Companion.StringType
+                }
+            )
+        )
     }
     object Settings : AppScreen(Routes.SETTINGS) {
 

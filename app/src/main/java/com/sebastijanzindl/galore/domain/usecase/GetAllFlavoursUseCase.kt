@@ -1,11 +1,8 @@
 package com.sebastijanzindl.galore.domain.usecase
 
+import com.sebastijanzindl.galore.domain.models.Flavour
+
 interface GetAllFlavoursUseCase: UseCase<GetAllFlavoursUseCase.Input, GetAllFlavoursUseCase.Output> {
     class Input
-
-    sealed class Output {
-        object Success: Output()
-
-        object Failure: Output();
-    }
+    class Output(val result: List<Flavour>?)
 }
