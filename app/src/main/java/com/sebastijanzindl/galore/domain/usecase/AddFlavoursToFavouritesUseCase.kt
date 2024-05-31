@@ -1,9 +1,7 @@
 package com.sebastijanzindl.galore.domain.usecase
 
-import com.sebastijanzindl.galore.domain.models.Flavour
-
 interface AddFlavoursToFavouritesUseCase: UseCase<AddFlavoursToFavouritesUseCase.Input, AddFlavoursToFavouritesUseCase.Output> {
-    class Input(val flavours: List<Flavour>)
+    class Input(val flavoursIds: List<String>, val userId: String)
     sealed class Output {
         object Success: Output();
 

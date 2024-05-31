@@ -26,6 +26,7 @@ import androidx.hilt.navigation.compose.hiltViewModel
 import com.sebastijanzindl.galore.presentation.component.FlavourButton
 import com.sebastijanzindl.galore.presentation.component.LoadingSpinner
 import com.sebastijanzindl.galore.presentation.component.Logo
+import com.sebastijanzindl.galore.presentation.component.SnackbarMessageHandler
 import com.sebastijanzindl.galore.ui.theme.GaloreTheme
 
 
@@ -37,9 +38,10 @@ fun FavouriteFlavoursScreen(
 ) {
     val flavours by viewModel.allFlavours.collectAsState();
     val isLoading by viewModel.isLoading.collectAsState()
+    val toastMessage by viewModel.toastMessage.collectAsState();
 
     val userFavouriteFlavours = remember {
-        mutableStateListOf("");
+        mutableStateListOf<String>();
     }
 
     fun favouriteFlavour (flavourName: String ) {
@@ -48,6 +50,20 @@ fun FavouriteFlavoursScreen(
         } else {
             userFavouriteFlavours.add(flavourName)
         }
+    }
+
+    SnackbarMessageHandler(
+        snackbarMessage = toastMessage,
+        onDismissSnackbar = {
+            viewModel.dismissToastMessage()
+        }
+    )
+
+    fun continueToNextStep() {
+        viewModel.submitFlavours(
+            flavourIds = userFavouriteFlavours,
+            onSuccessCallback = navigateToAllSet
+        )
     }
 
     Scaffold (
@@ -92,8 +108,9 @@ fun FavouriteFlavoursScreen(
                     modifier = Modifier
                         .fillMaxWidth()
                         .padding(horizontal = 24.dp),
+                    enabled = userFavouriteFlavours.isNotEmpty(),
                     onClick = {
-                        navigateToAllSet()
+                        continueToNextStep()
                     }
                 ) {
                     Text(text = "Continue")
@@ -113,8 +130,6 @@ private fun ButtonPreview() {
         FlavourButton( onClick =  {}, buttonText = "Spicy", isInList = false)
     }
 }
-
-
 
 @Preview(apiLevel = 33)
 @Composable

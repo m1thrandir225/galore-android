@@ -7,6 +7,7 @@ import androidx.compose.animation.core.Spring
 import androidx.compose.animation.core.spring
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Add
+import androidx.compose.material.icons.filled.Close
 import androidx.compose.material3.Button
 import androidx.compose.material3.ButtonDefaults
 import androidx.compose.material3.Icon
@@ -25,7 +26,7 @@ fun FlavourButton(
 ) {
     
     val animatedColor by animateColorAsState(
-        if(isDisabled) MaterialTheme.colorScheme.onSurface else MaterialTheme.colorScheme.onPrimary,
+        if(isDisabled) MaterialTheme.colorScheme.onSurface else if (isInList) MaterialTheme.colorScheme.onSecondaryContainer else MaterialTheme.colorScheme.onPrimary,
         animationSpec = spring(
             dampingRatio = Spring.DampingRatioNoBouncy,
             stiffness = Spring.StiffnessLow,
@@ -34,7 +35,7 @@ fun FlavourButton(
     )
 
     val animatedBackground = animateColorAsState(
-        if(isDisabled)  MaterialTheme.colorScheme.inverseOnSurface else MaterialTheme.colorScheme.primary,
+        if(isDisabled)  MaterialTheme.colorScheme.inverseOnSurface else if (isInList) MaterialTheme.colorScheme.secondaryContainer else  MaterialTheme.colorScheme.primary,
         animationSpec = spring(
             dampingRatio = Spring.DampingRatioNoBouncy,
             stiffness = Spring.StiffnessMedium,
@@ -51,9 +52,11 @@ fun FlavourButton(
         ),
         modifier = Modifier.animateContentSize()
     ) {
-        AnimatedVisibility(visible = !isInList) {
+        AnimatedVisibility(visible = !isInList && !isDisabled) {
             Icon(Icons.Default.Add, contentDescription = "", tint = animatedColor)
-
+        }
+        AnimatedVisibility(visible = isInList && !isDisabled) {
+            Icon(Icons.Default.Close, contentDescription = "", tint = animatedColor)
         }
         Text(
             text = buttonText,
