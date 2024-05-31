@@ -102,7 +102,6 @@ fun GenerateSelectCocktailsScreen(
                 }
                 
             }
-
         }
 
         Row(

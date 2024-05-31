@@ -1,5 +1,6 @@
 package com.sebastijanzindl.galore.presentation.component
 
+import androidx.compose.animation.animateColorAsState
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
@@ -8,6 +9,7 @@ import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.width
+import androidx.compose.material3.CardDefaults
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.OutlinedCard
 import androidx.compose.material3.Text
@@ -43,16 +45,33 @@ fun CocktailCard (
     cardType: CocktailCardType = CocktailCardType.Vertical,
     cocktail: CocktailCardInfo,
     onCardPress: () -> Unit,
-    cocktailIsGenerated: Boolean = false
-
+    isDisabled: Boolean = false,
+    isSelected: Boolean = false,
 ) {
+    val backgroundColor = animateColorAsState(
+        targetValue =  if(isSelected) {MaterialTheme.colorScheme.primary} else { MaterialTheme.colorScheme.surface},
+        label = "")
 
+    val disabledBackgroundColor = animateColorAsState(targetValue = if(isDisabled) MaterialTheme.colorScheme.surfaceVariant else backgroundColor.value,
+        label = ""
+    )
+
+    val textColor = animateColorAsState(targetValue = if(isSelected) MaterialTheme.colorScheme.onPrimary else { MaterialTheme.colorScheme.onSurface})
     OutlinedCard(
         onClick = onCardPress,
-        modifier = modifier.width(cardType.value).fillMaxHeight()
+        colors = CardDefaults.outlinedCardColors(
+            containerColor = backgroundColor.value,
+            disabledContainerColor = disabledBackgroundColor.value,
+            disabledContentColor = MaterialTheme.colorScheme.onSurfaceVariant
+        ),
+        enabled = !isDisabled,
+        modifier = modifier
+            .width(cardType.value)
+            .fillMaxHeight()
     ) {
         AsyncImage(
-            modifier = Modifier.fillMaxWidth()
+            modifier = Modifier
+                .fillMaxWidth()
                 .height(166.dp),
             model = ImageRequest.Builder(LocalContext.current)
                 .data(cocktail.image)
@@ -77,7 +96,7 @@ fun CocktailCard (
                 Text(
                     text = cocktail.name,
                     style = MaterialTheme.typography.bodyMedium,
-                    color = MaterialTheme.colorScheme.onSurface
+                    color = textColor.value
                 )
             }
         }
