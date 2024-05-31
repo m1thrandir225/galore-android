@@ -1,11 +1,23 @@
 package com.sebastijanzindl.galore.data.repository
 
 import com.sebastijanzindl.galore.domain.models.Cocktail
+import com.sebastijanzindl.galore.domain.models.UserMadeCocktail
+import io.ktor.client.statement.HttpResponse
 
 interface CocktailRepository {
   suspend fun getAllCocktails(): List<Cocktail?>
-  suspend fun getCocktailsByFlavour(flavourName: String): List<Cocktail?>
-  suspend fun getCocktailsByTag(tag: String): List<Cocktail>
-  suspend fun getCocktailsByKeyword(query: String): List<Cocktail?>
-  suspend fun getSingleCocktail(cocktailName: String): Cocktail?
+
+  suspend fun generateCocktail(prompt: String, authorizationToken: String): HttpResponse
+
+  suspend fun getGeneratedCocktail(cocktailId: String): HttpResponse
+
+  suspend fun getYourGeneratedCocktails(userId: String): List<UserMadeCocktail>
+
+  suspend fun getLikedCocktails(): HttpResponse
+
+  suspend fun getSingleCocktailFromCocktailDb(id: String): HttpResponse
+
+  suspend fun getPopularCocktails(): HttpResponse
+
+  suspend fun getCocktailsBySearch(query: String): HttpResponse
 }

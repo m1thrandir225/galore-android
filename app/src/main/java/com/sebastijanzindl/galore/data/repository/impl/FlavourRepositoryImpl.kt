@@ -2,10 +2,12 @@ package com.sebastijanzindl.galore.data.repository.impl
 
 import com.sebastijanzindl.galore.data.repository.FlavourRepository
 import com.sebastijanzindl.galore.domain.models.Flavour
+import com.sebastijanzindl.galore.domain.models.UserLikedFlavour
 import io.github.jan.supabase.postgrest.Postgrest
-import java.util.UUID
+import io.github.jan.supabase.postgrest.query.Columns
+import javax.inject.Inject
 
-class FlavourRepositoryImpl(
+class FlavourRepositoryImpl @Inject constructor(
     private val postgrest: Postgrest
 ): FlavourRepository {
     override suspend fun getAllFlavours(): List<Flavour> {
@@ -13,6 +15,26 @@ class FlavourRepositoryImpl(
     }
 
     override suspend fun getUserFlavours(userId: String): List<Flavour> {
-        TODO("Not yet implemented")
+        val columns = Columns.raw("""
+            flavours (
+                id,
+                name,
+                created_at
+            )
+        """.trimIndent())
+        return postgrest.from("user_liked_flavours")
+            .select(columns = columns)
+            .decodeList<Flavour>()
+    }
+    override suspend fun addFlavoursToFavourites(flavourIds: List<String>, userId: String): List<UserLikedFlavour> {
+        val userLikedFlavours = flavourIds.map { flavourId ->
+            UserLikedFlavour(
+                userId = userId,
+                flavourId = flavourId
+            )
+        }
+        return postgrest.from("user_liked_flavours").insert(userLikedFlavours) {
+            select()
+        }.decodeList<UserLikedFlavour>()
     }
 }

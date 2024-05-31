@@ -9,67 +9,42 @@ import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.Modifier
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavController
-import com.sebastijanzindl.galore.domain.models.Cocktail
+import com.sebastijanzindl.galore.domain.models.CocktailCardInfo
+import com.sebastijanzindl.galore.domain.models.Section
 import com.sebastijanzindl.galore.presentation.component.CocktailCardType
 import com.sebastijanzindl.galore.presentation.component.CocktailTagSection
 import com.sebastijanzindl.galore.presentation.viewmodels.ProfileSharedViewModel
-import kotlinx.datetime.LocalDate
+import com.sebastijanzindl.galore.presentation.viewmodels.SectionSharedViewModel
 
-data class Section(
-    val cocktails: List<Cocktail>,
-    val tagName: String,
-    val isFeatured: Boolean = false,
-)
 @OptIn(ExperimentalMaterial3Api::class, ExperimentalFoundationApi::class)
 @Composable
 fun HomeScreen(
     modifier: Modifier = Modifier,
     viewModel: HomeScreenViewModel = hiltViewModel(),
     userProfileSharedViewModel: ProfileSharedViewModel = hiltViewModel(),
+    sharedSectionViewModel: SectionSharedViewModel = hiltViewModel(),
     navController: NavController
 ) {
     val coroutineScope = rememberCoroutineScope();
 
     val cocktails = listOf(
-        Cocktail(
+        CocktailCardInfo(
             id = "1",
-            image = "https://images.unsplash.com/photo-1609951651556-5334e2706168?q=80&w=3087&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D",
-            createdAt = LocalDate.parse("2024-02-24").toString(),
-            embeddingVector = listOf(0.10, 1.22, 1.55),
-            ingredients = "Gin, Tonic",
             name = "Gin & Tonic",
-            steps = ""
+            image = "https://plus.unsplash.com/premium_photo-1671647122910-3fa8ab4990cb?q=80&w=1976&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D"
         ),
-        Cocktail(
+        CocktailCardInfo(
             id = "2",
-            image = "https://plus.unsplash.com/premium_photo-1687354207716-b74e8c056def?q=80&w=3088&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D",
-            createdAt = LocalDate.parse("2024-02-24").toString(),
-            embeddingVector = listOf(0.10, 1.22, 1.55),
-            ingredients = "Rum & Coke",
-            name = "Rum & Coke",
-            steps = ""
-        ),
-        Cocktail(
+            image = "https://images.unsplash.com/photo-1609951651556-5334e2706168?q=80&w=1974&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D",
+            name = "Margarita",
+
+            ),
+        CocktailCardInfo(
             id = "3",
-            image = "https://images.unsplash.com/photo-1551538827-9c037cb4f32a?q=80&w=2761&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D",
-            createdAt = LocalDate.parse("2024-02-24").toString(),
-            embeddingVector = listOf(0.10, 1.22, 1.55),
-            ingredients = "Mojito",
-            name = "Mojito",
-            steps = ""
-        ),
-        Cocktail(
-            id = "4",
-            image = "https://images.unsplash.com/photo-1587223962930-cb7f31384c19?q=80&w=3087&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D",
-            createdAt = LocalDate.parse("2024-02-24").toString(),
-            embeddingVector = listOf(0.10, 1.22, 1.55),
-            ingredients = "Martini",
-            name = "Martini",
-            steps = ""
+            name = "Nokishta711",
+            image = "https://images.unsplash.com/photo-1514362545857-3bc16c4c7d1b?q=80&w=2070&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D"
         )
     )
-
-
     val sections = listOf(
         Section(
             cocktails = cocktails,
@@ -98,7 +73,7 @@ fun HomeScreen(
             } else {
                 CocktailCardType.Vertical
             }
-            CocktailTagSection(cocktails = section.cocktails, tagName = section.tagName, canNavigateToSection = section.isFeatured, cocktailCardType = cocktailCardType , navigateToSection = {})
+            CocktailTagSection(cocktails = section.cocktails, tagName = section.tagName, canNavigateToSection = section.isFeatured, cocktailCardType = cocktailCardType , navigateToSection = {}, cardPress = {})
         }
     }
 }

@@ -98,6 +98,8 @@ fun GaloreApp(
 
     val currentRoute = navBackStackEntry?.destination?.route;
 
+    val routeArguments = navBackStackEntry?.arguments
+
     when(currentRoute) {
         AppScreen.Main.Home.route,
         AppScreen.Main.Search.route,
@@ -106,12 +108,16 @@ fun GaloreApp(
             bottomBarState.value = true
             topBarState.value = true
         }
+
         AppScreen.Settings.SettingsOverview.route,
         AppScreen.Settings.AccountSettings.route,
         AppScreen.Settings.PasswordAndSecurity.route,
         AppScreen.Settings.NotificationSettings.route,
         AppScreen.Settings.PrivacyPolicy.route,
-        AppScreen.Settings.TermsAndConditions.route -> {
+        AppScreen.Settings.TermsAndConditions.route,
+        AppScreen.Main.CocktailSection.route,
+        AppScreen.Main.CocktailDetails.route,
+        AppScreen.Main.GeneratedCocktailDetails.route, -> {
             topBarState.value = true
             bottomBarState.value = false
         }
@@ -134,7 +140,8 @@ fun GaloreApp(
                         navigateBack = {
                             navController.popBackStack()
                         },
-                        currentRoute = currentRoute
+                        currentRoute = currentRoute,
+                        arguments = routeArguments
                     )
                 }
             },
@@ -143,7 +150,7 @@ fun GaloreApp(
                     BottomNavigationBar(navController = navController)
                 }
             }
-        ){paddingValues ->
+        ){ paddingValues ->
             RootNavHost(
                 navHostController = navController,
                 paddingValues

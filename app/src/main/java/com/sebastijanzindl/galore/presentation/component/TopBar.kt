@@ -1,5 +1,6 @@
 package com.sebastijanzindl.galore.presentation.component
 
+import android.os.Bundle
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxWidth
@@ -25,7 +26,8 @@ fun TopAppBar(
     scrollBehaviour: TopAppBarScrollBehavior,
     openBottomSheet: () -> Unit,
     navigateBack: () -> Unit,
-    currentRoute: String?
+    currentRoute: String?,
+    arguments: Bundle?
 ) {
     when (currentRoute) {
         AppScreen.Settings.SettingsOverview.route -> {
@@ -74,10 +76,19 @@ fun TopAppBar(
         AppScreen.Main.Search.route,
         AppScreen.Main.Library.route,
         AppScreen.Main.Generate.route,
-        AppScreen.Main.CocktailDetails.route -> {
+        AppScreen.Main.CocktailDetails.route,
+        AppScreen.Main.GeneratedCocktailDetails.route -> {
             MainGraphContent(
                 scrollBehaviour = scrollBehaviour,
                 openBottomSheet = openBottomSheet
+            )
+        }
+        AppScreen.Main.CocktailSection.route -> {
+            val title = arguments?.getString("section-title")!!;
+            CocktailSectionGraphContent(
+                navigateBack = navigateBack,
+                scrollBehaviour = scrollBehaviour,
+                title = title
             )
         }
         else -> {}
@@ -85,6 +96,29 @@ fun TopAppBar(
 }
 
 
+@OptIn(ExperimentalMaterial3Api::class)
+@Composable
+private fun CocktailSectionGraphContent(
+    navigateBack: () -> Unit,
+    scrollBehaviour: TopAppBarScrollBehavior,
+    title: String?,
+) {
+    TopAppBar(
+        modifier = Modifier.fillMaxWidth(),
+        title = {
+                Text(text = title ?: "")
+        },
+        navigationIcon = {
+            IconButton(onClick = navigateBack) {
+                Icon(
+                    imageVector = Icons.AutoMirrored.Filled.ArrowBack ,
+                    contentDescription = "Go Back Icon"
+                )
+            }
+        },
+        scrollBehavior = scrollBehaviour
+    )
+}
 
 @Composable
 @OptIn(ExperimentalMaterial3Api::class)
