@@ -1,6 +1,7 @@
 package com.sebastijanzindl.galore.presentation.screens.generateCocktailSelectCocktails
 
 import androidx.compose.animation.AnimatedVisibility
+import androidx.compose.animation.animateContentSize
 import androidx.compose.animation.core.Spring
 import androidx.compose.animation.core.animateFloatAsState
 import androidx.compose.animation.core.spring
@@ -20,6 +21,8 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.lazy.grid.GridCells
 import androidx.compose.foundation.lazy.grid.LazyVerticalGrid
 import androidx.compose.foundation.lazy.grid.items
+import androidx.compose.foundation.text.KeyboardActions
+import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Search
 import androidx.compose.material3.Button
@@ -35,6 +38,7 @@ import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.text.input.ImeAction
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import com.sebastijanzindl.galore.domain.models.CocktailCardInfo
@@ -57,6 +61,7 @@ fun GenerateSelectCocktailsScreen(
     val isLoading by viewModel.isLoading.collectAsState();
     val cocktails by viewModel.cocktails.collectAsState();
     val toastMessage by viewModel.toastMessage.collectAsState();
+    val hasSearchResults by viewModel.hasSearchResult.collectAsState();
 
     SnackbarMessageHandler(snackbarMessage = toastMessage, onDismissSnackbar = { viewModel.dismissToast() })
     
@@ -72,14 +77,32 @@ fun GenerateSelectCocktailsScreen(
     Column (
         modifier = modifier
             .fillMaxSize()
-            .padding(24.dp),
+            .padding(24.dp)
+            .animateContentSize(),
         verticalArrangement = Arrangement.SpaceEvenly,
         horizontalAlignment = Alignment.CenterHorizontally
     ) {
         Box(modifier = Modifier
             .align(Alignment.Start)
             .fillMaxWidth()) {
-            Text(text = "Step 2/3")
+            Row(
+                modifier = Modifier.fillMaxWidth(),
+                horizontalArrangement = Arrangement.SpaceBetween,
+                verticalAlignment = Alignment.CenterVertically
+
+            ) {
+                Text(text = "Step 2/3")
+                AnimatedVisibility(visible = hasSearchResults) {
+                    Button(onClick = {
+                        searchString.value = ""
+                        viewModel.getInitialCocktails();
+                    }) {
+                        Text(text = "Clear Search")
+                    }
+                }
+                
+            }
+
         }
 
         Row(
@@ -100,6 +123,14 @@ fun GenerateSelectCocktailsScreen(
                 supportingText = {
                     Text(text = "")
                 },
+                keyboardOptions = KeyboardOptions(
+                    imeAction = ImeAction.Search
+                ),
+                keyboardActions = KeyboardActions(
+                    onSearch = {
+                        viewModel.getSearchCocktails(searchString.value)
+                    }
+                )
             )
             AnimatedVisibility(
                 visible = searchString.value.isNotEmpty(),
@@ -115,10 +146,11 @@ fun GenerateSelectCocktailsScreen(
                     // Overwrites the ending position of the slide-out to 200 (pixels) to the right
                     200
                 } + fadeOut()
-
             ) {
                 FilledIconButton(
-                    onClick = {}) {
+                    onClick = {
+                        viewModel.getSearchCocktails(searchString = searchString.value)
+                    }) {
                     Icon(Icons.Default.Search, contentDescription = "")
                 }
             }

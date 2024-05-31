@@ -5,6 +5,7 @@ import androidx.compose.material3.SnackbarDuration
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.sebastijanzindl.galore.domain.models.Cocktail
+import com.sebastijanzindl.galore.domain.usecase.GetCocktailsBySearchUseCase
 import com.sebastijanzindl.galore.domain.usecase.GetPopularCocktailsUseCase
 import com.sebastijanzindl.galore.presentation.component.SnackbarMessage
 import com.sebastijanzindl.galore.presentation.component.UserMessage
@@ -17,7 +18,8 @@ import javax.inject.Inject
 
 @HiltViewModel
 class GenerateSelectCocktailsViewModel @Inject constructor(
-    private val getPopularCocktailsUseCase: GetPopularCocktailsUseCase
+    private val getPopularCocktailsUseCase: GetPopularCocktailsUseCase,
+    private val getCocktailsBySearchUseCase: GetCocktailsBySearchUseCase
 ) : ViewModel() {
     private val _isLoading = MutableStateFlow<Boolean>(false);
     val isLoading = _isLoading.asStateFlow();
@@ -27,6 +29,9 @@ class GenerateSelectCocktailsViewModel @Inject constructor(
 
     private val _toastMessage = MutableStateFlow<SnackbarMessage?>(null)
     val toastMessage = _toastMessage.asStateFlow()
+
+    private val _hasSearchResults = MutableStateFlow<Boolean>(false);
+    val hasSearchResult = _hasSearchResults.asStateFlow();
 
     fun dismissToast() {
         _toastMessage.update { null }
@@ -45,6 +50,7 @@ class GenerateSelectCocktailsViewModel @Inject constructor(
                 if(result.result == null) throw Exception("There was a problem fetching the required data.")
 
                 _cocktails.value = result.result
+                _hasSearchResults.value = false
             } catch(e: Exception) {
                 Log.e("Possible exception", e.message.toString())
                 _toastMessage.value = SnackbarMessage.from(
@@ -61,7 +67,28 @@ class GenerateSelectCocktailsViewModel @Inject constructor(
         }
     }
 
-    fun getSearchCocktails() {
-        //TODO implement search functionality
+    fun getSearchCocktails(searchString: String) {
+        viewModelScope.launch {
+            try {
+                _isLoading.value = true;
+                val result = getCocktailsBySearchUseCase.execute(
+                    GetCocktailsBySearchUseCase.Input(searchString)
+                )
+                if (result.result == null) throw Exception("There was a problem fetching the required data.");
+                _cocktails.value = result.result
+                _hasSearchResults.value = true;
+            } catch (e: Exception) {
+                Log.e("Possible exception", e.message.toString())
+                _toastMessage.value = SnackbarMessage.from(
+                    duration = SnackbarDuration.Short,
+                    userMessage = UserMessage.from("An error occurred."),
+                    actionLabelMessage = null,
+                    onSnackbarResult = {},
+                    withDismissAction = false
+                )
+            } finally {
+                _isLoading.value = false;
+            }
+        }
     }
 }
