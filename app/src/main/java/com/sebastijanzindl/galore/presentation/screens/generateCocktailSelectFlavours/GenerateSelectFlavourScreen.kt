@@ -29,6 +29,7 @@ import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import com.sebastijanzindl.galore.presentation.component.FlavourButton
 import com.sebastijanzindl.galore.presentation.component.LoadingSpinner
+import com.sebastijanzindl.galore.presentation.component.SnackbarMessageHandler
 import com.sebastijanzindl.galore.presentation.viewmodels.GenerateCocktailViewModel
 
 
@@ -42,14 +43,16 @@ fun GenerateSelectFlavoursScreen(
     goBack: () -> Unit,
 ) {
 
-
     val userLikedFlavours by sharedGenerateCocktailViewModel.userFavouriteFlavours.collectAsState()
     val flavours by viewModel.allFlavours.collectAsState()
     val isLoading by viewModel.isLoading.collectAsState();
+    val toastMessage by viewModel.toastMessage.collectAsState()
 
     val userSelectedFlavours = remember {
         mutableStateListOf<String>()
     }
+
+    SnackbarMessageHandler(snackbarMessage = toastMessage, onDismissSnackbar = { viewModel.dismissToast() })
 
     LaunchedEffect(userLikedFlavours) {
         if(userLikedFlavours.isNotEmpty()) {

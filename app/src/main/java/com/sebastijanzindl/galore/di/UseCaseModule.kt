@@ -4,6 +4,7 @@ import com.sebastijanzindl.galore.domain.usecase.AddFlavoursToFavouritesUseCase
 import com.sebastijanzindl.galore.domain.usecase.DeleteUserUseCase
 import com.sebastijanzindl.galore.domain.usecase.GetAllFlavoursUseCase
 import com.sebastijanzindl.galore.domain.usecase.GetAllUserMadeCocktails
+import com.sebastijanzindl.galore.domain.usecase.GetPopularCocktailsUseCase
 import com.sebastijanzindl.galore.domain.usecase.GetSingleCocktailUseCase
 import com.sebastijanzindl.galore.domain.usecase.GetSingleGeneratedCocktailUseCase
 import com.sebastijanzindl.galore.domain.usecase.GetUserFlavoursUseCase
@@ -19,6 +20,7 @@ import com.sebastijanzindl.galore.domain.usecase.impl.AddFlavourToFavouritesUseC
 import com.sebastijanzindl.galore.domain.usecase.impl.DeleteUserUseCaseImpl
 import com.sebastijanzindl.galore.domain.usecase.impl.GetAllFlavoursUseCaseImpl
 import com.sebastijanzindl.galore.domain.usecase.impl.GetAllUserMadeCocktailsImpl
+import com.sebastijanzindl.galore.domain.usecase.impl.GetPopularCocktailsUseCaseImpl
 import com.sebastijanzindl.galore.domain.usecase.impl.GetSingleCocktailUseCaseImpl
 import com.sebastijanzindl.galore.domain.usecase.impl.GetSingleGeneratedCocktailUseCaseImpl
 import com.sebastijanzindl.galore.domain.usecase.impl.GetUserFlavoursUseCaseImpl
@@ -83,4 +85,7 @@ abstract class UseCaseModule {
 
     @Binds
     abstract fun bindAddFlavourToFavouriteUseCase(impl: AddFlavourToFavouritesUseCaseImpl): AddFlavoursToFavouritesUseCase
+
+    @Binds
+    abstract fun bindGetPopularCocktailsUseCase(impl: GetPopularCocktailsUseCaseImpl): GetPopularCocktailsUseCase
 }

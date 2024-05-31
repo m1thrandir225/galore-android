@@ -16,7 +16,6 @@ import javax.inject.Singleton
 object RetrofitModule   {
     @Provides
     fun provideBaseUrl(): String = "https://generate-cocktail-backend.sebastijanzindl.workers.dev"
-
     @Provides
     @Singleton
     fun provideRetrofit(baseUrl: String): Retrofit = Retrofit.Builder()

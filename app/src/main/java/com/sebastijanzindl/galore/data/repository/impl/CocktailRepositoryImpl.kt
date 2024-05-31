@@ -62,4 +62,10 @@ class CocktailRepositoryImpl @Inject constructor(
             }
         )
     }
+
+    override suspend fun getPopularCocktails(): HttpResponse {
+        return  edgeFunctions.invoke(
+            function = "get-popular-cocktails"
+        )
+    }
 }

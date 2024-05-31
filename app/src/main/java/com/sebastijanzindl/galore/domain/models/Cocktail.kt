@@ -36,14 +36,16 @@ data class CocktailIngredient(
 
 
 @Serializable
-data class UserLikedCocktailsResponse(
+data class MultipleCocktailsResponse(
     @SerialName("cocktails")
     val cocktails: List<Cocktail>
 )
 
 @Serializable
-data class GetSingleCocktailResponse(
+data class SingleCocktailResponse(
     @SerialName("cocktail")
     val cocktail: Cocktail
 )
+
+
 

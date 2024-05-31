@@ -1,5 +1,6 @@
 package com.sebastijanzindl.galore.presentation.screens.generateCocktailSelectFlavours
 
+import android.util.Log
 import androidx.compose.material3.SnackbarDuration
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
@@ -10,6 +11,7 @@ import com.sebastijanzindl.galore.presentation.component.UserMessage
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asStateFlow
+import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
 import javax.inject.Inject
 
@@ -29,6 +31,10 @@ class GenerateSelectFlavourViewModel @Inject constructor(
     init {
         getFlavours()
     }
+
+    fun dismissToast() {
+        _toastMessage.update { null }
+    }
     private fun getFlavours() {
         viewModelScope.launch {
             try {
@@ -42,9 +48,10 @@ class GenerateSelectFlavourViewModel @Inject constructor(
                 _allFlavours.value = response.result
 
             } catch (e: Exception) {
+                Log.e("Possible exception", e.message.toString())
                 _toastMessage.value = SnackbarMessage.from(
                     duration = SnackbarDuration.Short,
-                    userMessage = UserMessage.from(e.message.toString()),
+                    userMessage = UserMessage.from("An error occurred."),
                     actionLabelMessage = null,
                     onSnackbarResult = {},
                     withDismissAction = false
