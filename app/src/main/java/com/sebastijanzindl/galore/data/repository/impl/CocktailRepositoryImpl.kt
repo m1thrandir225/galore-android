@@ -64,9 +64,12 @@ class CocktailRepositoryImpl @Inject constructor(
         )
     }
 
-    override suspend fun getPopularCocktails(): HttpResponse {
+    override suspend fun getSectionCocktails(sectionName: String): HttpResponse {
         return  edgeFunctions.invoke(
-            function = "get-popular-cocktails"
+            function = "get-section-cocktails",
+            body = buildJsonObject {
+                put("section", sectionName)
+            }
         )
     }
 

@@ -18,7 +18,7 @@ interface CocktailRepository {
 
   suspend fun getSingleCocktailFromCocktailDb(id: String): HttpResponse
 
-  suspend fun getPopularCocktails(): HttpResponse
+  suspend fun getSectionCocktails(sectionName: String): HttpResponse
 
   suspend fun getCocktailsBySearch(query: String): HttpResponse
 

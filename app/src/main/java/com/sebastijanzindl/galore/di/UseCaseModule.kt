@@ -7,7 +7,7 @@ import com.sebastijanzindl.galore.domain.usecase.GenerateCocktailUseCase
 import com.sebastijanzindl.galore.domain.usecase.GetAllFlavoursUseCase
 import com.sebastijanzindl.galore.domain.usecase.GetAllUserMadeCocktails
 import com.sebastijanzindl.galore.domain.usecase.GetCocktailsBySearchUseCase
-import com.sebastijanzindl.galore.domain.usecase.GetPopularCocktailsUseCase
+import com.sebastijanzindl.galore.domain.usecase.GetSectionCocktailsUseCase
 import com.sebastijanzindl.galore.domain.usecase.GetSingleCocktailUseCase
 import com.sebastijanzindl.galore.domain.usecase.GetSingleGeneratedCocktailUseCase
 import com.sebastijanzindl.galore.domain.usecase.GetUserFlavoursUseCase
@@ -95,7 +95,7 @@ abstract class UseCaseModule {
     abstract fun bindAddFlavourToFavouriteUseCase(impl: AddFlavourToFavouritesUseCaseImpl): AddFlavoursToFavouritesUseCase
 
     @Binds
-    abstract fun bindGetPopularCocktailsUseCase(impl: GetPopularCocktailsUseCaseImpl): GetPopularCocktailsUseCase
+    abstract fun bindGetPopularCocktailsUseCase(impl: GetPopularCocktailsUseCaseImpl): GetSectionCocktailsUseCase
 
     @Binds
     abstract fun bindGetCocktailsBySearchUseCase(impl: GetCocktailsBySearchUseCaseImpl): GetCocktailsBySearchUseCase
