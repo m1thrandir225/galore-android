@@ -56,7 +56,9 @@ fun CocktailCard (
         label = ""
     )
 
-    val textColor by animateColorAsState(targetValue = if(isInList) MaterialTheme.colorScheme.onPrimary else { MaterialTheme.colorScheme.onSurface})
+    val textColor by animateColorAsState(targetValue = if(isInList) MaterialTheme.colorScheme.onPrimary else { MaterialTheme.colorScheme.onSurface},
+        label = ""
+    )
 
 
     OutlinedCard(

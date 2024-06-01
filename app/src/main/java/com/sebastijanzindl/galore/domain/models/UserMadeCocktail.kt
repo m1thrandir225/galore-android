@@ -26,7 +26,6 @@ data class UserMadeCocktail(
     @SerialName("created_at")
     val createdAt: String,
 
-
     @SerialName("user_id")
     val userId: String,
 

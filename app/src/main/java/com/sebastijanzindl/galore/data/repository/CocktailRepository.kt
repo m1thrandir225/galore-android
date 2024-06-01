@@ -1,6 +1,7 @@
 package com.sebastijanzindl.galore.data.repository
 
 import com.sebastijanzindl.galore.domain.models.Cocktail
+import com.sebastijanzindl.galore.domain.models.UserLikedCocktail
 import com.sebastijanzindl.galore.domain.models.UserMadeCocktail
 import io.ktor.client.statement.HttpResponse
 
@@ -20,4 +21,7 @@ interface CocktailRepository {
   suspend fun getPopularCocktails(): HttpResponse
 
   suspend fun getCocktailsBySearch(query: String): HttpResponse
+
+  suspend fun addCocktailToFavourites(cocktailId: String, userId: String): UserLikedCocktail?
+  suspend fun removeCocktailFromFavourites(cocktailId: String, userId: String): UserLikedCocktail?
 }

@@ -1,5 +1,6 @@
 package com.sebastijanzindl.galore.di
 
+import com.sebastijanzindl.galore.domain.usecase.AddCocktailToFavouritesUseCase
 import com.sebastijanzindl.galore.domain.usecase.AddFlavoursToFavouritesUseCase
 import com.sebastijanzindl.galore.domain.usecase.DeleteUserUseCase
 import com.sebastijanzindl.galore.domain.usecase.GenerateCocktailUseCase
@@ -13,11 +14,13 @@ import com.sebastijanzindl.galore.domain.usecase.GetUserFlavoursUseCase
 import com.sebastijanzindl.galore.domain.usecase.GetUserLikedCocktailsUseCase
 import com.sebastijanzindl.galore.domain.usecase.GetUserProfileUseCase
 import com.sebastijanzindl.galore.domain.usecase.LibraryScreenUseCase
+import com.sebastijanzindl.galore.domain.usecase.RemoveCocktailFromFavouritesUseCase
 import com.sebastijanzindl.galore.domain.usecase.SignInGoogleUseCase
 import com.sebastijanzindl.galore.domain.usecase.SignInUseCase
 import com.sebastijanzindl.galore.domain.usecase.SignOutUseCase
 import com.sebastijanzindl.galore.domain.usecase.SignUpUseCase
 import com.sebastijanzindl.galore.domain.usecase.UpdateUserProfileUseCase
+import com.sebastijanzindl.galore.domain.usecase.impl.AddCocktailToFavouritesUseCaseImpl
 import com.sebastijanzindl.galore.domain.usecase.impl.AddFlavourToFavouritesUseCaseImpl
 import com.sebastijanzindl.galore.domain.usecase.impl.DeleteUserUseCaseImpl
 import com.sebastijanzindl.galore.domain.usecase.impl.GenerateCocktailUseCaseImpl
@@ -31,6 +34,7 @@ import com.sebastijanzindl.galore.domain.usecase.impl.GetUserFlavoursUseCaseImpl
 import com.sebastijanzindl.galore.domain.usecase.impl.GetUserLikedCocktailsUseCaseImpl
 import com.sebastijanzindl.galore.domain.usecase.impl.GetUserProfileUseCaseImpl
 import com.sebastijanzindl.galore.domain.usecase.impl.LibraryScreenUseCaseImpl
+import com.sebastijanzindl.galore.domain.usecase.impl.RemoveCocktailFromFavouritesUseCaseImpl
 import com.sebastijanzindl.galore.domain.usecase.impl.SignInGoogleUseCaseImpl
 import com.sebastijanzindl.galore.domain.usecase.impl.SignInUseCaseImpl
 import com.sebastijanzindl.galore.domain.usecase.impl.SignOutUseCaseImpl
@@ -98,4 +102,10 @@ abstract class UseCaseModule {
 
     @Binds
     abstract fun bindGenerateCocktailUseCase(impl: GenerateCocktailUseCaseImpl): GenerateCocktailUseCase
+
+    @Binds
+    abstract fun bindAddCocktailToFavouritesUseCase(impl: AddCocktailToFavouritesUseCaseImpl): AddCocktailToFavouritesUseCase
+
+    @Binds
+    abstract fun bindRemoveCocktailFromFavouritesUseCase(impl: RemoveCocktailFromFavouritesUseCaseImpl): RemoveCocktailFromFavouritesUseCase
 }

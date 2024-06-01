@@ -8,6 +8,7 @@ import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.automirrored.filled.ArrowBack
 import androidx.compose.material.icons.filled.AccountCircle
 import androidx.compose.material3.ExperimentalMaterial3Api
+import androidx.compose.material3.FilledIconButton
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
 import androidx.compose.material3.Text
@@ -16,6 +17,7 @@ import androidx.compose.material3.TopAppBarScrollBehavior
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.sp
 import com.sebastijanzindl.galore.navigation.AppScreen
@@ -75,9 +77,7 @@ fun TopAppBar(
         AppScreen.Main.Home.route,
         AppScreen.Main.Search.route,
         AppScreen.Main.Library.route,
-        AppScreen.Main.Generate.route,
-        AppScreen.Main.CocktailDetails.route,
-        AppScreen.Main.GeneratedCocktailDetails.route -> {
+        AppScreen.Main.Generate.route -> {
             MainGraphContent(
                 scrollBehaviour = scrollBehaviour,
                 openBottomSheet = openBottomSheet
@@ -91,8 +91,33 @@ fun TopAppBar(
                 title = title
             )
         }
+        AppScreen.Main.GeneratedCocktailDetails.route,
+        AppScreen.Main.CocktailDetails.route -> {
+            CocktailDetailsAppBar(navigateBack = navigateBack, scrollBehaviour = scrollBehaviour)
+        }
         else -> {}
     }
+}
+
+@OptIn(ExperimentalMaterial3Api::class)
+@Composable
+private fun CocktailDetailsAppBar(
+    navigateBack: () -> Unit,
+    scrollBehaviour: TopAppBarScrollBehavior
+) {
+    TopAppBar(
+        modifier = Modifier.fillMaxWidth(),
+        title = {},
+        scrollBehavior = scrollBehaviour,
+        colors = androidx.compose.material3.TopAppBarDefaults.topAppBarColors(
+            containerColor = Color.Transparent
+        ),
+        navigationIcon = {
+            FilledIconButton(onClick = navigateBack) {
+                Icon(Icons.AutoMirrored.Filled.ArrowBack, contentDescription = "Go Back Icon")
+            }
+        }
+    )
 }
 
 

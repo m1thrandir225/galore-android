@@ -3,6 +3,7 @@ package com.sebastijanzindl.galore.data.repository.impl
 import com.sebastijanzindl.galore.data.network.ApiService
 import com.sebastijanzindl.galore.data.repository.CocktailRepository
 import com.sebastijanzindl.galore.domain.models.Cocktail
+import com.sebastijanzindl.galore.domain.models.UserLikedCocktail
 import com.sebastijanzindl.galore.domain.models.UserMadeCocktail
 import io.github.jan.supabase.functions.Functions
 import io.github.jan.supabase.postgrest.Postgrest
@@ -76,5 +77,25 @@ class CocktailRepositoryImpl @Inject constructor(
                 put("query", query)
             }
         )
+    }
+
+    override suspend fun addCocktailToFavourites(cocktailId: String, userId: String): UserLikedCocktail {
+        return postgrest.from("user_liked_cocktails")
+            .insert(UserLikedCocktail(cocktailId = cocktailId, userId = userId)) {
+                select()
+            }.decodeSingle<UserLikedCocktail>()
+    }
+
+    override suspend fun removeCocktailFromFavourites(
+        cocktailId: String,
+        userId: String
+    ): UserLikedCocktail? {
+       return postgrest.from("user_liked_cocktails").delete {
+           select()
+           filter {
+               eq("cocktail_id", cocktailId)
+               eq("user_id", userId)
+           }
+       }.decodeSingle<UserLikedCocktail>()
     }
 }
