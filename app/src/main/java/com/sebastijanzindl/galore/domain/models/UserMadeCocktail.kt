@@ -14,24 +14,26 @@ data class UserMadeCocktail(
     @SerialName("short_description")
     val shortDescription: String,
 
-    @SerialName("image")
-    val image: String,
+    @SerialName("instructions")
+    val instructions: List<UserMadeCocktailInstruction>,
 
     @SerialName("ingredients")
     val ingredients: List<UserMadeCocktailIngredient>,
 
-    @SerialName("instructions")
-    val instructions: List<UserMadeCocktailInstruction>,
-
-    @SerialName("user_id")
-    val userId: String,
+    @SerialName("image")
+    val image: String,
 
     @SerialName("created_at")
     val createdAt: String,
 
+    @SerialName("user_id")
+    val userId: String,
+
     @SerialName("embedding")
     val embedding: List<Float>?
 )
+
+
 
 
 @Serializable

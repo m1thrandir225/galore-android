@@ -2,6 +2,7 @@ package com.sebastijanzindl.galore.navigation
 
 import androidx.compose.animation.AnimatedContentTransitionScope
 import androidx.compose.animation.core.tween
+import androidx.compose.foundation.layout.ExperimentalLayoutApi
 import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.padding
@@ -23,6 +24,7 @@ import com.sebastijanzindl.galore.presentation.screens.search.SearchScreen
 import com.sebastijanzindl.galore.presentation.viewmodels.GenerateCocktailViewModel
 import com.sebastijanzindl.galore.presentation.viewmodels.SectionSharedViewModel
 
+@OptIn(ExperimentalLayoutApi::class)
 fun NavGraphBuilder.mainNavGraph(
     navController: NavController,
     paddingValues: PaddingValues
@@ -211,7 +213,7 @@ fun NavGraphBuilder.mainNavGraph(
         ) {
             val cocktailId = it.arguments?.getString("cocktail-id")!!;
             CocktailDetailsScreen(
-                modifier = Modifier.padding(paddingValues),
+                modifier = Modifier.padding(bottom = paddingValues.calculateBottomPadding()),
                 cocktailId = cocktailId
             )
         }
@@ -224,7 +226,8 @@ fun NavGraphBuilder.mainNavGraph(
         ) {
             val cocktailId = it.arguments?.getString("cocktail-id")!!;
             GeneratedCocktailDetailsScreen(
-                modifier = Modifier.padding(paddingValues),
+                modifier = Modifier
+                    .padding(bottom = paddingValues.calculateBottomPadding()),
                 cocktailId = cocktailId
             )
         }
