@@ -6,6 +6,7 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.sebastijanzindl.galore.domain.models.Cocktail
 import com.sebastijanzindl.galore.domain.usecase.AddCocktailToFavouritesUseCase
+import com.sebastijanzindl.galore.domain.usecase.GetCocktailFavouriteStatusUseCase
 import com.sebastijanzindl.galore.domain.usecase.GetSingleCocktailUseCase
 import com.sebastijanzindl.galore.domain.usecase.RemoveCocktailFromFavouritesUseCase
 import com.sebastijanzindl.galore.presentation.component.SnackbarMessage
@@ -22,6 +23,7 @@ class CocktailDetailsScreenViewModel  @Inject constructor(
     private val getSingleCocktailUseCase: GetSingleCocktailUseCase,
     private val addCocktailToFavouriteUseCase: AddCocktailToFavouritesUseCase,
     private val removeCocktailFromFavouritesUseCase: RemoveCocktailFromFavouritesUseCase,
+    private val getCocktailFavouriteStatusUseCase: GetCocktailFavouriteStatusUseCase,
     private val auth: Auth
 ): ViewModel(){
     private val _isLoading = MutableStateFlow<Boolean>(false);
@@ -30,7 +32,7 @@ class CocktailDetailsScreenViewModel  @Inject constructor(
     private val _cocktail = MutableStateFlow<Cocktail?>(null)
     val cocktail = _cocktail.asStateFlow();
 
-    private val _isFavourite = MutableStateFlow<Boolean>(true);
+    private val _isFavourite = MutableStateFlow<Boolean>(false);
     val isFavourite = _isFavourite.asStateFlow();
 
     private val _toastMessage = MutableStateFlow<SnackbarMessage?>(null)
@@ -39,13 +41,30 @@ class CocktailDetailsScreenViewModel  @Inject constructor(
     fun getCocktail(id: String) {
         viewModelScope.launch {
             try {
+
                 _isLoading.value = true
+
+                val user = auth.currentUserOrNull() ?: throw Exception("User not logged in.");
 
                 val result = getSingleCocktailUseCase.execute(
                     GetSingleCocktailUseCase.Input(id)
                 )
                 if(result.result == null) throw Exception("There was a problem fetching the cocktail.")
+
+                val isFavouriteResult = getCocktailFavouriteStatusUseCase.execute(
+                    GetCocktailFavouriteStatusUseCase.Input(result.result.id, user.id)
+                )
+
+
                 _cocktail.value = result.result
+                _isFavourite.value = when(isFavouriteResult) {
+                    is GetCocktailFavouriteStatusUseCase.Output.Success -> {
+                        true
+                    }
+                    is GetCocktailFavouriteStatusUseCase.Output.Failure -> {
+                        false
+                    }
+                }
             } catch (e: Exception) {
                 Log.e("Possible exception", e.message.toString())
                 _toastMessage.value = SnackbarMessage.from(

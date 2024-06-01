@@ -24,4 +24,6 @@ interface CocktailRepository {
 
   suspend fun addCocktailToFavourites(cocktailId: String, userId: String): UserLikedCocktail?
   suspend fun removeCocktailFromFavourites(cocktailId: String, userId: String): UserLikedCocktail?
+
+  suspend fun getCocktailFavouriteStatus(cocktailId: String, userId: String): UserLikedCocktail?
 }
