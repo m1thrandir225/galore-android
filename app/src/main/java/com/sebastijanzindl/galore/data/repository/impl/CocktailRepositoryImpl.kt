@@ -3,6 +3,7 @@ package com.sebastijanzindl.galore.data.repository.impl
 import com.sebastijanzindl.galore.data.network.ApiService
 import com.sebastijanzindl.galore.data.repository.CocktailRepository
 import com.sebastijanzindl.galore.domain.models.Cocktail
+import com.sebastijanzindl.galore.domain.models.UserLikedCocktail
 import com.sebastijanzindl.galore.domain.models.UserMadeCocktail
 import io.github.jan.supabase.functions.Functions
 import io.github.jan.supabase.postgrest.Postgrest
@@ -32,8 +33,8 @@ class CocktailRepositoryImpl @Inject constructor(
         return edgeFunctions.invoke(
             function = "get-generated-cocktail",
             body = buildJsonObject {
-                put("cocktail_id", cocktailId)
-            },
+                put("cocktailId", cocktailId)
+            }
         )
     }
 
@@ -63,9 +64,12 @@ class CocktailRepositoryImpl @Inject constructor(
         )
     }
 
-    override suspend fun getPopularCocktails(): HttpResponse {
+    override suspend fun getSectionCocktails(sectionName: String): HttpResponse {
         return  edgeFunctions.invoke(
-            function = "get-popular-cocktails"
+            function = "get-section-cocktails",
+            body = buildJsonObject {
+                put("section", sectionName)
+            }
         )
     }
 
@@ -76,5 +80,39 @@ class CocktailRepositoryImpl @Inject constructor(
                 put("query", query)
             }
         )
+    }
+
+    override suspend fun addCocktailToFavourites(cocktailId: String, userId: String): UserLikedCocktail? {
+        return postgrest.from("user_liked_cocktails")
+            .insert(UserLikedCocktail(cocktailId = cocktailId, userId = userId)) {
+                select()
+            }.decodeSingleOrNull<UserLikedCocktail>()
+    }
+
+    override suspend fun removeCocktailFromFavourites(
+        cocktailId: String,
+        userId: String
+    ): UserLikedCocktail? {
+       return postgrest.from("user_liked_cocktails").delete {
+           select()
+           filter {
+               eq("cocktail_id", cocktailId)
+               eq("user_id", userId)
+           }
+       }.decodeSingleOrNull<UserLikedCocktail>()
+    }
+
+    override suspend fun getCocktailFavouriteStatus(
+        cocktailId: String,
+        userId: String
+    ): UserLikedCocktail? {
+      return postgrest.from("user_liked_cocktails")
+          .select()
+          {
+              filter {
+                  eq("user_id", userId)
+                  eq("cocktail_id", cocktailId)
+              }
+          }.decodeSingleOrNull<UserLikedCocktail>()
     }
 }

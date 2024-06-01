@@ -1,28 +1,33 @@
 package com.sebastijanzindl.galore.di
 
+import com.sebastijanzindl.galore.domain.usecase.AddCocktailToFavouritesUseCase
 import com.sebastijanzindl.galore.domain.usecase.AddFlavoursToFavouritesUseCase
 import com.sebastijanzindl.galore.domain.usecase.DeleteUserUseCase
 import com.sebastijanzindl.galore.domain.usecase.GenerateCocktailUseCase
 import com.sebastijanzindl.galore.domain.usecase.GetAllFlavoursUseCase
 import com.sebastijanzindl.galore.domain.usecase.GetAllUserMadeCocktails
+import com.sebastijanzindl.galore.domain.usecase.GetCocktailFavouriteStatusUseCase
 import com.sebastijanzindl.galore.domain.usecase.GetCocktailsBySearchUseCase
-import com.sebastijanzindl.galore.domain.usecase.GetPopularCocktailsUseCase
+import com.sebastijanzindl.galore.domain.usecase.GetSectionCocktailsUseCase
 import com.sebastijanzindl.galore.domain.usecase.GetSingleCocktailUseCase
 import com.sebastijanzindl.galore.domain.usecase.GetSingleGeneratedCocktailUseCase
 import com.sebastijanzindl.galore.domain.usecase.GetUserFlavoursUseCase
 import com.sebastijanzindl.galore.domain.usecase.GetUserLikedCocktailsUseCase
 import com.sebastijanzindl.galore.domain.usecase.GetUserProfileUseCase
 import com.sebastijanzindl.galore.domain.usecase.LibraryScreenUseCase
+import com.sebastijanzindl.galore.domain.usecase.RemoveCocktailFromFavouritesUseCase
 import com.sebastijanzindl.galore.domain.usecase.SignInGoogleUseCase
 import com.sebastijanzindl.galore.domain.usecase.SignInUseCase
 import com.sebastijanzindl.galore.domain.usecase.SignOutUseCase
 import com.sebastijanzindl.galore.domain.usecase.SignUpUseCase
 import com.sebastijanzindl.galore.domain.usecase.UpdateUserProfileUseCase
+import com.sebastijanzindl.galore.domain.usecase.impl.AddCocktailToFavouritesUseCaseImpl
 import com.sebastijanzindl.galore.domain.usecase.impl.AddFlavourToFavouritesUseCaseImpl
 import com.sebastijanzindl.galore.domain.usecase.impl.DeleteUserUseCaseImpl
 import com.sebastijanzindl.galore.domain.usecase.impl.GenerateCocktailUseCaseImpl
 import com.sebastijanzindl.galore.domain.usecase.impl.GetAllFlavoursUseCaseImpl
 import com.sebastijanzindl.galore.domain.usecase.impl.GetAllUserMadeCocktailsImpl
+import com.sebastijanzindl.galore.domain.usecase.impl.GetCocktailFavouriteStatusUseCaseImpl
 import com.sebastijanzindl.galore.domain.usecase.impl.GetCocktailsBySearchUseCaseImpl
 import com.sebastijanzindl.galore.domain.usecase.impl.GetPopularCocktailsUseCaseImpl
 import com.sebastijanzindl.galore.domain.usecase.impl.GetSingleCocktailUseCaseImpl
@@ -31,6 +36,7 @@ import com.sebastijanzindl.galore.domain.usecase.impl.GetUserFlavoursUseCaseImpl
 import com.sebastijanzindl.galore.domain.usecase.impl.GetUserLikedCocktailsUseCaseImpl
 import com.sebastijanzindl.galore.domain.usecase.impl.GetUserProfileUseCaseImpl
 import com.sebastijanzindl.galore.domain.usecase.impl.LibraryScreenUseCaseImpl
+import com.sebastijanzindl.galore.domain.usecase.impl.RemoveCocktailFromFavouritesUseCaseImpl
 import com.sebastijanzindl.galore.domain.usecase.impl.SignInGoogleUseCaseImpl
 import com.sebastijanzindl.galore.domain.usecase.impl.SignInUseCaseImpl
 import com.sebastijanzindl.galore.domain.usecase.impl.SignOutUseCaseImpl
@@ -91,11 +97,20 @@ abstract class UseCaseModule {
     abstract fun bindAddFlavourToFavouriteUseCase(impl: AddFlavourToFavouritesUseCaseImpl): AddFlavoursToFavouritesUseCase
 
     @Binds
-    abstract fun bindGetPopularCocktailsUseCase(impl: GetPopularCocktailsUseCaseImpl): GetPopularCocktailsUseCase
+    abstract fun bindGetPopularCocktailsUseCase(impl: GetPopularCocktailsUseCaseImpl): GetSectionCocktailsUseCase
 
     @Binds
     abstract fun bindGetCocktailsBySearchUseCase(impl: GetCocktailsBySearchUseCaseImpl): GetCocktailsBySearchUseCase
 
     @Binds
     abstract fun bindGenerateCocktailUseCase(impl: GenerateCocktailUseCaseImpl): GenerateCocktailUseCase
+
+    @Binds
+    abstract fun bindAddCocktailToFavouritesUseCase(impl: AddCocktailToFavouritesUseCaseImpl): AddCocktailToFavouritesUseCase
+
+    @Binds
+    abstract fun bindRemoveCocktailFromFavouritesUseCase(impl: RemoveCocktailFromFavouritesUseCaseImpl): RemoveCocktailFromFavouritesUseCase
+
+    @Binds
+    abstract fun bindGetCocktailFavouriteStatusUseCase(impl: GetCocktailFavouriteStatusUseCaseImpl): GetCocktailFavouriteStatusUseCase
 }
