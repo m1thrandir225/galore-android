@@ -124,8 +124,9 @@ fun CocktailDetailsScreen(
                 Text(
                     modifier = Modifier.padding(horizontal = 12.dp),
                     text = "Serve: ${cocktail!!.glass}",
-                    style = MaterialTheme.typography.bodyMedium,
-                    color = MaterialTheme.colorScheme.onSurfaceVariant,
+                    style = MaterialTheme.typography.bodyLarge,
+                    color = MaterialTheme.colorScheme.onSurface,
+                    fontWeight = FontWeight.Normal
                 )
                 Text(
                     modifier = Modifier.padding(horizontal = 12.dp),

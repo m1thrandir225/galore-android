@@ -1,4 +1,4 @@
-package com.sebastijanzindl.galore.presentation.screens.generateCocktailSelectCocktails
+package com.sebastijanzindl.galore.presentation.screens.search
 
 import android.util.Log
 import androidx.compose.material3.SnackbarDuration
@@ -18,10 +18,10 @@ import kotlinx.coroutines.launch
 import javax.inject.Inject
 
 @HiltViewModel
-class GenerateSelectCocktailsViewModel @Inject constructor(
-    private val getPopularCocktailsUseCase: GetSectionCocktailsUseCase,
+class SearchScreenViewModel @Inject constructor(
+    private val getSectionCocktailsUseCase: GetSectionCocktailsUseCase,
     private val getCocktailsBySearchUseCase: GetCocktailsBySearchUseCase,
-) : ViewModel() {
+) : ViewModel(){
     private val _isLoading = MutableStateFlow<Boolean>(false);
     val isLoading = _isLoading.asStateFlow();
 
@@ -41,13 +41,14 @@ class GenerateSelectCocktailsViewModel @Inject constructor(
     init {
         getInitialCocktails();
     }
+
     fun getInitialCocktails() {
         viewModelScope.launch {
             try {
                 _isLoading.value = true;
-                val result = getPopularCocktailsUseCase.execute(
+                val result = getSectionCocktailsUseCase.execute(
                     GetSectionCocktailsUseCase.Input(
-                        CocktailDbSectionName.POPULAR
+                        CocktailDbSectionName.RECENT
                     )
                 )
                 if(result.result == null) throw Exception("There was a problem fetching the required data.")

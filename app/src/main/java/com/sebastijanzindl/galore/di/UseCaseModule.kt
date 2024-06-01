@@ -6,8 +6,9 @@ import com.sebastijanzindl.galore.domain.usecase.DeleteUserUseCase
 import com.sebastijanzindl.galore.domain.usecase.GenerateCocktailUseCase
 import com.sebastijanzindl.galore.domain.usecase.GetAllFlavoursUseCase
 import com.sebastijanzindl.galore.domain.usecase.GetAllUserMadeCocktails
+import com.sebastijanzindl.galore.domain.usecase.GetCocktailFavouriteStatusUseCase
 import com.sebastijanzindl.galore.domain.usecase.GetCocktailsBySearchUseCase
-import com.sebastijanzindl.galore.domain.usecase.GetPopularCocktailsUseCase
+import com.sebastijanzindl.galore.domain.usecase.GetSectionCocktailsUseCase
 import com.sebastijanzindl.galore.domain.usecase.GetSingleCocktailUseCase
 import com.sebastijanzindl.galore.domain.usecase.GetSingleGeneratedCocktailUseCase
 import com.sebastijanzindl.galore.domain.usecase.GetUserFlavoursUseCase
@@ -26,6 +27,7 @@ import com.sebastijanzindl.galore.domain.usecase.impl.DeleteUserUseCaseImpl
 import com.sebastijanzindl.galore.domain.usecase.impl.GenerateCocktailUseCaseImpl
 import com.sebastijanzindl.galore.domain.usecase.impl.GetAllFlavoursUseCaseImpl
 import com.sebastijanzindl.galore.domain.usecase.impl.GetAllUserMadeCocktailsImpl
+import com.sebastijanzindl.galore.domain.usecase.impl.GetCocktailFavouriteStatusUseCaseImpl
 import com.sebastijanzindl.galore.domain.usecase.impl.GetCocktailsBySearchUseCaseImpl
 import com.sebastijanzindl.galore.domain.usecase.impl.GetPopularCocktailsUseCaseImpl
 import com.sebastijanzindl.galore.domain.usecase.impl.GetSingleCocktailUseCaseImpl
@@ -95,7 +97,7 @@ abstract class UseCaseModule {
     abstract fun bindAddFlavourToFavouriteUseCase(impl: AddFlavourToFavouritesUseCaseImpl): AddFlavoursToFavouritesUseCase
 
     @Binds
-    abstract fun bindGetPopularCocktailsUseCase(impl: GetPopularCocktailsUseCaseImpl): GetPopularCocktailsUseCase
+    abstract fun bindGetPopularCocktailsUseCase(impl: GetPopularCocktailsUseCaseImpl): GetSectionCocktailsUseCase
 
     @Binds
     abstract fun bindGetCocktailsBySearchUseCase(impl: GetCocktailsBySearchUseCaseImpl): GetCocktailsBySearchUseCase
@@ -108,4 +110,7 @@ abstract class UseCaseModule {
 
     @Binds
     abstract fun bindRemoveCocktailFromFavouritesUseCase(impl: RemoveCocktailFromFavouritesUseCaseImpl): RemoveCocktailFromFavouritesUseCase
+
+    @Binds
+    abstract fun bindGetCocktailFavouriteStatusUseCase(impl: GetCocktailFavouriteStatusUseCaseImpl): GetCocktailFavouriteStatusUseCase
 }

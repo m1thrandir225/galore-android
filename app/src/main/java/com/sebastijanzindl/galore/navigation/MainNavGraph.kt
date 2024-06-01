@@ -109,7 +109,8 @@ fun NavGraphBuilder.mainNavGraph(
             SearchScreen(
                modifier = Modifier
                    .padding(paddingValues)
-                   .fillMaxSize()
+                   .fillMaxSize(),
+                navigateToCocktail = {id -> navigateToCocktailDetails(id)}
             )
         }
         composable(

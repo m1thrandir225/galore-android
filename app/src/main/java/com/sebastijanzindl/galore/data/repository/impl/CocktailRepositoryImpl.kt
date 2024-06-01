@@ -64,9 +64,12 @@ class CocktailRepositoryImpl @Inject constructor(
         )
     }
 
-    override suspend fun getPopularCocktails(): HttpResponse {
+    override suspend fun getSectionCocktails(sectionName: String): HttpResponse {
         return  edgeFunctions.invoke(
-            function = "get-popular-cocktails"
+            function = "get-section-cocktails",
+            body = buildJsonObject {
+                put("section", sectionName)
+            }
         )
     }
 
@@ -79,11 +82,11 @@ class CocktailRepositoryImpl @Inject constructor(
         )
     }
 
-    override suspend fun addCocktailToFavourites(cocktailId: String, userId: String): UserLikedCocktail {
+    override suspend fun addCocktailToFavourites(cocktailId: String, userId: String): UserLikedCocktail? {
         return postgrest.from("user_liked_cocktails")
             .insert(UserLikedCocktail(cocktailId = cocktailId, userId = userId)) {
                 select()
-            }.decodeSingle<UserLikedCocktail>()
+            }.decodeSingleOrNull<UserLikedCocktail>()
     }
 
     override suspend fun removeCocktailFromFavourites(
@@ -96,6 +99,20 @@ class CocktailRepositoryImpl @Inject constructor(
                eq("cocktail_id", cocktailId)
                eq("user_id", userId)
            }
-       }.decodeSingle<UserLikedCocktail>()
+       }.decodeSingleOrNull<UserLikedCocktail>()
+    }
+
+    override suspend fun getCocktailFavouriteStatus(
+        cocktailId: String,
+        userId: String
+    ): UserLikedCocktail? {
+      return postgrest.from("user_liked_cocktails")
+          .select()
+          {
+              filter {
+                  eq("user_id", userId)
+                  eq("cocktail_id", cocktailId)
+              }
+          }.decodeSingleOrNull<UserLikedCocktail>()
     }
 }
