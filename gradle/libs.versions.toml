@@ -19,11 +19,17 @@ lottieVersion = "6.3.0"
 material3 = "1.2.1"
 navVersion = "2.7.7"
 supabaseVersion = "2.3.1"
+androidGradlePlugin = "8.4.1"
+kotlinGradlePlugin = "1.9.0"
+kspGradlePlugin = "1.9.22-1.0.16"
+daggerHiltGradlePlugin = "2.50"
+kotlinSerializationGradlePlugin = "1.9.22"
 
 [libraries]
 androidx-activity-compose = { module = "androidx.activity:activity-compose", version.ref = "activityCompose" }
 androidx-compose-bom = { module = "androidx.compose:compose-bom", version.ref = "composeBom" }
 androidx-core-ktx = { module = "androidx.core:core-ktx", version.ref = "coreKtx" }
+#noinspection CredentialDependency
 androidx-credentials = { module = "androidx.credentials:credentials", version.ref = "credentials" }
 androidx-credentials-play-services-auth = { module = "androidx.credentials:credentials-play-services-auth", version.ref = "credentials" }
 androidx-espresso-core = { module = "androidx.test.espresso:espresso-core", version.ref = "espressoCore" }
@@ -40,24 +46,35 @@ androidx-ui-test-junit4 = { module = "androidx.compose.ui:ui-test-junit4" }
 androidx-ui-test-manifest = { module = "androidx.compose.ui:ui-test-manifest" }
 androidx-ui-tooling = { module = "androidx.compose.ui:ui-tooling" }
 androidx-ui-tooling-preview = { module = "androidx.compose.ui:ui-tooling-preview" }
+
 coil = { module = "io.coil-kt:coil", version.ref = "coilVer" }
 coil-compose = { module = "io.coil-kt:coil-compose", version.ref = "coilVer" }
 coil-integration = { module = "io.github.jan-tennert.supabase:coil-integration", version.ref = "supabaseVersion" }
-compose-auth = { module = "io.github.jan-tennert.supabase:compose-auth", version.ref = "supabaseVersion" }
-functions-kt = { module = "io.github.jan-tennert.supabase:functions-kt", version.ref = "supabaseVersion" }
+
+
 googleid = { module = "com.google.android.libraries.identity.googleid:googleid", version.ref = "googleidVersion" }
-gotrue-kt = { module = "io.github.jan-tennert.supabase:gotrue-kt", version.ref = "supabaseVersion" }
 hilt-android = { module = "com.google.dagger:hilt-android", version.ref = "hiltVer" }
 hilt-compiler = { module = "com.google.dagger:hilt-compiler", version.ref = "hiltCompiler" }
 junit = { module = "junit:junit", version.ref = "junit" }
+
 ktor-client-android = { module = "io.ktor:ktor-client-android", version.ref = "ktorVersion" }
 ktor-client-content-negotiation = { module = "io.ktor:ktor-client-content-negotiation", version.ref = "ktorVersion" }
 ktor-client-core = { module = "io.ktor:ktor-client-core", version.ref = "ktorVersion" }
 ktor-client-logging = { module = "io.ktor:ktor-client-logging", version.ref = "ktorClientLogging" }
 ktor-serialization-kotlinx-json = { module = "io.ktor:ktor-serialization-kotlinx-json", version.ref = "ktorVersion" }
 ktor-utils = { module = "io.ktor:ktor-utils", version.ref = "ktorVersion" }
+
 lottie-compose = { module = "com.airbnb.android:lottie-compose", version.ref = "lottieVersion" }
+
+compose-auth = { module = "io.github.jan-tennert.supabase:compose-auth", version.ref = "supabaseVersion" }
+gotrue-kt = { module = "io.github.jan-tennert.supabase:gotrue-kt", version.ref = "supabaseVersion" }
+functions-kt = { module = "io.github.jan-tennert.supabase:functions-kt", version.ref = "supabaseVersion" }
 postgrest-kt = { module = "io.github.jan-tennert.supabase:postgrest-kt", version.ref = "supabaseVersion" }
 storage-kt = { module = "io.github.jan-tennert.supabase:storage-kt", version.ref = "supabaseVersion" }
 
 [plugins]
+android-application = { id = "com.android.application", version.ref = "androidGradlePlugin"}
+kotlin-android = { id = "org.jetbrains.kotlin.android", version.ref = "kotlinGradlePlugin"}
+ksp-android = { id = "com.google.devtools.ksp", version.ref = "kspGradlePlugin"}
+dagger-android = { id = "com.google.dagger.hilt.android", version.ref = "daggerHiltGradlePlugin"}
+kotlin-serialization = { id = "org.jetbrains.kotlin.plugin.serialization", version.ref = "kotlinSerializationGradlePlugin"}
