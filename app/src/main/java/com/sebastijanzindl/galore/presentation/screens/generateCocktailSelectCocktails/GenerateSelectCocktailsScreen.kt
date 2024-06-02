@@ -182,7 +182,7 @@ fun GenerateSelectCocktailsScreen(
                 LazyVerticalGrid(
                     modifier = Modifier
                         .fillMaxWidth()
-                        .heightIn(min = 300.dp, max = 600.dp),
+                        .heightIn(min = 300.dp, max = 500.dp),
                     columns = GridCells.Fixed(2),
                     horizontalArrangement = Arrangement.spacedBy(12.dp),
                     verticalArrangement = Arrangement.spacedBy(12.dp)
