@@ -28,6 +28,13 @@ fun NavGraphBuilder.onboardingNavGraph(
             FeatureShowcaseScreen(
                 navigateToPushNotificationScreen = {
                     navController.navigate(AppScreen.Onboarding.EnablePushNotifications.route)
+                },
+                navigateToMain = {
+                    navController.navigate(AppScreen.Main.Home.route) {
+                        popUpTo(AppScreen.Onboarding.route) {
+                            inclusive = true;
+                        }
+                    }
                 }
             )
         }

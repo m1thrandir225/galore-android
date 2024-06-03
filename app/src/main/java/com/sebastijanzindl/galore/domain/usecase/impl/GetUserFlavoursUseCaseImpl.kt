@@ -13,7 +13,7 @@ class GetUserFlavoursUseCaseImpl @Inject constructor(
         withContext(Dispatchers.IO) {
             val result = flavourRepository.getUserFlavours(input.userId)
             if(result.isNotEmpty()) {
-                GetUserFlavoursUseCase.Output.Success;
+                    GetUserFlavoursUseCase.Output.Success(result);
             } else {
                 GetUserFlavoursUseCase.Output.Failure
             }

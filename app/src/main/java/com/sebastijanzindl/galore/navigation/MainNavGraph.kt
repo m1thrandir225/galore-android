@@ -215,7 +215,7 @@ fun NavGraphBuilder.mainNavGraph(
             val cocktailId = it.arguments?.getString("cocktail-id")!!;
             CocktailDetailsScreen(
                 modifier = Modifier.padding(bottom = paddingValues.calculateBottomPadding()),
-                cocktailId = cocktailId
+                cocktailId = cocktailId,
             )
         }
         composable (
@@ -229,7 +229,7 @@ fun NavGraphBuilder.mainNavGraph(
             GeneratedCocktailDetailsScreen(
                 modifier = Modifier
                     .padding(bottom = paddingValues.calculateBottomPadding()),
-                cocktailId = cocktailId
+                cocktailId = cocktailId,
             )
         }
     }

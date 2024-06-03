@@ -16,14 +16,15 @@ class FlavourRepositoryImpl @Inject constructor(
 
     override suspend fun getUserFlavours(userId: String): List<Flavour> {
         val columns = Columns.raw("""
-            flavours (
-                id,
-                name,
-                created_at
-            )
+            *,
+            user_liked_flavours()
         """.trimIndent())
-        return postgrest.from("user_liked_flavours")
-            .select(columns = columns)
+        return postgrest.from("flavours")
+            .select(columns) {
+                filter {
+                    eq("user_liked_flavours.user_id", userId)
+                }
+            }
             .decodeList<Flavour>()
     }
     override suspend fun addFlavoursToFavourites(flavourIds: List<String>, userId: String): List<UserLikedFlavour> {

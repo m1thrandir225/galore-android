@@ -48,7 +48,7 @@ import com.sebastijanzindl.galore.presentation.component.LoadingSpinner
 fun CocktailDetailsScreen(
     modifier: Modifier = Modifier,
     cocktailId: String,
-    viewModel: CocktailDetailsScreenViewModel = hiltViewModel()
+    viewModel: CocktailDetailsScreenViewModel = hiltViewModel(),
 ) {
     val isLoading by viewModel.isLoading.collectAsState();
     val cocktail by viewModel.cocktail.collectAsState();
@@ -123,7 +123,7 @@ fun CocktailDetailsScreen(
                 )
                 Text(
                     modifier = Modifier.padding(horizontal = 12.dp),
-                    text = "Serve: ${cocktail!!.glass}",
+                    text = cocktail!!.glass,
                     style = MaterialTheme.typography.bodyLarge,
                     color = MaterialTheme.colorScheme.onSurface,
                     fontWeight = FontWeight.Normal
