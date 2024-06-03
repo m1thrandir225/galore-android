@@ -65,7 +65,7 @@ fun GaloreApp(
                 ) == PackageManager.PERMISSION_GRANTED
             )
         } else {
-          mutableStateOf(false)
+          mutableStateOf(true)
         }
     }
     viewModel.setHasEnabledNotifications(
