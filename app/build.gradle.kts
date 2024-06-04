@@ -7,6 +7,7 @@ plugins {
     id("com.google.devtools.ksp")
     id("com.google.dagger.hilt.android")
     kotlin("plugin.serialization")
+    id("com.google.gms.google-services")
 }
 
 android {
@@ -134,5 +135,11 @@ dependencies {
      * Sign in With Google
      */
     implementation (libs.googleid)
+
+    /**
+     * Firebase
+     */
+    implementation(platform(libs.firebase.bom))
+    implementation(libs.firebase.messaging)
 
 }

@@ -41,9 +41,11 @@ fun BottomNavigationBar(
             selectedIcon = Icons.Filled.Home,
             unselectedIcon = Icons.Outlined.Home,
             onClick = {
-                navController.navigate(AppScreen.Main.Home.route) {
-                    popUpTo(AppScreen.Main.Home.route)
+                val currentRoute = navController.currentDestination?.route
+                if(currentRoute != AppScreen.Main.Home.route) {
+                    navController.navigate(AppScreen.Main.Home.route)
                 }
+
             },
         ),
         BottomNavigationItem(
@@ -52,9 +54,11 @@ fun BottomNavigationBar(
             selectedIcon = Icons.Filled.Search,
             unselectedIcon =  Icons.Outlined.Search,
             onClick = {
-                navController.navigate(AppScreen.Main.Search.route) {
-                    popUpTo(AppScreen.Main.Home.route)
+                val currentRoute = navController.currentDestination?.route
+                if(currentRoute != AppScreen.Main.Search.route) {
+                    navController.navigate(AppScreen.Main.Search.route)
                 }
+
             }
         ),
         BottomNavigationItem(
@@ -63,8 +67,9 @@ fun BottomNavigationBar(
             selectedIcon = ImageVector.vectorResource(id = R.drawable.sparkles_filled),
             unselectedIcon = ImageVector.vectorResource(id = R.drawable.sparkles),
             onClick = {
-                navController.navigate(AppScreen.Main.Generate.route) {
-                    popUpTo(AppScreen.Main.Home.route)
+                val currentRoute = navController.currentDestination?.route
+                if(currentRoute != AppScreen.Main.Generate.route) {
+                    navController.navigate(AppScreen.Main.Generate.route)
                 }
             }
         ),
@@ -74,9 +79,12 @@ fun BottomNavigationBar(
             selectedIcon = ImageVector.vectorResource(id = R.drawable.book_filled),
             unselectedIcon = ImageVector.vectorResource(id = R.drawable.book_24px),
             onClick = {
-                navController.navigate(AppScreen.Main.Library.route) {
-                    popUpTo(AppScreen.Main.Library.route)
+                val currentRoute = navController.currentDestination?.route
+                if(currentRoute != AppScreen.Main.Library.route) {
+                    navController.navigate(AppScreen.Main.Library.route)
+
                 }
+
             }
         )
     )

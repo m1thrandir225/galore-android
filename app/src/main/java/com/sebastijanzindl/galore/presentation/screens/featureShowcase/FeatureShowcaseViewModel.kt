@@ -31,7 +31,7 @@ class FeatureShowcaseViewModel @Inject constructor(
     init {
         getUserFlavours()
     }
-    fun getUserFlavours() {
+    private fun getUserFlavours() {
         viewModelScope.launch {
             try {
                 _isLoading.value = true
