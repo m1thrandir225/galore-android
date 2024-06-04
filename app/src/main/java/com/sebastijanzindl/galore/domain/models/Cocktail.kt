@@ -25,27 +25,5 @@ data class Cocktail(
 
 );
 
-@Serializable
-data class CocktailIngredient(
-    @SerialName("ingredient")
-    val ingredient: String,
-
-    @SerialName("amount")
-    val amount: String
-)
-
-
-@Serializable
-data class MultipleCocktailsResponse(
-    @SerialName("cocktails")
-    val cocktails: List<Cocktail>
-)
-
-@Serializable
-data class SingleCocktailResponse(
-    @SerialName("cocktail")
-    val cocktail: Cocktail
-)
-
 
 

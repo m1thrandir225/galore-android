@@ -12,6 +12,7 @@ class GetUserFlavoursUseCaseImpl @Inject constructor(
     override suspend fun execute(input: GetUserFlavoursUseCase.Input): GetUserFlavoursUseCase.Output =
         withContext(Dispatchers.IO) {
             val result = flavourRepository.getUserFlavours(input.userId)
+            println(result.toString());
             if(result.isNotEmpty()) {
                     GetUserFlavoursUseCase.Output.Success(result);
             } else {

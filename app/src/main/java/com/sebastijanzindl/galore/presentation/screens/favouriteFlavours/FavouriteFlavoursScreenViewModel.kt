@@ -34,7 +34,6 @@ class FavouriteFlavoursScreenViewModel @Inject constructor(
     init {
         getFlavours()
     }
-
     fun dismissToastMessage() {
         _toastMessage.update { null }
     }

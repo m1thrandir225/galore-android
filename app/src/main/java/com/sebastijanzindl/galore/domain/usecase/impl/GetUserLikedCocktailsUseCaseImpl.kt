@@ -1,7 +1,7 @@
 package com.sebastijanzindl.galore.domain.usecase.impl
 
 import com.sebastijanzindl.galore.data.repository.CocktailRepository
-import com.sebastijanzindl.galore.domain.models.MultipleCocktailsResponse
+import com.sebastijanzindl.galore.data.network.response.MultipleCocktailsResponse
 import com.sebastijanzindl.galore.domain.usecase.GetUserLikedCocktailsUseCase
 import io.ktor.client.call.body
 import kotlinx.coroutines.Dispatchers
