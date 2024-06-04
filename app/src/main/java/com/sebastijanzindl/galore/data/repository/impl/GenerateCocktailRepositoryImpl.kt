@@ -1,5 +1,7 @@
-package com.sebastijanzindl.galore.data.network
+package com.sebastijanzindl.galore.data.repository.impl
 
+import com.sebastijanzindl.galore.data.network.request.GenerateCocktailRequest
+import com.sebastijanzindl.galore.data.repository.GenerateCocktailRepository
 import io.ktor.client.HttpClient
 import io.ktor.client.request.headers
 import io.ktor.client.request.post
@@ -8,17 +10,10 @@ import io.ktor.client.statement.HttpResponse
 import io.ktor.http.ContentType
 import io.ktor.http.HttpHeaders
 import io.ktor.http.contentType
-import kotlinx.serialization.SerialName
-import kotlinx.serialization.Serializable
 import javax.inject.Inject
 
-@Serializable
-data class GenerateCocktailRequest (
-    @SerialName("prompt")
-    val prompt: String
-)
-
-class ApiServiceImpl @Inject constructor(private val httpClient: HttpClient): ApiService{
+class GenerateCocktailRepositoryImpl @Inject constructor(private val httpClient: HttpClient):
+    GenerateCocktailRepository {
     override suspend fun generateCocktail(prompt: String, token: String):  HttpResponse {
         return httpClient.post("/generate-cocktail") {
             headers {
