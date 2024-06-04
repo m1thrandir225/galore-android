@@ -26,12 +26,14 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.platform.LocalContext
+import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import coil.compose.AsyncImage
 import coil.request.ImageRequest
+import com.sebastijanzindl.galore.R
 import com.sebastijanzindl.galore.domain.models.UserMadeCocktailInstruction
 import com.sebastijanzindl.galore.presentation.component.LoadingSpinner
 
@@ -39,30 +41,31 @@ import com.sebastijanzindl.galore.presentation.component.LoadingSpinner
 fun GeneratedCocktailDetailsScreen(
     modifier: Modifier,
     cocktailId: String,
-    viewModel: GeneratedCocktailDetailsScreenViewModel = hiltViewModel()
+    viewModel: GeneratedCocktailDetailsScreenViewModel = hiltViewModel(),
 ) {
-    val isLoading by viewModel.isLoading.collectAsState()
+    val isLoading by viewModel.isLoading.collectAsState();
     val cocktail by viewModel.cocktail.collectAsState()
 
     LaunchedEffect(Unit) {
         viewModel.getCocktail(cocktailId)
     }
-    Column(
-        modifier = modifier
-            .fillMaxSize()
-            .verticalScroll(rememberScrollState()),
-        verticalArrangement = Arrangement.spacedBy(24.dp)
-    ) {
-        if(isLoading) {
-            Column (
-                modifier = modifier.fillMaxSize(),
-                verticalArrangement = Arrangement.Center,
-                horizontalAlignment = Alignment.CenterHorizontally
+
+    if(isLoading) {
+        Column (
+            modifier = Modifier.fillMaxSize(),
+            verticalArrangement = Arrangement.Center,
+            horizontalAlignment = Alignment.CenterHorizontally
+        ) {
+            LoadingSpinner(shouldShow = isLoading)
+        }
+    } else {
+        if(cocktail != null) {
+            Column(
+                modifier = modifier
+                    .fillMaxSize()
+                    .verticalScroll(rememberScrollState()),
+                verticalArrangement = Arrangement.spacedBy(24.dp)
             ) {
-                LoadingSpinner(shouldShow = isLoading)
-            }
-        } else {
-            if(cocktail != null) {
                 AsyncImage(
                     modifier = Modifier
                         .fillMaxWidth()
@@ -71,6 +74,7 @@ fun GeneratedCocktailDetailsScreen(
                         .data(cocktail!!.image)
                         .crossfade(true)
                         .build(),
+                    placeholder = painterResource(id = R.drawable.placeholder_cockgtail),
                     contentDescription = "Cocktail image",
                     contentScale = ContentScale.Crop,
                 )
@@ -151,6 +155,7 @@ fun GeneratedCocktailDetailsScreen(
                 )
                 InstructionsCarousel(itemsCount = cocktail!!.instructions.count(), instructions = cocktail!!.instructions)
             }
+
         }
    }
 }
@@ -184,7 +189,7 @@ private fun InstructionsCarousel(
                     .height(200.dp)
                     .clip(RoundedCornerShape(16.dp)),
                 contentScale = ContentScale.Crop,
-
+                placeholder = painterResource(id = R.drawable.placeholder_cockgtail),
                 contentDescription = "Image for instruction: $instructionIndex"
             )
             Text(

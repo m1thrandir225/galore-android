@@ -31,10 +31,10 @@ class FavouriteFlavoursScreenViewModel @Inject constructor(
     private val _toastMessage = MutableStateFlow<SnackbarMessage?>(null)
     val toastMessage = _toastMessage.asStateFlow()
 
+
     init {
         getFlavours()
     }
-
     fun dismissToastMessage() {
         _toastMessage.update { null }
     }

@@ -3,7 +3,6 @@ package com.sebastijanzindl.galore.presentation
 import android.Manifest
 import android.content.pm.PackageManager
 import android.os.Build
-import androidx.annotation.RequiresApi
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Settings
@@ -43,7 +42,7 @@ import com.sebastijanzindl.galore.presentation.viewmodels.ProfileSharedViewModel
 import kotlinx.coroutines.launch
 
 @OptIn(ExperimentalMaterial3Api::class)
-@RequiresApi(Build.VERSION_CODES.TIRAMISU)
+
 @Composable
 fun GaloreApp(
     viewModel: MainViewModel = hiltViewModel(),
@@ -58,12 +57,16 @@ fun GaloreApp(
     val context = LocalContext.current
 
     val hasNotificationPermission by remember {
-        mutableStateOf(
-            ContextCompat.checkSelfPermission(
-                context,
-                Manifest.permission.POST_NOTIFICATIONS
-            ) == PackageManager.PERMISSION_GRANTED
-        )
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) {
+            mutableStateOf(
+                ContextCompat.checkSelfPermission(
+                    context,
+                    Manifest.permission.POST_NOTIFICATIONS
+                ) == PackageManager.PERMISSION_GRANTED
+            )
+        } else {
+          mutableStateOf(true)
+        }
     }
     viewModel.setHasEnabledNotifications(
         hasNotificationPermission

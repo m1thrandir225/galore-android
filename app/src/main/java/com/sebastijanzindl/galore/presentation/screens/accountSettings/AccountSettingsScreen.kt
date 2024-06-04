@@ -145,7 +145,7 @@ fun AccountSettingScreen(
                     model = userProfile!!.avatarUrl,
                     contentDescription = "Your Profile Picture",
                     contentScale = ContentScale.Crop,
-                    placeholder = painterResource(id = R.drawable.profile_picture_placeholder)
+                    placeholder = painterResource(id = R.drawable.placeholder_user)
                 )
                 Text(
                     text = "Change Profile Picture",
