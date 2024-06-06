@@ -8,6 +8,8 @@ import io.ktor.client.statement.HttpResponse
 interface CocktailRepository {
   suspend fun getAllCocktails(): List<Cocktail?>
 
+  suspend fun getDailyHomeSections(authorizationToken: String): HttpResponse
+
   suspend fun generateCocktail(prompt: String, authorizationToken: String): HttpResponse
 
   suspend fun getGeneratedCocktail(cocktailId: String): HttpResponse

@@ -2,6 +2,8 @@ package com.sebastijanzindl.galore.navigation
 
 import androidx.compose.animation.AnimatedContentTransitionScope
 import androidx.compose.animation.core.tween
+import androidx.compose.animation.fadeIn
+import androidx.compose.animation.scaleIn
 import androidx.compose.foundation.layout.ExperimentalLayoutApi
 import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.fillMaxSize
@@ -86,21 +88,22 @@ fun NavGraphBuilder.mainNavGraph(
 
         composable(
             route = AppScreen.Main.Home.route,
-            enterTransition = { slideIntoContainer(AnimatedContentTransitionScope.SlideDirection.Start, tween(700)) },
-            exitTransition = { slideOutOfContainer(AnimatedContentTransitionScope.SlideDirection.Start, tween(700)) },
+            enterTransition = { scaleIn() + fadeIn(tween(700)) },
+            exitTransition = { slideOutOfContainer(AnimatedContentTransitionScope.SlideDirection.End, tween(700)) },
             popEnterTransition = { slideIntoContainer(AnimatedContentTransitionScope.SlideDirection.End, tween(700)) },
             popExitTransition = { slideOutOfContainer(AnimatedContentTransitionScope.SlideDirection.End, tween(700)) }
         ) {
             val sharedSectionViewModel: SectionSharedViewModel = it.sharedViewModel<SectionSharedViewModel>(navController = navController);
             HomeScreen(
                 modifier = Modifier.padding(paddingValues),
-                navController = navController,
-                sharedSectionViewModel = sharedSectionViewModel
+                sharedSectionViewModel = sharedSectionViewModel,
+                navigateToCocktailSection = { title -> navigateToCocktailSection(title) },
+                singleCocktailCardPress = { id -> navigateToCocktailDetails(id) }
             )
         }
         composable(
             route = AppScreen.Main.Search.route,
-            enterTransition = { slideIntoContainer(AnimatedContentTransitionScope.SlideDirection.Start, tween(700)) },
+            enterTransition = { scaleIn() + fadeIn(tween(700)) },
             exitTransition = { slideOutOfContainer(AnimatedContentTransitionScope.SlideDirection.Start, tween(700)) },
             popEnterTransition = { slideIntoContainer(AnimatedContentTransitionScope.SlideDirection.End, tween(700)) },
             popExitTransition = { slideOutOfContainer(AnimatedContentTransitionScope.SlideDirection.End, tween(700)) }
@@ -115,7 +118,7 @@ fun NavGraphBuilder.mainNavGraph(
         }
         composable(
             route = AppScreen.Main.Generate.route,
-            enterTransition = { slideIntoContainer(AnimatedContentTransitionScope.SlideDirection.Start, tween(700)) },
+            enterTransition = { scaleIn() + fadeIn(tween(700)) },
             exitTransition = { slideOutOfContainer(AnimatedContentTransitionScope.SlideDirection.Start, tween(700)) },
             popEnterTransition = { slideIntoContainer(AnimatedContentTransitionScope.SlideDirection.End, tween(700)) },
             popExitTransition = { slideOutOfContainer(AnimatedContentTransitionScope.SlideDirection.End, tween(700)) }
@@ -132,7 +135,7 @@ fun NavGraphBuilder.mainNavGraph(
          */
         composable(
             route = AppScreen.Main.GenerateSelectFlavours.route,
-            enterTransition = { slideIntoContainer(AnimatedContentTransitionScope.SlideDirection.Start, tween(700)) },
+            enterTransition = { scaleIn() + fadeIn(tween(700)) },
             exitTransition = { slideOutOfContainer(AnimatedContentTransitionScope.SlideDirection.Start, tween(700)) },
             popEnterTransition = { slideIntoContainer(AnimatedContentTransitionScope.SlideDirection.End, tween(700)) },
             popExitTransition = { slideOutOfContainer(AnimatedContentTransitionScope.SlideDirection.End, tween(700)) }
@@ -192,7 +195,7 @@ fun NavGraphBuilder.mainNavGraph(
         }
         composable(
             route = AppScreen.Main.CocktailSection.route,
-            enterTransition = { slideIntoContainer(AnimatedContentTransitionScope.SlideDirection.Start, tween(700)) },
+            enterTransition = { scaleIn() + fadeIn(tween(700)) },
             exitTransition = { slideOutOfContainer(AnimatedContentTransitionScope.SlideDirection.Start, tween(700)) },
             popEnterTransition = { slideIntoContainer(AnimatedContentTransitionScope.SlideDirection.End, tween(700)) },
             popExitTransition = { slideOutOfContainer(AnimatedContentTransitionScope.SlideDirection.End, tween(700)) }
@@ -207,15 +210,15 @@ fun NavGraphBuilder.mainNavGraph(
         }
         composable(
             route = AppScreen.Main.CocktailDetails.route,
-            enterTransition = { slideIntoContainer(AnimatedContentTransitionScope.SlideDirection.Start, tween(700)) },
-            exitTransition = { slideOutOfContainer(AnimatedContentTransitionScope.SlideDirection.Start, tween(700)) },
-            popEnterTransition = { slideIntoContainer(AnimatedContentTransitionScope.SlideDirection.End, tween(700)) },
-            popExitTransition = { slideOutOfContainer(AnimatedContentTransitionScope.SlideDirection.End, tween(700)) }
+            enterTransition = { slideIntoContainer(AnimatedContentTransitionScope.SlideDirection.Up, tween(700)) },
+            exitTransition = { slideOutOfContainer(AnimatedContentTransitionScope.SlideDirection.Up, tween(700)) },
+            popEnterTransition = { slideIntoContainer(AnimatedContentTransitionScope.SlideDirection.Down, tween(700)) },
+            popExitTransition = { slideOutOfContainer(AnimatedContentTransitionScope.SlideDirection.Down, tween(700)) }
         ) {
             val cocktailId = it.arguments?.getString("cocktail-id")!!;
             CocktailDetailsScreen(
                 modifier = Modifier.padding(bottom = paddingValues.calculateBottomPadding()),
-                cocktailId = cocktailId
+                cocktailId = cocktailId,
             )
         }
         composable (
@@ -229,7 +232,7 @@ fun NavGraphBuilder.mainNavGraph(
             GeneratedCocktailDetailsScreen(
                 modifier = Modifier
                     .padding(bottom = paddingValues.calculateBottomPadding()),
-                cocktailId = cocktailId
+                cocktailId = cocktailId,
             )
         }
     }

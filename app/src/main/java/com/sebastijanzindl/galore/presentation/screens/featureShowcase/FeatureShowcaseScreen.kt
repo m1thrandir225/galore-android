@@ -31,6 +31,8 @@ import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
+import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableIntStateOf
 import androidx.compose.runtime.mutableStateOf
@@ -41,9 +43,12 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.painterResource
+import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import androidx.hilt.navigation.compose.hiltViewModel
 import com.sebastijanzindl.galore.R
+import com.sebastijanzindl.galore.presentation.component.LoadingSpinner
 import com.sebastijanzindl.galore.presentation.component.Logo
 import com.sebastijanzindl.galore.ui.theme.GaloreTheme
 import kotlinx.coroutines.launch
@@ -51,16 +56,16 @@ import kotlinx.coroutines.launch
 @OptIn(ExperimentalFoundationApi::class)
 
 
-/**
- * TODO: add viewmodel and isFirstTime useCase if the user is a first time continue with onboarding if not redirect to main nav graph
- */
-
-
 @Composable
 fun FeatureShowcaseScreen(
     modifier: Modifier = Modifier,
     navigateToPushNotificationScreen: () -> Unit,
+    navigateToMain: () -> Unit,
+    viewModel: FeatureShowcaseViewModel = hiltViewModel()
 ) {
+    val isLoading by viewModel.isLoading.collectAsState();
+    val isFirstTime by viewModel.isFirstTime.collectAsState()
+
     val maxCarouselSlides = 3
     val coroutineScope = rememberCoroutineScope()
     val pagerState  = rememberPagerState {
@@ -77,28 +82,43 @@ fun FeatureShowcaseScreen(
         }
 
     }
-
-    Scaffold (modifier = modifier) {
+    LaunchedEffect (isFirstTime) {
+        if(isFirstTime != null  && !isFirstTime!!) {
+            navigateToMain()
+        }
+    }
+    if(isLoading) {
         Column (
+            modifier = Modifier.fillMaxSize(),
             horizontalAlignment = Alignment.CenterHorizontally,
-            verticalArrangement = Arrangement.SpaceEvenly,
-            modifier = Modifier
-                .padding(top = it.calculateTopPadding(), bottom = it.calculateBottomPadding())
-                .fillMaxSize()
+            verticalArrangement = Arrangement.Center
         ) {
-            Logo()
-            Carousel(pagerState = pagerState)
-            Button(
-                modifier = Modifier.width(200.dp),
-                onClick =  {
-                    onContinuePress()
-                }){
-                Text(text = "Continue")
+            LoadingSpinner(shouldShow = isLoading)
+        }
+    } else {
+        Scaffold (modifier = modifier) {
+            Column (
+                horizontalAlignment = Alignment.CenterHorizontally,
+                verticalArrangement = Arrangement.SpaceEvenly,
+                modifier = Modifier
+                    .padding(top = it.calculateTopPadding(), bottom = it.calculateBottomPadding())
+                    .fillMaxSize()
+            ) {
+                Logo()
+                Carousel(pagerState = pagerState)
+                Button(
+                    modifier = Modifier.width(200.dp),
+                    onClick =  {
+                        onContinuePress()
+                    }){
+                    Text(text = "Continue")
+                }
+
             }
 
         }
-
     }
+
 
 }
 
@@ -109,7 +129,7 @@ fun Carousel(
     pagerState: PagerState
 ) {
     val slideImage = remember {
-        mutableIntStateOf(R.drawable.open_doodles___dynamic_duo)
+        mutableIntStateOf(R.drawable.onboarding_carousel_1)
     }
 
     val slideText = remember {
@@ -119,21 +139,21 @@ fun Carousel(
     Column(
         modifier = modifier,
         horizontalAlignment = Alignment.CenterHorizontally,
-        verticalArrangement = Arrangement.spacedBy(8.dp)
+        verticalArrangement = Arrangement.spacedBy(24.dp)
     ){
         HorizontalPager(state = pagerState ) { page ->
             when(page) {
                 0 -> {
-                    slideImage.intValue = R.drawable.open_doodles___catching_up
+                    slideImage.intValue = R.drawable.onboarding_carousel_1
                     slideText.value = "Choose your favourite flavours."
                 }
                 1 -> {
-                    slideImage.intValue = R.drawable.open_doodles___dynamic_duo
+                    slideImage.intValue = R.drawable.onboarding_carousel_2
                     slideText.value = "Find your next favourite drink."
                 }
 
                 2 -> {
-                    slideImage.intValue = R.drawable.open_doodles___stuff_to_do
+                    slideImage.intValue = R.drawable.onboarding_carousel_3
                     slideText.value = "Generate your own unique cocktail."
                 }
             }
@@ -172,7 +192,8 @@ fun OnboardingCarouselItem(
         Text(
             style = MaterialTheme.typography.headlineMedium,
             color = MaterialTheme.colorScheme.primary,
-            text = carouselText
+            text = carouselText,
+            textAlign = TextAlign.Center
         )
     }
 }
@@ -241,6 +262,6 @@ fun Dot(
 @Composable
 private fun Preview1() {
     GaloreTheme {
-        FeatureShowcaseScreen (navigateToPushNotificationScreen = {})
+        FeatureShowcaseScreen (navigateToPushNotificationScreen = {}, navigateToMain = {})
     }
 }

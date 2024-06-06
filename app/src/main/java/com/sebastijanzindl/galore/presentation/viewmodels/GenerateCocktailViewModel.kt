@@ -45,7 +45,7 @@ class GenerateCocktailViewModel @Inject constructor(
                 val response = generateCocktailUseCase.execute(
                     GenerateCocktailUseCase.Input(
                         prompt = prompt,
-                        token = "Bearer ${session.accessToken}"
+                        token = session.accessToken
                     )
                 )
                 _generatedCocktailId.value = response.cocktailId

@@ -1,5 +1,6 @@
 package com.sebastijanzindl.galore.presentation.screens.favouriteFlavours
 
+import android.util.Log
 import androidx.compose.material3.SnackbarDuration
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
@@ -31,10 +32,10 @@ class FavouriteFlavoursScreenViewModel @Inject constructor(
     private val _toastMessage = MutableStateFlow<SnackbarMessage?>(null)
     val toastMessage = _toastMessage.asStateFlow()
 
+
     init {
         getFlavours()
     }
-
     fun dismissToastMessage() {
         _toastMessage.update { null }
     }
@@ -87,9 +88,10 @@ class FavouriteFlavoursScreenViewModel @Inject constructor(
                 _allFlavours.value = response.result
 
             } catch (e: Exception) {
+                e.message?.let { Log.e("Favourite Flavours Screen", it) }
                 _toastMessage.value = SnackbarMessage.from(
                     duration = SnackbarDuration.Short,
-                    userMessage = UserMessage.from(e.message.toString()),
+                    userMessage = UserMessage.from("An error occurred"),
                     actionLabelMessage = null,
                     onSnackbarResult = {},
                     withDismissAction = false

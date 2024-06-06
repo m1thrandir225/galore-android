@@ -1,6 +1,6 @@
 package com.sebastijanzindl.galore.domain.usecase.impl
 
-import com.sebastijanzindl.galore.data.network.GenerateCocktailResponse
+import com.sebastijanzindl.galore.data.network.response.GenerateCocktailResponse
 import com.sebastijanzindl.galore.data.repository.CocktailRepository
 import com.sebastijanzindl.galore.domain.usecase.GenerateCocktailUseCase
 import io.ktor.client.call.body

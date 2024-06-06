@@ -36,7 +36,7 @@ import com.sebastijanzindl.galore.ui.theme.GaloreTheme
 
 enum class CocktailCardType(val value: Dp) {
     Horizontal(280.dp),
-    Vertical(180.dp)
+    Vertical(190.dp)
 }
 
 @Composable
@@ -82,7 +82,7 @@ fun CocktailCard (
                 .crossfade(true)
                 .build(),
             contentDescription = "Image of the cocktail: ${cocktail.name}",
-            placeholder = painterResource(id = R.drawable.cocktail_card_image_preview), //TODO: Replace with actually placeholder
+            placeholder = painterResource(id = R.drawable.placeholder_cockgtail),
             contentScale = ContentScale.Crop,
         )
         Row (

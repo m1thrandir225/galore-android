@@ -32,31 +32,3 @@ data class UserMadeCocktail(
     @SerialName("embedding")
     val embedding: List<Float>?
 )
-
-
-
-
-@Serializable
-data class UserMadeCocktailIngredient(
-    @SerialName("name")
-    val name: String,
-
-    @SerialName("amount")
-    val amount: String
-)
-
-@Serializable
-data class UserMadeCocktailInstruction(
-    @SerialName("instruction")
-    val instruction: String,
-
-    @SerialName("instruction_image")
-    val instructionImage: String
-)
-
-
-@Serializable
-data class GetSingleGeneratedCocktailResponse(
-    @SerialName("cocktail")
-    val cocktail: UserMadeCocktail
-)

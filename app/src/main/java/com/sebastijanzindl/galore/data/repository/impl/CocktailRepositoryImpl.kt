@@ -1,6 +1,6 @@
 package com.sebastijanzindl.galore.data.repository.impl
 
-import com.sebastijanzindl.galore.data.network.ApiService
+import com.sebastijanzindl.galore.data.network.KtorAPIService
 import com.sebastijanzindl.galore.data.repository.CocktailRepository
 import com.sebastijanzindl.galore.domain.models.Cocktail
 import com.sebastijanzindl.galore.domain.models.UserLikedCocktail
@@ -15,15 +15,21 @@ import javax.inject.Inject
 class CocktailRepositoryImpl @Inject constructor(
     private val postgrest: Postgrest,
     private val edgeFunctions: Functions,
-    private val honoService: ApiService
+    private val ktorApiService: KtorAPIService
 ) : CocktailRepository {
     override suspend fun getAllCocktails(): List<Cocktail?> {
         return postgrest.from("cocktails").select().decodeList<Cocktail>()
     }
 
+    override suspend fun getDailyHomeSections(authorizationToken: String): HttpResponse {
+        return ktorApiService.getDailyHome(
+            token = authorizationToken
+        )
+    }
+
     override suspend fun generateCocktail(prompt: String, authorizationToken: String): HttpResponse {
 
-         return honoService.generateCocktail(
+         return ktorApiService.generateCocktail(
             prompt = prompt,
              token = authorizationToken,
         )

@@ -46,7 +46,6 @@ fun CocktailTagSection(
         state = pagerState,
         pagerSnapDistance = PagerSnapDistance.atMost(10)
     )
-
     Column (
         modifier = modifier,
         verticalArrangement = Arrangement.spacedBy(12.dp),
@@ -89,9 +88,9 @@ fun CocktailTagSection(
         } else {
           Text(
               modifier = Modifier.padding(horizontal = 24.dp),
-              text = "There are no cocktails in this section",
+              text = "No items in this section.",
               style = MaterialTheme.typography.bodyMedium,
-              color = MaterialTheme.colorScheme.onSurface
+              color = MaterialTheme.colorScheme.secondary
           )
         }
     }
@@ -120,7 +119,6 @@ private fun CocktailTagSectionPreview() {
                 image = "https://images.unsplash.com/photo-1514362545857-3bc16c4c7d1b?q=80&w=2070&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D"
             )
         )
-
         CocktailTagSection(cocktails = cocktails, tagName = "Preview Section", cocktailCardType = CocktailCardType.Horizontal, navigateToSection = {}, cardPress = {})
     }
 }

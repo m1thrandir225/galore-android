@@ -7,6 +7,7 @@ plugins {
     id("com.google.devtools.ksp")
     id("com.google.dagger.hilt.android")
     kotlin("plugin.serialization")
+    id("com.google.gms.google-services")
 }
 
 android {
@@ -15,7 +16,7 @@ android {
 
     defaultConfig {
         applicationId = "com.sebastijanzindl.galore"
-        minSdk = 30
+        minSdk = 29
         targetSdk = 34
         versionCode = 1
         versionName = "1.0"
@@ -65,81 +66,80 @@ android {
 
 dependencies {
 
-    implementation("androidx.core:core-ktx:1.12.0")
-    implementation("androidx.lifecycle:lifecycle-runtime-ktx:2.6.2")
-    testImplementation("junit:junit:4.13.2")
-    androidTestImplementation("androidx.test.ext:junit:1.1.5")
-    androidTestImplementation("androidx.test.espresso:espresso-core:3.5.1")
-    androidTestImplementation("androidx.compose.ui:ui-test-junit4")
-    debugImplementation("androidx.compose.ui:ui-tooling")
-    debugImplementation("androidx.compose.ui:ui-test-manifest")
+    implementation(libs.androidx.core.ktx)
+    implementation(libs.androidx.lifecycle.runtime.ktx)
+    testImplementation(libs.junit)
+    androidTestImplementation(libs.androidx.junit)
+    androidTestImplementation(libs.androidx.espresso.core)
+    androidTestImplementation(libs.androidx.ui.test.junit4)
+    debugImplementation(libs.androidx.ui.tooling)
+    debugImplementation(libs.androidx.ui.test.manifest)
 
-    //Compose
-    androidTestImplementation(platform("androidx.compose:compose-bom:2023.08.00"))
-    implementation("androidx.activity:activity-compose:1.8.2")
-    implementation(platform("androidx.compose:compose-bom:2023.08.00"))
-    implementation("androidx.compose.ui:ui")
-    implementation("androidx.compose.ui:ui-graphics")
-    implementation("androidx.compose.ui:ui-tooling-preview")
-    implementation("androidx.compose.material3:material3:1.2.0")
-    implementation("androidx.compose.material3:material3-window-size-class:1.2.0")
-    implementation("androidx.compose.material3:material3-adaptive:1.0.0-alpha06")
-    implementation("androidx.compose.material3:material3-adaptive-navigation-suite:1.0.0-alpha03")
-    implementation("androidx.lifecycle:lifecycle-viewmodel-compose:2.7.0")
+    /**
+     * Compose
+     */
+    androidTestImplementation(platform(libs.androidx.compose.bom))
+    implementation(libs.androidx.activity.compose)
+    implementation(platform(libs.androidx.compose.bom))
+    implementation(libs.androidx.ui)
+    implementation(libs.androidx.ui.graphics)
+    implementation(libs.androidx.ui.tooling.preview)
+    implementation(libs.androidx.material3)
+    implementation(libs.androidx.material3.window.size)
+    implementation(libs.androidx.lifecycle.viewmodel.compose)
 
-    //Coil
-    val coilVer = "2.5.0"
-    implementation("io.coil-kt:coil:$coilVer")
-    implementation("io.coil-kt:coil-compose:$coilVer")
+    /**
+     * Coil
+     */
+    implementation(libs.coil)
+    implementation(libs.coil.compose)
 
+    /**
+     * Dagger & Hilt
+     */
+    implementation (libs.hilt.android)
+    implementation(libs.androidx.hilt.navigation.compose)
+    ksp(libs.hilt.compiler)
 
-    //Retrofit
-    val retrofitVer = "2.11.0"
-    implementation("com.squareup.retrofit2:retrofit:$retrofitVer")
-    implementation ("com.squareup.retrofit2:converter-kotlinx-serialization:2.11.0")
+    implementation(libs.androidx.navigation.compose)
 
-    //Dagger-Hilt
-    val hiltVer = "2.50"
-    implementation ("com.google.dagger:hilt-android:$hiltVer")
-    implementation("androidx.hilt:hilt-navigation-compose:1.2.0")
-    ksp("com.google.dagger:hilt-compiler:$hiltVer")
+    /**
+     * Lottie
+     */
+    implementation (libs.lottie.compose)
 
-    //Navigation
-    val navVersion = "2.7.7"
-    implementation("androidx.navigation:navigation-compose:$navVersion")
+    /**
+     * Supabase
+     */
+    implementation (libs.postgrest.kt)
+    implementation (libs.storage.kt)
+    implementation (libs.gotrue.kt)
+    implementation(libs.coil.integration)
+    implementation(libs.compose.auth)
+    implementation(libs.functions.kt)
+    implementation (libs.ktor.client.android)
+    implementation (libs.ktor.client.core)
+    implementation (libs.ktor.utils)
+    implementation(libs.ktor.client.logging)
+    implementation(libs.ktor.serialization.kotlinx.json)
+    implementation(libs.ktor.client.content.negotiation)
 
-    //Lottie
-    val lottieVersion = "6.3.0"
-    implementation ("com.airbnb.android:lottie-compose:$lottieVersion")
-
-    //Supabase
-    val supabaseVersion = "2.3.1"
-    val ktorVersion = "2.3.8"
-    implementation ("io.github.jan-tennert.supabase:postgrest-kt:$supabaseVersion")
-    implementation ("io.github.jan-tennert.supabase:storage-kt:$supabaseVersion")
-    implementation ("io.github.jan-tennert.supabase:gotrue-kt:$supabaseVersion")
-    implementation("io.github.jan-tennert.supabase:coil-integration:$supabaseVersion")
-    implementation("io.github.jan-tennert.supabase:compose-auth:$supabaseVersion")
-    implementation("io.github.jan-tennert.supabase:functions-kt:$supabaseVersion")
-    implementation ("io.ktor:ktor-client-android:$ktorVersion")
-    implementation ("io.ktor:ktor-client-core:$ktorVersion")
-    implementation ("io.ktor:ktor-utils:$ktorVersion")
-    implementation("io.ktor:ktor-client-logging:2.3.2")
-    implementation("io.ktor:ktor-serialization-kotlinx-json:$ktorVersion")
-    implementation("io.ktor:ktor-client-content-negotiation:$ktorVersion")
-
-    //Credential Manager
-    implementation("androidx.credentials:credentials:1.3.0-alpha03")
-    implementation("androidx.credentials:credentials-play-services-auth:1.3.0-alpha03")
+    /**
+     * Credential Manager
+     */
+    implementation(libs.androidx.credentials)
+    implementation(libs.androidx.credentials.play.services.auth)
 
 
-    //Sign in with Google
-    val googleidVersion = "1.1.0"
+    /**
+     * Sign in With Google
+     */
+    implementation (libs.googleid)
 
-    implementation ("com.google.android.libraries.identity.googleid:googleid:$googleidVersion")
-
-//    //Arrow
-//    implementation("io.arrow-kt:arrow-core:1.2.1")
-//    implementation("io.arrow-kt:arrow-fx-coroutines:1.2.1")
+    /**
+     * Firebase
+     */
+    implementation(platform(libs.firebase.bom))
+    implementation(libs.firebase.messaging)
 
 }

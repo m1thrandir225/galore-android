@@ -103,7 +103,7 @@ fun UserInfoShowcase(
             model = avatarUrl,
             contentDescription = "Your Avatar",
             contentScale = ContentScale.Crop,
-            placeholder = painterResource(id = R.drawable.profile_picture_placeholder)
+            placeholder = painterResource(id = R.drawable.placeholder_user)
         )
         Column (
             horizontalAlignment = Alignment.Start,
