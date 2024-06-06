@@ -1,19 +1,25 @@
 package com.sebastijanzindl.galore.presentation.screens.home
 
 import androidx.compose.foundation.ExperimentalFoundationApi
+import androidx.compose.foundation.layout.Arrangement
+import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.collectAsState
+import androidx.compose.runtime.getValue
 import androidx.compose.runtime.rememberCoroutineScope
+import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
-import androidx.navigation.NavController
-import com.sebastijanzindl.galore.domain.models.CocktailCardInfo
-import com.sebastijanzindl.galore.domain.models.Section
 import com.sebastijanzindl.galore.presentation.component.CocktailCardType
 import com.sebastijanzindl.galore.presentation.component.CocktailTagSection
-import com.sebastijanzindl.galore.presentation.viewmodels.ProfileSharedViewModel
+import com.sebastijanzindl.galore.presentation.component.LoadingSpinner
+import com.sebastijanzindl.galore.presentation.component.SnackbarMessageHandler
 import com.sebastijanzindl.galore.presentation.viewmodels.SectionSharedViewModel
 
 @OptIn(ExperimentalMaterial3Api::class, ExperimentalFoundationApi::class)
@@ -21,61 +27,59 @@ import com.sebastijanzindl.galore.presentation.viewmodels.SectionSharedViewModel
 fun HomeScreen(
     modifier: Modifier = Modifier,
     viewModel: HomeScreenViewModel = hiltViewModel(),
-    userProfileSharedViewModel: ProfileSharedViewModel = hiltViewModel(),
     sharedSectionViewModel: SectionSharedViewModel = hiltViewModel(),
-    navController: NavController
+    navigateToCocktailSection: (title: String) -> Unit,
+    singleCocktailCardPress: (cocktailId: String) -> Unit,
 ) {
     val coroutineScope = rememberCoroutineScope();
 
-    val cocktails = listOf(
-        CocktailCardInfo(
-            id = "1",
-            name = "Gin & Tonic",
-            image = "https://plus.unsplash.com/premium_photo-1671647122910-3fa8ab4990cb?q=80&w=1976&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D"
-        ),
-        CocktailCardInfo(
-            id = "2",
-            image = "https://images.unsplash.com/photo-1609951651556-5334e2706168?q=80&w=1974&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D",
-            name = "Margarita",
+    val toastMessage by viewModel.toastMessage.collectAsState();
+    val isLoading by viewModel.isLoading.collectAsState();
 
-            ),
-        CocktailCardInfo(
-            id = "3",
-            name = "Nokishta711",
-            image = "https://images.unsplash.com/photo-1514362545857-3bc16c4c7d1b?q=80&w=2070&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D"
-        )
-    )
-    val sections = listOf(
-        Section(
-            cocktails = cocktails,
-            tagName = "Today's Picks",
-            isFeatured = true,
-        ),
-        Section(
-            cocktails = cocktails,
-            tagName = "After a long day"
-        ),
-        Section(
-            cocktails = cocktails,
-            tagName = "Something Exciting"
-        ),
-        Section(
-            cocktails = cocktails,
-            tagName = "To cool down"
-        )
-    )
-    LazyColumn  (
-        modifier = modifier
-    ) {
-        items(sections) { section ->
-            val cocktailCardType = if(section.isFeatured) {
-                CocktailCardType.Horizontal
-            } else {
-                CocktailCardType.Vertical
+    val cocktailSections by viewModel.cocktailSections.collectAsState()
+
+    SnackbarMessageHandler(snackbarMessage = toastMessage, onDismissSnackbar = { viewModel.dismissToastMessage() })
+
+   if(isLoading) {
+        Column(
+            modifier = Modifier.fillMaxSize(),
+            verticalArrangement = Arrangement.Center,
+            horizontalAlignment = Alignment.CenterHorizontally
+        ) {
+            LoadingSpinner(shouldShow = isLoading)
+        }
+    } else {
+        LazyColumn  (
+            modifier = modifier.fillMaxSize().padding(bottom = 32.dp),
+            verticalArrangement = Arrangement.spacedBy(24.dp)
+
+        ) {
+            items(cocktailSections) { section ->
+                val cocktailCardType = if(section.isFeatured) {
+                    CocktailCardType.Horizontal
+                } else {
+                    CocktailCardType.Vertical
+                }
+                CocktailTagSection(cocktails = section.cocktails,
+                    tagName = section.tagName,
+                    canNavigateToSection = section.isFeatured,
+                    cocktailCardType = cocktailCardType ,
+                    navigateToSection = {
+                        sharedSectionViewModel.addSectionData(
+                            cocktails = section.cocktails,
+                            sectionName = section.tagName,
+                            isGeneratedSection = section.generatedCocktailsSection
+                        )
+                        navigateToCocktailSection(section.tagName)
+                    },
+                    cardPress = {cocktailId ->
+                        singleCocktailCardPress(cocktailId)
+                    }
+                )
             }
-            CocktailTagSection(cocktails = section.cocktails, tagName = section.tagName, canNavigateToSection = section.isFeatured, cocktailCardType = cocktailCardType , navigateToSection = {}, cardPress = {})
         }
     }
+
 }
 
 

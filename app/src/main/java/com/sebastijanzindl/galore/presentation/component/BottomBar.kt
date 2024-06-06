@@ -43,7 +43,9 @@ fun BottomNavigationBar(
             onClick = {
                 val currentRoute = navController.currentDestination?.route
                 if(currentRoute != AppScreen.Main.Home.route) {
-                    navController.navigate(AppScreen.Main.Home.route)
+                    navController.navigate(AppScreen.Main.Home.route) {
+                        popUpTo(AppScreen.Main.route)
+                    }
                 }
 
             },
@@ -56,7 +58,9 @@ fun BottomNavigationBar(
             onClick = {
                 val currentRoute = navController.currentDestination?.route
                 if(currentRoute != AppScreen.Main.Search.route) {
-                    navController.navigate(AppScreen.Main.Search.route)
+                    navController.navigate(AppScreen.Main.Search.route) {
+                        popUpTo(AppScreen.Main.route)
+                    }
                 }
 
             }
@@ -69,7 +73,9 @@ fun BottomNavigationBar(
             onClick = {
                 val currentRoute = navController.currentDestination?.route
                 if(currentRoute != AppScreen.Main.Generate.route) {
-                    navController.navigate(AppScreen.Main.Generate.route)
+                    navController.navigate(AppScreen.Main.Generate.route) {
+                        popUpTo(AppScreen.Main.route)
+                    }
                 }
             }
         ),
@@ -81,8 +87,9 @@ fun BottomNavigationBar(
             onClick = {
                 val currentRoute = navController.currentDestination?.route
                 if(currentRoute != AppScreen.Main.Library.route) {
-                    navController.navigate(AppScreen.Main.Library.route)
-
+                    navController.navigate(AppScreen.Main.Library.route) {
+                        popUpTo(AppScreen.Main.route)
+                    }
                 }
 
             }

@@ -36,7 +36,7 @@ import com.sebastijanzindl.galore.ui.theme.GaloreTheme
 
 enum class CocktailCardType(val value: Dp) {
     Horizontal(280.dp),
-    Vertical(180.dp)
+    Vertical(190.dp)
 }
 
 @Composable
