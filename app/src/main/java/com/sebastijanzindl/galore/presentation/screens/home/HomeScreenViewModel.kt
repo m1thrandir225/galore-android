@@ -46,6 +46,8 @@ class HomeScreenViewModel @Inject constructor(
 
                 val session = auth.currentSessionOrNull() ?: throw Exception("user not logged in");
 
+                Log.i("TOKEN", session.accessToken);
+
                 val result = getDailyHomeSectionsUseCase.execute(
                     GetDailyHomeSectionsUseCase.Input(session.accessToken)
                 )
