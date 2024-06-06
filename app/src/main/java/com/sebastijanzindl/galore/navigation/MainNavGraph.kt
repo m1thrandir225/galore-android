@@ -96,8 +96,9 @@ fun NavGraphBuilder.mainNavGraph(
             val sharedSectionViewModel: SectionSharedViewModel = it.sharedViewModel<SectionSharedViewModel>(navController = navController);
             HomeScreen(
                 modifier = Modifier.padding(paddingValues),
-                navController = navController,
-                sharedSectionViewModel = sharedSectionViewModel
+                sharedSectionViewModel = sharedSectionViewModel,
+                navigateToCocktailSection = { title -> navigateToCocktailSection(title) },
+                singleCocktailCardPress = { id -> navigateToCocktailDetails(id) }
             )
         }
         composable(
@@ -194,7 +195,7 @@ fun NavGraphBuilder.mainNavGraph(
         }
         composable(
             route = AppScreen.Main.CocktailSection.route,
-            enterTransition = { slideIntoContainer(AnimatedContentTransitionScope.SlideDirection.Start, tween(700)) },
+            enterTransition = { scaleIn() + fadeIn(tween(700)) },
             exitTransition = { slideOutOfContainer(AnimatedContentTransitionScope.SlideDirection.Start, tween(700)) },
             popEnterTransition = { slideIntoContainer(AnimatedContentTransitionScope.SlideDirection.End, tween(700)) },
             popExitTransition = { slideOutOfContainer(AnimatedContentTransitionScope.SlideDirection.End, tween(700)) }
@@ -209,10 +210,10 @@ fun NavGraphBuilder.mainNavGraph(
         }
         composable(
             route = AppScreen.Main.CocktailDetails.route,
-            enterTransition = { slideIntoContainer(AnimatedContentTransitionScope.SlideDirection.Start, tween(700)) },
-            exitTransition = { slideOutOfContainer(AnimatedContentTransitionScope.SlideDirection.Start, tween(700)) },
-            popEnterTransition = { slideIntoContainer(AnimatedContentTransitionScope.SlideDirection.End, tween(700)) },
-            popExitTransition = { slideOutOfContainer(AnimatedContentTransitionScope.SlideDirection.End, tween(700)) }
+            enterTransition = { slideIntoContainer(AnimatedContentTransitionScope.SlideDirection.Up, tween(700)) },
+            exitTransition = { slideOutOfContainer(AnimatedContentTransitionScope.SlideDirection.Up, tween(700)) },
+            popEnterTransition = { slideIntoContainer(AnimatedContentTransitionScope.SlideDirection.Down, tween(700)) },
+            popExitTransition = { slideOutOfContainer(AnimatedContentTransitionScope.SlideDirection.Down, tween(700)) }
         ) {
             val cocktailId = it.arguments?.getString("cocktail-id")!!;
             CocktailDetailsScreen(

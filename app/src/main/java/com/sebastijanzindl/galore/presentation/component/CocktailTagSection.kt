@@ -46,7 +46,6 @@ fun CocktailTagSection(
         state = pagerState,
         pagerSnapDistance = PagerSnapDistance.atMost(10)
     )
-
     Column (
         modifier = modifier,
         verticalArrangement = Arrangement.spacedBy(12.dp),

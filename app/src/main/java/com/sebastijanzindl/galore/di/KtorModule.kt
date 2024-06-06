@@ -1,7 +1,7 @@
 package com.sebastijanzindl.galore.di
 
-import com.sebastijanzindl.galore.data.repository.GenerateCocktailRepository
-import com.sebastijanzindl.galore.data.repository.impl.GenerateCocktailRepositoryImpl
+import com.sebastijanzindl.galore.data.network.KtorAPIService
+import com.sebastijanzindl.galore.data.network.KtorAPIServiceImpl
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
@@ -47,5 +47,5 @@ object KtorModule {
     }
     @Singleton
     @Provides
-    fun provideApiService(httpClient: HttpClient): GenerateCocktailRepository = GenerateCocktailRepositoryImpl(httpClient)
+    fun provideApiService(httpClient: HttpClient): KtorAPIService = KtorAPIServiceImpl(httpClient)
 }
