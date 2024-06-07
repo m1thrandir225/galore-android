@@ -34,7 +34,8 @@ object KtorModule {
                 level = LogLevel.ALL
             }
             install(HttpTimeout) {
-                requestTimeoutMillis = 240000
+                requestTimeoutMillis = 600000
+                socketTimeoutMillis = 600000
             }
             install(DefaultRequest) {
                 url("https://generate-cocktail-backend.sebastijanzindl.workers.dev/")
