@@ -13,9 +13,25 @@ import com.google.firebase.messaging.FirebaseMessagingService
 import com.google.firebase.messaging.RemoteMessage
 import com.sebastijanzindl.galore.GaloreActivity
 import com.sebastijanzindl.galore.R
+import com.sebastijanzindl.galore.domain.usecase.RegisterFCMTokenUseCase
+import dagger.hilt.android.AndroidEntryPoint
+import io.github.jan.supabase.gotrue.Auth
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.launch
+import javax.inject.Inject
 import kotlin.random.Random
 
-class NotificationService : FirebaseMessagingService() {
+@AndroidEntryPoint
+class NotificationService: FirebaseMessagingService() {
+
+    @Inject
+    lateinit var auth: Auth
+
+    @Inject
+    lateinit var registerFCMTokenUseCase: RegisterFCMTokenUseCase
+
+    private val coroutineScope = CoroutineScope(Dispatchers.IO)
 
     override fun onMessageReceived(remoteMessage: RemoteMessage) {
         remoteMessage.notification?.let { message ->
@@ -26,8 +42,30 @@ class NotificationService : FirebaseMessagingService() {
         registerUserToken(token)
     }
 
-    private fun registerUserToken(token: String?) {
-        Log.d("TAG", "sendRegistrationToServer$token")
+    private fun registerUserToken(token: String) {
+        coroutineScope.launch {
+            try {
+                val user = auth.currentUserOrNull() ?: throw Exception("User not signed in.")
+
+                val response = registerFCMTokenUseCase.execute(
+                    RegisterFCMTokenUseCase.Input(token = token, userId = user.id)
+                )
+
+                when(response) {
+                    RegisterFCMTokenUseCase.Output.Success -> {
+                        return@launch;
+                    }
+
+                    RegisterFCMTokenUseCase.Output.Failure -> {
+                        throw Exception("There was an error registering the new token.")
+                    }
+                }
+            } catch (e: Exception) {
+                Log.e("FCM Service", e.message.toString())
+            }
+
+
+        }
     }
 
     private fun sendNotification(message: RemoteMessage.Notification) {
