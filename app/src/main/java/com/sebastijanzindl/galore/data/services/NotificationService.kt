@@ -5,6 +5,7 @@ import android.app.NotificationManager
 import android.app.NotificationManager.IMPORTANCE_DEFAULT
 import android.app.PendingIntent
 import android.app.PendingIntent.FLAG_IMMUTABLE
+import android.content.Context
 import android.content.Intent
 import android.content.Intent.FLAG_ACTIVITY_CLEAR_TOP
 import android.util.Log
@@ -14,6 +15,7 @@ import com.google.firebase.messaging.RemoteMessage
 import com.sebastijanzindl.galore.GaloreActivity
 import com.sebastijanzindl.galore.R
 import com.sebastijanzindl.galore.domain.usecase.RegisterFCMTokenUseCase
+import com.sebastijanzindl.galore.presentation.util.deviceId
 import dagger.hilt.android.AndroidEntryPoint
 import io.github.jan.supabase.gotrue.Auth
 import kotlinx.coroutines.CoroutineScope
@@ -33,6 +35,8 @@ class NotificationService: FirebaseMessagingService() {
 
     private val coroutineScope = CoroutineScope(Dispatchers.IO)
 
+    val context: Context = this
+
     override fun onMessageReceived(remoteMessage: RemoteMessage) {
         remoteMessage.notification?.let { message ->
             sendNotification(message)
@@ -47,8 +51,10 @@ class NotificationService: FirebaseMessagingService() {
             try {
                 val user = auth.currentUserOrNull() ?: throw Exception("User not signed in.")
 
+
+
                 val response = registerFCMTokenUseCase.execute(
-                    RegisterFCMTokenUseCase.Input(token = token, userId = user.id)
+                    RegisterFCMTokenUseCase.Input(token = token, userId = user.id, context.deviceId())
                 )
 
                 when(response) {

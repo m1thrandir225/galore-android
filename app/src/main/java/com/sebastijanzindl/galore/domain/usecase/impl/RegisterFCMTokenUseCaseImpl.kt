@@ -13,11 +13,16 @@ class RegisterFCMTokenUseCaseImpl @Inject constructor(
         withContext(Dispatchers.IO) {
             val response = notificationRepository.registerFCMToken(
                 token = input.token,
-                userId = input.userId
+                userId = input.userId,
+                deviceId = input.deviceId
             )
 
             if(response != null) {
-                RegisterFCMTokenUseCase.Output.Success
+                if(response.fcmToken == input.token && response.deviceID == input.deviceId) {
+                    RegisterFCMTokenUseCase.Output.AlreadyExists
+                } else {
+                    RegisterFCMTokenUseCase.Output.Success
+                }
             } else {
                 RegisterFCMTokenUseCase.Output.Failure
             }

@@ -87,6 +87,7 @@ dependencies {
     implementation(libs.androidx.material3)
     implementation(libs.androidx.material3.window.size)
     implementation(libs.androidx.lifecycle.viewmodel.compose)
+    implementation(libs.accompanist.permissions)
 
     /**
      * Coil

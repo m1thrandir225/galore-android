@@ -31,27 +31,35 @@ import com.airbnb.lottie.compose.LottieConstants
 import com.airbnb.lottie.compose.rememberLottieComposition
 import com.sebastijanzindl.galore.R
 import com.sebastijanzindl.galore.presentation.component.Logo
-import com.sebastijanzindl.galore.presentation.viewmodels.MainViewModel
 import com.sebastijanzindl.galore.ui.theme.GaloreTheme
 
 @Composable
 fun EnablePushNotificationScreen(
     modifier: Modifier = Modifier,
     navigateToFavouriteFlavours: () -> Unit,
-    appViewModel: MainViewModel = hiltViewModel<MainViewModel>()
+    viewModel: EnablePushNotificationScreenViewModel = hiltViewModel()
 ) {
     val lottieSpec: LottieCompositionSpec = LottieCompositionSpec.RawRes(R.raw.enable_notifications_lottie)
     val composition by rememberLottieComposition(lottieSpec)
 
-    if(appViewModel.enabledNotifications) {
+    val hasPermissionsEnabled by viewModel.hasNotificationsPermission
+
+    if(hasPermissionsEnabled) {
         navigateToFavouriteFlavours();
     }
 
     val openPermissionLauncher = rememberLauncherForActivityResult(
         contract = ActivityResultContracts.RequestPermission(),
-        onResult = {
-            appViewModel.setHasEnabledNotifications(it)
-            navigateToFavouriteFlavours();
+        onResult = {result ->
+            viewModel.updateNotificationPermission(result)
+            when(result) {
+                true -> {
+
+                }
+                false -> {
+                    navigateToFavouriteFlavours();
+                }
+            }
         }
     )
 

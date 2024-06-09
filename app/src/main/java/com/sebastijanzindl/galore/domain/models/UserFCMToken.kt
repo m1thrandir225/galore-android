@@ -10,6 +10,9 @@ data class UserFCMTokenRequest(
 
     @SerialName("token")
     val fcmToken: String,
+
+    @SerialName("device_id")
+    val deviceID: String,
 )
 
 @Serializable
@@ -22,6 +25,9 @@ data class UserFCMToken(
 
     @SerialName("user_id")
     val userId: String,
+
+    @SerialName("device_id")
+    val deviceID: String,
 
     @SerialName("created_at")
     val createdAt: String
