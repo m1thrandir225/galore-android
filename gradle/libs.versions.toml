@@ -1,6 +1,7 @@
 [versions]
 accompanistPermissions = "0.35.1-alpha"
 activityCompose = "1.9.0"
+coilSvg = "2.6.0"
 coilVer = "2.6.0"
 composeBom = "2024.05.00"
 coreKtx = "1.13.1"
@@ -56,6 +57,7 @@ coil-compose = { module = "io.coil-kt:coil-compose", version.ref = "coilVer" }
 coil-integration = { module = "io.github.jan-tennert.supabase:coil-integration", version.ref = "supabaseVersion" }
 
 
+coil-svg = { module = "io.coil-kt:coil-svg", version.ref = "coilSvg" }
 firebase-bom = { module = "com.google.firebase:firebase-bom", version.ref = "firebaseBom" }
 firebase-messaging = { module = "com.google.firebase:firebase-messaging" }
 googleid = { module = "com.google.android.libraries.identity.googleid:googleid", version.ref = "googleidVersion" }

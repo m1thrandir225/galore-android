@@ -49,8 +49,6 @@ class NotificationsSettingsScreenViewModel @Inject constructor(
                     RegisterFCMTokenUseCase.Input(token = deviceFCMToken.result, userId = user.id, deviceId)
                 )
 
-
-
                 when(registerFCMResponse) {
                     RegisterFCMTokenUseCase.Output.Success -> {
                         _toastMessage.value = SnackbarMessage.from(
@@ -82,9 +80,6 @@ class NotificationsSettingsScreenViewModel @Inject constructor(
             } finally {
                 _isLoading.value = false
             }
-
-
-
         }
     }
 }
