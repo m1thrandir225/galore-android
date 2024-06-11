@@ -87,12 +87,15 @@ dependencies {
     implementation(libs.androidx.material3)
     implementation(libs.androidx.material3.window.size)
     implementation(libs.androidx.lifecycle.viewmodel.compose)
+    implementation(libs.accompanist.permissions)
 
     /**
      * Coil
      */
     implementation(libs.coil)
     implementation(libs.coil.compose)
+    implementation(libs.coil.svg)
+
 
     /**
      * Dagger & Hilt

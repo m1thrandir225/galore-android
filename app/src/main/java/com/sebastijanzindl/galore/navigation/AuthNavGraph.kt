@@ -9,6 +9,7 @@ import androidx.navigation.NavController
 import androidx.navigation.NavGraphBuilder
 import androidx.navigation.compose.composable
 import androidx.navigation.navigation
+import com.sebastijanzindl.galore.presentation.screens.forgotPassword.ForgotPasswordScreen
 import com.sebastijanzindl.galore.presentation.screens.login.LoginScreen
 import com.sebastijanzindl.galore.presentation.screens.register.RegisterScreen
 import com.sebastijanzindl.galore.presentation.screens.welcome.WelcomeScreen
@@ -91,6 +92,11 @@ fun NavGraphBuilder.authNavGraph(
                             inclusive = true
                         }
                     }
+                },
+                navigateToForgotPassword = {
+                    navController.navigate(AppScreen.Auth.ForgotPassword.route) {
+                        popUpTo(AppScreen.Auth.Login.route)
+                    }
                 }
             )
 
@@ -138,6 +144,41 @@ fun NavGraphBuilder.authNavGraph(
                             inclusive = true;
                         }
                     }
+                }
+            )
+        }
+
+        composable(
+            route = AppScreen.Auth.ForgotPassword.route,
+            enterTransition = {
+                return@composable slideIntoContainer(
+                    AnimatedContentTransitionScope.SlideDirection.Start,
+                    tween(700)
+                )
+            },
+            exitTransition = {
+                return@composable slideOutOfContainer(
+                    AnimatedContentTransitionScope.SlideDirection.End,
+                    tween(700)
+                )
+            },
+            popEnterTransition = {
+                return@composable slideIntoContainer(
+                    AnimatedContentTransitionScope.SlideDirection.End,
+                    tween(700)
+                )
+            },
+            popExitTransition = {
+                return@composable slideOutOfContainer(
+                    AnimatedContentTransitionScope.SlideDirection.End,
+                    tween(700)
+                )
+            }
+        ) {
+            ForgotPasswordScreen(
+                modifier = Modifier.padding(paddingValues),
+                goBack = {
+                    navController.popBackStack()
                 }
             )
         }

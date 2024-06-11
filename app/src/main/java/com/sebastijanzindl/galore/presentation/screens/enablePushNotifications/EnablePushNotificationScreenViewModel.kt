@@ -1,9 +1,10 @@
-package com.sebastijanzindl.galore.presentation.screens.notifications
+package com.sebastijanzindl.galore.presentation.screens.enablePushNotifications
 
 import android.util.Log
 import androidx.compose.material3.SnackbarDuration
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import com.sebastijanzindl.galore.data.repository.PermissionsRepository
 import com.sebastijanzindl.galore.domain.usecase.GetDeviceFCMTokenUseCase
 import com.sebastijanzindl.galore.domain.usecase.RegisterFCMTokenUseCase
 import com.sebastijanzindl.galore.presentation.component.SnackbarMessage
@@ -17,7 +18,9 @@ import kotlinx.coroutines.launch
 import javax.inject.Inject
 
 @HiltViewModel
-class NotificationsSettingsScreenViewModel @Inject constructor(
+
+class EnablePushNotificationScreenViewModel @Inject constructor(
+    private val permissionsRepository: PermissionsRepository,
     private val getDeviceFCMTokenUseCase: GetDeviceFCMTokenUseCase,
     private val registerFCMTokenUseCase: RegisterFCMTokenUseCase,
     private val auth: Auth
@@ -32,6 +35,13 @@ class NotificationsSettingsScreenViewModel @Inject constructor(
     fun dismissToast() {
         _toastMessage.update { null }
     }
+
+    val hasNotificationsPermission = permissionsRepository.hasNotificationsPermission
+
+    fun updateNotificationPermission(granted: Boolean) {
+        permissionsRepository.hasNotificationsPermission.value = granted
+    }
+
     fun uploadFCMToken(deviceId: String) {
         viewModelScope.launch {
             try {

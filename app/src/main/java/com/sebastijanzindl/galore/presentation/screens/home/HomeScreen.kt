@@ -50,17 +50,29 @@ fun HomeScreen(
         }
     } else {
         LazyColumn  (
-            modifier = modifier.fillMaxSize().padding(bottom = 32.dp),
+            modifier = modifier.fillMaxSize(),
             verticalArrangement = Arrangement.spacedBy(24.dp)
-
         ) {
-            items(cocktailSections) { section ->
+            items(cocktailSections, key = { it.tagName }) { section ->
                 val cocktailCardType = if(section.isFeatured) {
                     CocktailCardType.Horizontal
                 } else {
                     CocktailCardType.Vertical
                 }
-                CocktailTagSection(cocktails = section.cocktails,
+
+                val isLast = section == cocktailSections.last();
+                CocktailTagSection(
+                    modifier = Modifier.padding(
+                        bottom = when(isLast) {
+                            true -> {
+                                32.dp
+                            }
+                            else -> {
+                                0.dp
+                            }
+                        }
+                    ),
+                    cocktails = section.cocktails,
                     tagName = section.tagName,
                     canNavigateToSection = section.isFeatured,
                     cocktailCardType = cocktailCardType ,
@@ -79,7 +91,6 @@ fun HomeScreen(
             }
         }
     }
-
 }
 
 

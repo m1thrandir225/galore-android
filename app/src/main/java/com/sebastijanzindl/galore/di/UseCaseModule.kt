@@ -9,6 +9,7 @@ import com.sebastijanzindl.galore.domain.usecase.GetAllUserMadeCocktails
 import com.sebastijanzindl.galore.domain.usecase.GetCocktailFavouriteStatusUseCase
 import com.sebastijanzindl.galore.domain.usecase.GetCocktailsBySearchUseCase
 import com.sebastijanzindl.galore.domain.usecase.GetDailyHomeSectionsUseCase
+import com.sebastijanzindl.galore.domain.usecase.GetDeviceFCMTokenUseCase
 import com.sebastijanzindl.galore.domain.usecase.GetSectionCocktailsUseCase
 import com.sebastijanzindl.galore.domain.usecase.GetSingleCocktailUseCase
 import com.sebastijanzindl.galore.domain.usecase.GetSingleGeneratedCocktailUseCase
@@ -16,6 +17,7 @@ import com.sebastijanzindl.galore.domain.usecase.GetUserFlavoursUseCase
 import com.sebastijanzindl.galore.domain.usecase.GetUserLikedCocktailsUseCase
 import com.sebastijanzindl.galore.domain.usecase.GetUserProfileUseCase
 import com.sebastijanzindl.galore.domain.usecase.LibraryScreenUseCase
+import com.sebastijanzindl.galore.domain.usecase.RegisterFCMTokenUseCase
 import com.sebastijanzindl.galore.domain.usecase.RemoveCocktailFromFavouritesUseCase
 import com.sebastijanzindl.galore.domain.usecase.SignInGoogleUseCase
 import com.sebastijanzindl.galore.domain.usecase.SignInUseCase
@@ -31,6 +33,7 @@ import com.sebastijanzindl.galore.domain.usecase.impl.GetAllUserMadeCocktailsImp
 import com.sebastijanzindl.galore.domain.usecase.impl.GetCocktailFavouriteStatusUseCaseImpl
 import com.sebastijanzindl.galore.domain.usecase.impl.GetCocktailsBySearchUseCaseImpl
 import com.sebastijanzindl.galore.domain.usecase.impl.GetDailyHomeSectionsUseCaseImpl
+import com.sebastijanzindl.galore.domain.usecase.impl.GetDeviceFCMTokenUseCaseImpl
 import com.sebastijanzindl.galore.domain.usecase.impl.GetPopularCocktailsUseCaseImpl
 import com.sebastijanzindl.galore.domain.usecase.impl.GetSingleCocktailUseCaseImpl
 import com.sebastijanzindl.galore.domain.usecase.impl.GetSingleGeneratedCocktailUseCaseImpl
@@ -38,6 +41,7 @@ import com.sebastijanzindl.galore.domain.usecase.impl.GetUserFlavoursUseCaseImpl
 import com.sebastijanzindl.galore.domain.usecase.impl.GetUserLikedCocktailsUseCaseImpl
 import com.sebastijanzindl.galore.domain.usecase.impl.GetUserProfileUseCaseImpl
 import com.sebastijanzindl.galore.domain.usecase.impl.LibraryScreenUseCaseImpl
+import com.sebastijanzindl.galore.domain.usecase.impl.RegisterFCMTokenUseCaseImpl
 import com.sebastijanzindl.galore.domain.usecase.impl.RemoveCocktailFromFavouritesUseCaseImpl
 import com.sebastijanzindl.galore.domain.usecase.impl.SignInGoogleUseCaseImpl
 import com.sebastijanzindl.galore.domain.usecase.impl.SignInUseCaseImpl
@@ -118,4 +122,10 @@ abstract class UseCaseModule {
 
     @Binds
     abstract fun bindGetDailyHomeSectionsUseCase(impl: GetDailyHomeSectionsUseCaseImpl): GetDailyHomeSectionsUseCase
+
+    @Binds
+    abstract fun bindRegisterFCMTokenUseCase(impl: RegisterFCMTokenUseCaseImpl): RegisterFCMTokenUseCase
+
+    @Binds
+    abstract fun bindGetDeviceFCMTokenUseCase(impl: GetDeviceFCMTokenUseCaseImpl): GetDeviceFCMTokenUseCase
 }

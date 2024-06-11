@@ -5,6 +5,7 @@
 
     <uses-permission android:name="android.permission.POST_NOTIFICATIONS"/>
 
+
     <application
         android:name=".MainApplication"
         android:allowBackup="true"
@@ -15,12 +16,15 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/Theme.Galore"
-        tools:targetApi="34">
+        tools:targetApi="34"
+        android:enableOnBackInvokedCallback="true"
+        >
         <activity
             android:name=".GaloreActivity"
             android:exported="true"
             android:windowSoftInputMode="adjustResize"
             android:theme="@style/Theme.Galore">
+
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
@@ -35,15 +39,26 @@
                     android:host="galore.app"
                     />
             </intent-filter>
+
         </activity>
 
-<!--        <service-->
-<!--            android:name=".java.MyFirebaseMessagingService"-->
-<!--            android:exported="false">-->
-<!--            <intent-filter>-->
-<!--                <action android:name="com.google.firebase.MESSAGING_EVENT" />-->
-<!--            </intent-filter>-->
-<!--        </service>-->
+        <service
+            android:name=".data.services.NotificationService"
+            android:exported="false">
+            <intent-filter>
+                <action android:name="com.google.firebase.MESSAGING_EVENT" />
+            </intent-filter>
+        </service>
+
+        <meta-data
+            android:name="com.google.firebase.messaging.default_notification_channel_id"
+            android:value="@string/default_notification_channel_id" />
+        <meta-data
+            android:name="com.google.firebase.messaging.default_notification_icon"
+            android:resource="@mipmap/ic_launcher" />
+        <meta-data
+            android:name="com.google.firebase.messaging.default_notification_color"
+            android:resource="@color/ic_launcher_background" />
 
     </application>
 

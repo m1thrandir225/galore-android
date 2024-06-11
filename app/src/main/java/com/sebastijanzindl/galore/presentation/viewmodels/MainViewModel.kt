@@ -1,21 +1,17 @@
 package com.sebastijanzindl.galore.presentation.viewmodels
 
-import androidx.compose.runtime.getValue
-import androidx.compose.runtime.mutableStateOf
-import androidx.compose.runtime.setValue
 import androidx.lifecycle.ViewModel
-import com.sebastijanzindl.galore.domain.usecase.SignOutUseCase
+import com.sebastijanzindl.galore.data.repository.PermissionsRepository
 import dagger.hilt.android.lifecycle.HiltViewModel
 import javax.inject.Inject
 
 @HiltViewModel
 class MainViewModel @Inject constructor(
-    private val signOutUseCase: SignOutUseCase,
+    private val permissionsRepository: PermissionsRepository
 ): ViewModel() {
-    var enabledNotifications by mutableStateOf(false)
-        private set
+    val hasNotificationsPermission = permissionsRepository.hasNotificationsPermission
 
-    fun setHasEnabledNotifications(value: Boolean) {
-        enabledNotifications = value;
+    fun updateNotificationPermission(granted: Boolean) {
+        permissionsRepository.hasNotificationsPermission.value = granted
     }
 }

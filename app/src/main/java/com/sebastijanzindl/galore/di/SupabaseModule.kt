@@ -46,7 +46,7 @@ object SupabaseModule {
     }
     @Provides
     @Singleton
-    fun provideSupabaseGoTrue(client: SupabaseClient): Postgrest {
+    fun provideSupabasePostgrest(client: SupabaseClient): Postgrest {
         return client.postgrest
     }
 
