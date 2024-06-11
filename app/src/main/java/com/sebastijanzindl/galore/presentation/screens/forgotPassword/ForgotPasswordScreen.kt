@@ -10,6 +10,7 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.text.KeyboardActions
 import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.material3.Button
+import androidx.compose.material3.CircularProgressIndicator
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.OutlinedTextField
 import androidx.compose.material3.Text
@@ -30,7 +31,6 @@ import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import com.airbnb.lottie.compose.LottieAnimation
 import com.airbnb.lottie.compose.LottieCompositionSpec
-import com.airbnb.lottie.compose.LottieConstants
 import com.airbnb.lottie.compose.rememberLottieComposition
 import com.sebastijanzindl.galore.R
 import com.sebastijanzindl.galore.presentation.component.Logo
@@ -40,7 +40,8 @@ import com.sebastijanzindl.galore.ui.theme.GaloreTheme
 @Composable
 fun ForgotPasswordScreen(
     modifier: Modifier = Modifier,
-    viewModel: ForgotPasswordScreenViewModel = hiltViewModel()
+    viewModel: ForgotPasswordScreenViewModel = hiltViewModel(),
+    goBack: () -> Unit
 ) {
 
     val isLoading by viewModel.isLoading.collectAsState()
@@ -65,7 +66,7 @@ fun ForgotPasswordScreen(
         Logo()
         when(magicLinkSent) {
             true -> {
-                SuccessfulMagicLinkRequest()
+                SuccessfulMagicLinkRequest(goBack = goBack)
             }
             false -> {
                 Text(text = "There was an error sending the password reset link.")
@@ -105,14 +106,22 @@ fun ForgotPasswordScreen(
                     )
                     Button(
                         modifier = Modifier.fillMaxWidth(),
-                        enabled = email.isNotEmpty(),
+                        enabled = email.isNotEmpty() || !isLoading,
                         onClick = {
                             if(email.isNotEmpty()) {
                                 viewModel.sendPasswordResetRequest(email)
                             }
                         }
                     ) {
-                        Text(text = "Send Magic Link")
+                        if(isLoading) {
+                            CircularProgressIndicator(
+                                modifier = Modifier.align(Alignment.CenterVertically),
+                                color = MaterialTheme.colorScheme.primaryContainer,
+                                trackColor = MaterialTheme.colorScheme.onPrimaryContainer,
+                            )
+                        } else {
+                            Text(text = "Send Magic Link")
+                        }
                     }
                 }
         }
@@ -123,23 +132,36 @@ fun ForgotPasswordScreen(
 
 @Composable
 fun SuccessfulMagicLinkRequest(
-    modifier: Modifier = Modifier
+    modifier: Modifier = Modifier,
+    goBack: () -> Unit,
 ) {
     val composition by rememberLottieComposition(spec = LottieCompositionSpec.RawRes(R.raw.reset_password_success))
+    Column (
+        modifier = Modifier.fillMaxWidth(),
+        horizontalAlignment = Alignment.CenterHorizontally,
+        verticalArrangement = Arrangement.Center
 
-    LottieAnimation(
-        composition = composition,
-        modifier = Modifier
-            .fillMaxWidth()
-            .height(400.dp),
-        iterations = LottieConstants.IterateForever
-    )
+    ) {
+        LottieAnimation(
+            composition = composition,
+            modifier = Modifier
+                .fillMaxWidth()
+                .height(400.dp),
+            iterations = 1
+        )
+        Spacer(modifier = Modifier.padding(4.dp))
+
+        Button(onClick = { goBack() }) {
+            Text(text = "Go Back")
+        }
+    }
+   
 }
 
 @Preview
 @Composable
 private fun ForgotPasswordScreenPreview() {
     GaloreTheme {
-        ForgotPasswordScreen()
+        ForgotPasswordScreen() {}
     }
 }

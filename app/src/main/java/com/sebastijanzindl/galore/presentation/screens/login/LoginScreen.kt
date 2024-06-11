@@ -56,6 +56,7 @@ fun LoginScreen(
     sharedViewModel: AuthSharedViewModel = hiltViewModel<AuthSharedViewModel>(),
     navigateToRegister: () -> Unit,
     navigateToMain: () -> Unit,
+    navigateToForgotPassword: () -> Unit
 ) {
     val composition by rememberLottieComposition(spec = LottieCompositionSpec.RawRes(R.raw.login_lottie))
     val scrollState = rememberScrollState();
@@ -159,6 +160,9 @@ fun LoginScreen(
 
             )
             Text(
+                modifier = Modifier.clickable {
+                    navigateToForgotPassword()
+                },
                 text = "Forgot your password ?",
                 style = MaterialTheme.typography.labelSmall,
                 color = MaterialTheme.colorScheme.onTertiaryContainer
@@ -227,6 +231,6 @@ fun LoginScreen(
 @Composable
 private fun LoginScreenPreview() {
     GaloreTheme {
-        LoginScreen(navigateToRegister = {}, navigateToMain = {})
+        LoginScreen(navigateToRegister = {}, navigateToMain = {}, navigateToForgotPassword = {})
     }
 }
