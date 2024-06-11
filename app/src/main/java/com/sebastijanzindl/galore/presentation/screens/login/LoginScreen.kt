@@ -107,7 +107,8 @@ fun LoginScreen(
                     Text(text = "Email")
                 },
                 keyboardOptions = KeyboardOptions(
-                    imeAction = ImeAction.Next
+                    imeAction = ImeAction.Next,
+                    keyboardType = KeyboardType.Email
                 ),
                 keyboardActions = KeyboardActions(
                     onNext = {
