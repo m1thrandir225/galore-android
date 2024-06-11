@@ -1,5 +1,7 @@
 [versions]
+accompanistPermissions = "0.35.1-alpha"
 activityCompose = "1.9.0"
+coilSvg = "2.6.0"
 coilVer = "2.6.0"
 composeBom = "2024.05.00"
 coreKtx = "1.13.1"
@@ -20,7 +22,7 @@ lottieVersion = "6.3.0"
 material3 = "1.2.1"
 navVersion = "2.7.7"
 supabaseVersion = "2.3.1"
-androidGradlePlugin = "8.4.1"
+androidGradlePlugin = "8.4.2"
 kotlinGradlePlugin = "1.9.0"
 kspGradlePlugin = "1.9.22-1.0.16"
 daggerHiltGradlePlugin = "2.50"
@@ -28,6 +30,7 @@ kotlinSerializationGradlePlugin = "1.9.22"
 
 
 [libraries]
+accompanist-permissions = { module = "com.google.accompanist:accompanist-permissions", version.ref = "accompanistPermissions" }
 androidx-activity-compose = { module = "androidx.activity:activity-compose", version.ref = "activityCompose" }
 androidx-compose-bom = { module = "androidx.compose:compose-bom", version.ref = "composeBom" }
 androidx-core-ktx = { module = "androidx.core:core-ktx", version.ref = "coreKtx" }
@@ -54,6 +57,7 @@ coil-compose = { module = "io.coil-kt:coil-compose", version.ref = "coilVer" }
 coil-integration = { module = "io.github.jan-tennert.supabase:coil-integration", version.ref = "supabaseVersion" }
 
 
+coil-svg = { module = "io.coil-kt:coil-svg", version.ref = "coilSvg" }
 firebase-bom = { module = "com.google.firebase:firebase-bom", version.ref = "firebaseBom" }
 firebase-messaging = { module = "com.google.firebase:firebase-messaging" }
 googleid = { module = "com.google.android.libraries.identity.googleid:googleid", version.ref = "googleidVersion" }

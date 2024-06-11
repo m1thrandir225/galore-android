@@ -1,5 +1,6 @@
 package com.sebastijanzindl.galore.navigation
 
+import android.content.Intent
 import androidx.compose.animation.AnimatedContentTransitionScope
 import androidx.compose.animation.core.tween
 import androidx.compose.foundation.layout.PaddingValues
@@ -8,6 +9,7 @@ import androidx.compose.ui.Modifier
 import androidx.navigation.NavController
 import androidx.navigation.NavGraphBuilder
 import androidx.navigation.compose.composable
+import androidx.navigation.navDeepLink
 import androidx.navigation.navigation
 import com.sebastijanzindl.galore.presentation.screens.accountSettings.AccountSettingScreen
 import com.sebastijanzindl.galore.presentation.screens.notifications.NotificationSettings
@@ -73,6 +75,12 @@ fun NavGraphBuilder.settingsNavGraph(
         }
         composable(
             route = AppScreen.Settings.PasswordAndSecurity.route,
+            deepLinks = listOf(
+                navDeepLink {
+                    uriPattern = "supabase://galore.app"
+                    action = Intent.ACTION_VIEW
+                }
+            ),
             enterTransition = { slideIntoContainer(AnimatedContentTransitionScope.SlideDirection.Start, tween(700)) },
             exitTransition = { slideOutOfContainer(AnimatedContentTransitionScope.SlideDirection.Start, tween(700)) },
             popEnterTransition = { slideIntoContainer(AnimatedContentTransitionScope.SlideDirection.End, tween(700)) },

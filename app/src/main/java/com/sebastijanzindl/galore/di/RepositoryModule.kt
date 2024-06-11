@@ -3,10 +3,12 @@ package com.sebastijanzindl.galore.di
 import com.sebastijanzindl.galore.data.repository.AuthenticationRepository
 import com.sebastijanzindl.galore.data.repository.CocktailRepository
 import com.sebastijanzindl.galore.data.repository.FlavourRepository
+import com.sebastijanzindl.galore.data.repository.NotificationRepository
 import com.sebastijanzindl.galore.data.repository.UserProfileRepository
 import com.sebastijanzindl.galore.data.repository.impl.AuthenticationRepositoryImpl
 import com.sebastijanzindl.galore.data.repository.impl.CocktailRepositoryImpl
 import com.sebastijanzindl.galore.data.repository.impl.FlavourRepositoryImpl
+import com.sebastijanzindl.galore.data.repository.impl.NotificationRepositoryImpl
 import com.sebastijanzindl.galore.data.repository.impl.UserProfileRepositoryImpl
 import dagger.Binds
 import dagger.Module
@@ -24,5 +26,8 @@ abstract  class RepositoryModule {
     abstract fun bindCocktailRepository(impl: CocktailRepositoryImpl): CocktailRepository
     @Binds
     abstract fun bindUserProfileRepository(impl: UserProfileRepositoryImpl): UserProfileRepository
+
+    @Binds
+    abstract fun bindNotificationRepository(impl: NotificationRepositoryImpl): NotificationRepository
 
 }

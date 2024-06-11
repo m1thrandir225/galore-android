@@ -21,8 +21,10 @@ class ProfileSharedViewModel @Inject constructor(
     private val getUserProfileUseCase: GetUserProfileUseCase,
     private val signOutUseCase: SignOutUseCase,
     private val updateUserProfileUseCase: UpdateUserProfileUseCase,
-    private val auth: Auth
+    private val auth: Auth,
 ) : ViewModel() {
+
+
     private val _userProfile = MutableStateFlow<UserProfile?>(null)
     private val sessionStatus = auth.currentSessionOrNull();
 

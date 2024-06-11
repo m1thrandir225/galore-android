@@ -21,6 +21,7 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
@@ -31,27 +32,42 @@ import com.airbnb.lottie.compose.LottieConstants
 import com.airbnb.lottie.compose.rememberLottieComposition
 import com.sebastijanzindl.galore.R
 import com.sebastijanzindl.galore.presentation.component.Logo
-import com.sebastijanzindl.galore.presentation.viewmodels.MainViewModel
+import com.sebastijanzindl.galore.presentation.util.deviceId
 import com.sebastijanzindl.galore.ui.theme.GaloreTheme
 
 @Composable
 fun EnablePushNotificationScreen(
     modifier: Modifier = Modifier,
     navigateToFavouriteFlavours: () -> Unit,
-    appViewModel: MainViewModel = hiltViewModel<MainViewModel>()
+    viewModel: EnablePushNotificationScreenViewModel = hiltViewModel()
 ) {
     val lottieSpec: LottieCompositionSpec = LottieCompositionSpec.RawRes(R.raw.enable_notifications_lottie)
     val composition by rememberLottieComposition(lottieSpec)
 
-    if(appViewModel.enabledNotifications) {
-        navigateToFavouriteFlavours();
+    val hasPermissionsEnabled by viewModel.hasNotificationsPermission
+
+    val context = LocalContext.current
+
+    if(hasPermissionsEnabled) {
+        viewModel.uploadFCMToken(context.deviceId()).also {
+            navigateToFavouriteFlavours();
+        }
     }
 
     val openPermissionLauncher = rememberLauncherForActivityResult(
         contract = ActivityResultContracts.RequestPermission(),
-        onResult = {
-            appViewModel.setHasEnabledNotifications(it)
-            navigateToFavouriteFlavours();
+        onResult = {result ->
+            viewModel.updateNotificationPermission(result)
+            when(result) {
+                true -> {
+                    viewModel.uploadFCMToken(context.deviceId()).also {
+                        navigateToFavouriteFlavours();
+                    }
+                }
+                false -> {
+                    navigateToFavouriteFlavours();
+                }
+            }
         }
     )
 

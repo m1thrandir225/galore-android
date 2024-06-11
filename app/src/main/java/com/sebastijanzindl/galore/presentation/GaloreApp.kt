@@ -68,7 +68,7 @@ fun GaloreApp(
           mutableStateOf(true)
         }
     }
-    viewModel.setHasEnabledNotifications(
+    viewModel.updateNotificationPermission(
         hasNotificationPermission
     )
 

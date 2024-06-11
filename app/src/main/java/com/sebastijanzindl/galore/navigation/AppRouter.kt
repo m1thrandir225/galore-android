@@ -16,6 +16,7 @@ private object  Routes {
     const val LOGIN = "login"
     const val REGISTER = "register"
     const val WELECOME = "welcome"
+    const val FORGOT_PASSWORD = "forgot-password"
 
     /**
      * Onboarding Graph Routes
@@ -79,6 +80,8 @@ sealed class AppScreen(val route: String, val navArguments: List<NamedNavArgumen
         object Welcome: AppScreen(Routes.WELECOME)
         object Login : AppScreen(Routes.LOGIN)
         object Register : AppScreen(Routes.REGISTER)
+
+        object ForgotPassword: AppScreen(Routes.FORGOT_PASSWORD)
     }
     object Main: AppScreen(Routes.MAIN) {
         object Home : BottomBarDesination(
