@@ -168,9 +168,6 @@ private fun BottomSheetPreview() {
                     title = "Settings") {
                     println("Settings Clicked")
                 }
-                MenuItem(buttonIcon = ButtonComposableWrapper {  Icon(painterResource(id = R.drawable.question_mark_24px), "") }, title = "Help") {
-                    println("Settings Clicked")
-                }
                 MenuItem(buttonIcon = ButtonComposableWrapper {  Icon(painterResource(id = R.drawable.logout_24px), "") }, title = "Logout") {
                     println("Settings Clicked")
                 }
