@@ -11,7 +11,6 @@ import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
@@ -21,7 +20,6 @@ import com.sebastijanzindl.galore.R
 import com.sebastijanzindl.galore.presentation.viewmodels.AuthSharedViewModel
 import io.github.jan.supabase.compose.auth.composable.NativeSignInResult
 import io.github.jan.supabase.compose.auth.composable.rememberSignInWithGoogle
-import io.github.jan.supabase.postgrest.Postgrest
 
 @Composable
 fun GoogleSignInButton(
@@ -30,8 +28,7 @@ fun GoogleSignInButton(
     onSuccessCallback: () -> Unit,
 ) {
     val context = LocalContext.current
-    rememberCoroutineScope()
-    Postgrest
+
 
     val googleSignIn = viewModel.supabaseComposeAuth.rememberSignInWithGoogle(
         onResult = { result -> //optional error handling
