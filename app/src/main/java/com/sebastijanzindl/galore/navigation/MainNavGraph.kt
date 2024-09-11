@@ -56,7 +56,7 @@ fun NavGraphBuilder.mainNavGraph(
                     newValue = cocktailId
                     ),
                 ) {
-                    popUpTo(AppScreen.Main.Generate.route) {
+                    popUpTo(AppScreen.Main.GenerateSelectFlavours.route) {
                         inclusive = true
                     }
                 }
@@ -77,11 +77,14 @@ fun NavGraphBuilder.mainNavGraph(
         }
 
         fun navigateToGenerateLoadingScreen() {
-            navController.navigate(AppScreen.Main.GenerateLoading.route);
+            navController.navigate(AppScreen.Main.GenerateLoading.route) {
+                popUpTo(AppScreen.Main.GenerateSelectFlavours.route) {
+                    inclusive = true
+                }
+            };
         }
-
         fun navigateBack() {
-            navController.popBackStack()
+            navController.navigateUp()
         }
 
 
