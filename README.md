@@ -20,7 +20,13 @@ The app is made using Clean Architecture and Use Cases along side a backend made
 
 # Screenshots
 
+# Related
+The following repository is a part of a larger project named Galore:
 
+- [**Check out the Backend Services**](https://github.com/m1thrandir225/galore-services)
+- [**Check out the iOS App**](https://github.com/m1thrandir225/galore-ios)
+- [**Check out the Admin Dashboard(WIP)**](https://github.com/m1thrandir225/galore-dashboard)
+- [**Check out the Landing Page**](https://github.com/m1thrandir225/galore-landing)
 
 ---
 License MIT © [Sebastijan Zindl](./LICENSE)
